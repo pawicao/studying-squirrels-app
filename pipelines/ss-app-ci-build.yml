@@ -17,5 +17,18 @@ steps:
 
 - script: |
     npm install
-    npm run build
-  displayName: 'npm install and build'
+  displayName: 'npm install'
+
+- script: |
+    npm run lint
+  displayName: 'npm run lint'
+
+- script: |
+    npm run test
+  displayName: 'Run unit tests'
+
+- script: |
+    cd android
+    bundle install
+    fastlane build
+  displayName: 'Build android'
