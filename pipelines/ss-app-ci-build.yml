@@ -7,28 +7,26 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'macOS-10.14'
+
+variables:
+  - group: AndroidKeystore
 
 steps:
 - task: NodeTool@0
+  displayName: 'Install Node'
   inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+    versionSpec: '12.16.1'
 
-- script: |
-    npm install
-  displayName: 'npm install'
+- script: npm install
+  workingDirectory: src
+  displayName: 'Install node dependencies'
 
-# - script: |
-#     npm run lint
-#   displayName: 'npm run lint'
-
-# - script: |
-#     npm run test
-#   displayName: 'Run unit tests'
-
-- script: |
-    cd android
-    bundle install
-    fastlane build
-  displayName: 'Build android'
+- task: Gradle@2
+  inputs:
+    workingDirectory: 'src/android'
+    gradleWrapperFile: 'src/android/gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleRelease'
