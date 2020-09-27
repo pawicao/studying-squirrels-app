@@ -1,2 +1,9 @@
-# studying_squirrels_ui_alpha
-W package.json masz listę npmowych komend do odpalenia, jeśli się przyda
+# Studying Squirrels App - React Native UI
+
+To build and run on Android:
+```
+npm install
+npm run eject
+npm run link-icons
+npm run android
+```
