@@ -9,9 +9,6 @@ trigger:
 pool:
   vmImage: 'macOS-10.14'
 
-variables:
-  - group: AndroidKeystore
-
 steps:
 - task: NodeTool@0
   displayName: 'Install Node'
