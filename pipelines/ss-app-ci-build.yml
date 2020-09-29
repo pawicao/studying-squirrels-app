@@ -39,7 +39,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      find $directory -type f -name "*.yml"
+      find $directory -type f -name "*.apk"
 
 # - task: AndroidSigning@3
 #   inputs:
