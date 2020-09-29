@@ -41,6 +41,21 @@ steps:
     script: |
       find $directory -type f -name "*.apk"
 
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/android/app/build/outputs/apk/release'
+    Contents: 'app-release.apk'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'StudyingSquirrelsAPK'
+    publishLocation: 'Container'
+
+
 # - task: AndroidSigning@3
 #   inputs:
 #     apkFiles: '**/*.apk'
