@@ -32,12 +32,13 @@ steps:
     publishJUnitResults: false
     # testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleRelease'
-- task: AndroidSigning@3
-  inputs:
-    apkFiles: '**/*.apk'
-    apksignerKeystoreFile: '*studyingsquirrels.keystore'
-    apksignerKeystorePassword: 'zJyiOuDNB0G5ZgGJv5jy'
-    zipalign: false
+
+# - task: AndroidSigning@3
+#   inputs:
+#     apkFiles: '**/*.apk'
+#     apksignerKeystoreFile: '*studyingsquirrels.keystore'
+#     apksignerKeystorePassword: 'zJyiOuDNB0G5ZgGJv5jy'
+#     zipalign: false
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.SourcesDirectory)/*.apk'
