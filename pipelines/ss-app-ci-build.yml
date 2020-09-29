@@ -7,8 +7,7 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: 'test'
 
 steps:
 - task: NodeTool@0
@@ -39,8 +38,8 @@ steps:
 #     apksignerKeystoreFile: '*studyingsquirrels.keystore'
 #     apksignerKeystorePassword: 'zJyiOuDNB0G5ZgGJv5jy'
 #     zipalign: false
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/*.apk'
-    ArtifactName: 'StudyingSquirrelsAPK'
-    publishLocation: 'Container'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.SourcesDirectory)/*.apk'
+#     ArtifactName: 'StudyingSquirrelsAPK'
+#     publishLocation: 'Container'
