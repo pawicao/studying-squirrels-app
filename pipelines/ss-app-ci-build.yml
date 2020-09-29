@@ -19,18 +19,18 @@ steps:
     npm install
     npm run eject
     npm run link-icons
-    npm run android
+    # npm run android
   workingDirectory: src
   displayName: 'Install node dependencies'
 
-# - task: Gradle@2
-#   inputs:
-#     workingDirectory: 'src/android'
-#     gradleWrapperFile: 'src/android/gradlew'
-#     gradleOptions: '-Xmx3072m'
-#     publishJUnitResults: false
-#     testResultsFiles: '**/TEST-*.xml'
-#     tasks: 'assembleRelease'
+- task: Gradle@2
+  inputs:
+    workingDirectory: 'android'
+    gradleWrapperFile: 'android/gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    # testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleRelease'
 
 
 
