@@ -61,3 +61,5 @@ buck-out/
 # Project exclude paths
 /android/
 /ios/
+
+.env

@@ -4,15 +4,15 @@ const initialState = {
   studentMode: true,
 };
 
-const changeMode = state => {
-  let prevState = {...state}
+const changeMode = (state) => {
+  let prevState = {...state};
   return {
-    studentMode: !prevState.studentMode
-  }
-}
+    studentMode: !prevState.studentMode,
+  };
+};
 
 const reducer = (state = initialState, action) => {
-  if(action.type === actionTypes.MODE_CHANGE) {
+  if (action.type === actionTypes.MODE_CHANGE) {
     return changeMode(state);
   }
   return state;

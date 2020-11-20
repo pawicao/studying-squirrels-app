@@ -56,7 +56,9 @@ class MyAccountScreen extends Component {
     switch (title) {
       case 'logout':
         this.handleLogout();
-        if(!this.props.studentMode) this.props.route.params.changeMode();
+        if (!this.props.studentMode) {
+          this.props.route.params.changeMode();
+        }
         this.props.navigation.navigate('Login');
         break;
       case 'edit':
@@ -92,20 +94,23 @@ class MyAccountScreen extends Component {
   };
 
   componentDidMount() {
-    axios.get(mockURL)
-      .then(res => this.setState({
-        user: {
-          userId: res.data[0].userId,
-          firstName: res.data[0].firstName,
-          lastName: res.data[0].lastName,
-          avatar: res.data[0].avatar,
-          studentRating: res.data[0].studentRating,
-          tutorRating: res.data[0].tutorRating,
-          isTutor: res.data[0].isTutor,
-          isStudent: res.data[0].isStudent,
-        },
-        loaded: true,
-      }))
+    axios
+      .get(mockURL)
+      .then((res) =>
+        this.setState({
+          user: {
+            userId: res.data[0].userId,
+            firstName: res.data[0].firstName,
+            lastName: res.data[0].lastName,
+            avatar: res.data[0].avatar,
+            studentRating: res.data[0].studentRating,
+            tutorRating: res.data[0].tutorRating,
+            isTutor: res.data[0].isTutor,
+            isStudent: res.data[0].isStudent,
+          },
+          loaded: true,
+        }),
+      )
       .catch(function (error) {
         console.log(error);
       });
@@ -114,7 +119,12 @@ class MyAccountScreen extends Component {
   render() {
     let upperContent;
     if (this.state.loaded) {
-      upperContent = <ProfileHeader studentMode={this.props.studentMode} user={this.state.user}/>;
+      upperContent = (
+        <ProfileHeader
+          studentMode={this.props.studentMode}
+          user={this.state.user}
+        />
+      );
     } else {
       upperContent = <Spinner style={{paddingTop: 55, paddingBottom: 55}} />;
     }
@@ -123,24 +133,29 @@ class MyAccountScreen extends Component {
       <View>
         {upperContent}
         <IconListItem
-          title={this.props.studentMode ? 'Switch to tutoring' : 'Switch to studying'}
+          title={
+            this.props.studentMode ? 'Switch to tutoring' : 'Switch to studying'
+          }
           icon={{name: 'swap-horizontal-bold', size: 30}}
           onPress={() => this.optionsFunction('mode-change')}
           chevron
         />
-        <FlatList keyExtractor={(item) => item.id} data={optionsList} renderItem={this.renderSettingsListItem}/>
+        <FlatList
+          keyExtractor={(item) => item.id}
+          data={optionsList}
+          renderItem={this.renderSettingsListItem}
+        />
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   studentMode: state.mode.studentMode,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onLogout: () => dispatch(actions.authLogout())
+const mapDispatchToProps = (dispatch) => ({
+  onLogout: () => dispatch(actions.authLogout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyAccountScreen);
-

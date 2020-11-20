@@ -9,7 +9,7 @@ import {BottomTabNavigator, routes} from '../components/ui/BottomTabNavigator';
 import * as actions from '../store/actions';
 import {connect} from 'react-redux';
 
-import { LogBox } from 'react-native';
+import {LogBox} from 'react-native';
 import MySubjectsScreen from './tutor/MySubjectsScreen';
 
 LogBox.ignoreLogs([
@@ -19,36 +19,57 @@ LogBox.ignoreLogs([
 const Tab = createBottomTabNavigator();
 
 class ContentScreen extends Component {
-
   render() {
     return (
       <BottomTabNavigator>
         <Tab.Screen name={routes.lessons} component={LessonsScreen} />
-        {this.props.studentMode ? <Tab.Screen name={routes.tutors} component={TutorsScreen}/> : <Tab.Screen name={routes.subjects} component={MySubjectsScreen}/>}
-        <Tab.Screen name={routes.social} component={SocialScreen/*options={{ tabBarBadge: 9 }}*/} />
-        <Tab.Screen name={routes.calendar} component={CalendarScreen}/>
-        <Tab.Screen name={routes.myAccount} component={MyAccountScreen} initialParams={{changeMode: this.props.changeMode}} />
+        {this.props.studentMode ? (
+          <Tab.Screen name={routes.tutors} component={TutorsScreen} />
+        ) : (
+          <Tab.Screen name={routes.subjects} component={MySubjectsScreen} />
+        )}
+        <Tab.Screen
+          name={routes.social}
+          component={SocialScreen /*options={{ tabBarBadge: 9 }}*/}
+        />
+        <Tab.Screen name={routes.calendar} component={CalendarScreen} />
+        <Tab.Screen
+          name={routes.myAccount}
+          component={MyAccountScreen}
+          initialParams={{changeMode: this.props.changeMode}}
+        />
       </BottomTabNavigator>
-    )
+    );
 
     let navigatorContent;
     if (this.props.studentMode) {
       navigatorContent = (
         <BottomTabNavigator>
           <Tab.Screen name={routes.lessons} component={LessonsScreen} />
-          <Tab.Screen name={routes.tutors} component={TutorsScreen}/>
-          <Tab.Screen name={routes.social} component={SocialScreen/*options={{ tabBarBadge: 9 }}*/} />
-          <Tab.Screen name={routes.calendar} component={CalendarScreen}/>
-          <Tab.Screen name={routes.myAccount} component={MyAccountScreen} initialParams={{changeMode: this.props.changeMode}} />
+          <Tab.Screen name={routes.tutors} component={TutorsScreen} />
+          <Tab.Screen
+            name={routes.social}
+            component={SocialScreen /*options={{ tabBarBadge: 9 }}*/}
+          />
+          <Tab.Screen name={routes.calendar} component={CalendarScreen} />
+          <Tab.Screen
+            name={routes.myAccount}
+            component={MyAccountScreen}
+            initialParams={{changeMode: this.props.changeMode}}
+          />
         </BottomTabNavigator>
       );
     } else {
       navigatorContent = (
-        <BottomTabNavigator >
-          <Tab.Screen name={routes.lessons} component={LessonsScreen}/>
+        <BottomTabNavigator>
+          <Tab.Screen name={routes.lessons} component={LessonsScreen} />
           <Tab.Screen name={routes.social} component={SocialScreen} />
-          <Tab.Screen name={routes.calendar} component={CalendarScreen}/>
-          <Tab.Screen name={routes.myAccount} component={MyAccountScreen} initialParams={{changeMode: this.props.changeMode}} />
+          <Tab.Screen name={routes.calendar} component={CalendarScreen} />
+          <Tab.Screen
+            name={routes.myAccount}
+            component={MyAccountScreen}
+            initialParams={{changeMode: this.props.changeMode}}
+          />
         </BottomTabNavigator>
       );
     }
@@ -56,13 +77,12 @@ class ContentScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  studentMode: state.mode.studentMode
+const mapStateToProps = (state) => ({
+  studentMode: state.mode.studentMode,
 });
 
-const mapDispatchToProps = dispatch => ({
-  changeMode: () => dispatch(actions.changeMode())
+const mapDispatchToProps = (dispatch) => ({
+  changeMode: () => dispatch(actions.changeMode()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContentScreen);
-

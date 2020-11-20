@@ -9,8 +9,8 @@ import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  mode: modeReducer
-})
+  mode: modeReducer,
+});
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -21,4 +21,3 @@ const App = () => (
 );
 
 export default App;
-

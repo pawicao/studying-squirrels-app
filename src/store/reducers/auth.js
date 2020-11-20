@@ -4,10 +4,10 @@ const initialState = {
   token: null,
   userId: null,
   error: null,
-  loading: false
+  loading: false,
 };
 
-const authStart = state => ({
+const authStart = (state) => ({
   ...state,
   error: null,
   loading: true,
@@ -27,7 +27,7 @@ const authFail = (state, action) => ({
   loading: false,
 });
 
-const authLogout = state => ({
+const authLogout = (state) => ({
   ...state,
   token: null,
   userId: null,

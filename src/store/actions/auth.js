@@ -10,10 +10,10 @@ const authStart = () => ({
 const authSuccess = (token, userId) => ({
   type: actionTypes.AUTH_SUCCESS,
   token,
-  userId
+  userId,
 });
 
-const authFail = error => ({
+const authFail = (error) => ({
   type: actionTypes.AUTH_FAIL,
   error,
 });
@@ -22,19 +22,18 @@ export const authLogout = () => ({
   type: actionTypes.AUTH_LOGOUT,
 });
 
-export const auth = (email, password) => dispatch => {
+export const auth = (email, password) => (dispatch) => {
   dispatch(authStart());
   const authData = {email, password};
   const url = mockAuthApi;
   axios
     .post(url, authData)
-    .then(res => {
+    .then((res) => {
       const {token, userId} = res.data;
       dispatch(authSuccess(token, userId));
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       dispatch(authFail(err));
     });
 };
-
