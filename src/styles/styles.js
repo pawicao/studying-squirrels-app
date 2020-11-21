@@ -7,11 +7,13 @@ export const studentTheme = {
   },
   font: {
     header: 18,
+    jumbo: 36,
     tiny: 12,
   },
   colors: {
     starColor: '#FFBF00',
     primary: '#e35f2e',
+    dimmedPrimary: '#f8f1f1',
     background: '#efefef',
     card: '#efefef',
     text: '#403f44',
@@ -32,11 +34,13 @@ export const tutorTheme = {
   },
   font: {
     header: 18,
+    jumbo: 36,
     tiny: 12,
   },
   colors: {
     starColor: '#FFBF00',
     primary: '#e35f2e',
+    dimmedPrimary: '#f8f1f1',
     background: '#403f44',
     card: '#403f44',
     text: '#efefef',

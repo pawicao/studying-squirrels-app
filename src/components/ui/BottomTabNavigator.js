@@ -9,7 +9,7 @@ export const routes = {
   social: 'Social',
   calendar: 'Calendar',
   myAccount: 'My account',
-  subjects: 'My subjects'
+  subjects: 'My subjects',
 };
 
 const Tab = createBottomTabNavigator();
@@ -24,11 +24,15 @@ export const BottomTabNavigator = (props) => {
           let iconName;
           switch (route.name) {
             case routes.lessons: {
-              iconName = focused ? 'book-open-page-variant' : 'book-open-variant';
+              iconName = focused
+                ? 'book-open-page-variant'
+                : 'book-open-variant';
               break;
             }
             case routes.tutors: {
-              iconName = focused ? 'map-marker-radius' : 'map-marker-radius-outline';
+              iconName = focused
+                ? 'map-marker-radius'
+                : 'map-marker-radius-outline';
               break;
             }
             case routes.calendar: {
@@ -48,7 +52,7 @@ export const BottomTabNavigator = (props) => {
               break;
             }
           }
-          return <Icon name={iconName} size={30} color={color}/>;
+          return <Icon name={iconName} size={30} color={color} />;
         },
       })}
       tabBarOptions={{
@@ -56,10 +60,9 @@ export const BottomTabNavigator = (props) => {
         showIcon: true,
         style: {
           borderTopColor: colors.dimmedBorderColor,
-          height: 55
-        }
-      }}
-    >
+          height: 55,
+        },
+      }}>
       {props.children}
     </Tab.Navigator>
   );

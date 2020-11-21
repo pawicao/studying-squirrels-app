@@ -3,7 +3,7 @@ import {FlatList, View} from 'react-native';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import {IconListItem} from '../../components/ui/IconListItem';
-import ProfileHeader from '../../components/ui/Profile/ProfileHeader';
+import ProfileHeader from '../../components/Profile/ProfileHeader';
 import Spinner from '../../components/ui/Spinner';
 import * as actions from '../../store/actions';
 

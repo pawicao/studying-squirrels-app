@@ -1,21 +1,20 @@
 import React, {Component} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import axios from 'axios';
 import {commafy} from '../../utilities/functions';
 import {useTheme} from '@react-navigation/native';
 import {generalStyles} from '../../styles/styles';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import {Rating} from '../../components/ui/Rating';
-import {API_BASEURL, API_KEY} from '@env';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Spinner from '../../components/ui/Spinner';
 import {AvatarListItem} from '../../components/ui/AvatarListItem';
 import {sortMethods, sortTutors} from '../../utilities/sorting';
 import FilterModal from '../../components/ui/FilterModal';
+import Api from '../../utilities/api';
 
-const mockId = '36';
 const MAX_PRICE = 250;
 const DEFAULT_CITY = {id: 0, name: 'Default (nearest tutors)'};
 
@@ -56,6 +55,7 @@ const tutorElement = (item, theme) => {
     <AvatarListItem
       title={tutor.firstName}
       white
+      highlighted={item.recommendation}
       rightElement={
         <TutorDetails
           rating={tutor.tutorRating}
@@ -72,7 +72,6 @@ const tutorElement = (item, theme) => {
 };
 
 class TutorsScreen extends Component {
-
   constructor(props) {
     super(props);
     this.sortMethodsList = sortMethods.map((method) => (
@@ -95,7 +94,7 @@ class TutorsScreen extends Component {
         subjects: [],
       },
       apiUrl: {
-        base: `/nearTutors?id=${mockId}`,
+        base: `/nearTutors?id=${this.props.userId}`,
         params: '',
       },
       filterMenuOpened: false,
@@ -103,14 +102,8 @@ class TutorsScreen extends Component {
   }
 
   getTutors = () => {
-    //TODO: Global axios setting as API KEY; BIERZ ZE STORA JUZ TOKEN
     this.setState({isLoaded: false});
-    axios
-      .create({
-        headers: {Authorization: 'Bearer ' + API_KEY},
-        baseURL: API_BASEURL,
-      })
-      .get(this.state.apiUrl.base + this.state.apiUrl.params)
+    Api.get(this.state.apiUrl.base + this.state.apiUrl.params)
       .then((res) =>
         this.setState({
           tutors: sortTutors(res.data),
@@ -123,12 +116,9 @@ class TutorsScreen extends Component {
   };
 
   getRecommendedTutor = () => {
-    axios
-      .create({
-        headers: {Authorization: 'Bearer ' + API_KEY},
-        baseURL: API_BASEURL,
-      })
-      .get(`/recommendedTutor?id=${mockId}` + this.state.apiUrl.params)
+    Api.get(
+      `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params,
+    )
       .then((res) =>
         this.setState({
           recommendedTutor: res.data,
@@ -171,13 +161,11 @@ class TutorsScreen extends Component {
       params: '',
     };
     if (city !== DEFAULT_CITY) {
-      console.log(city);
-      console.log(DEFAULT_CITY);
       ++filterCount;
       apiUrl.params = `&city=${city.name}`;
-      apiUrl.base = `/tutors?id=${mockId}`;
+      apiUrl.base = `/tutors?id=${this.props.userId}`;
     } else {
-      apiUrl.base = `/nearTutors?id=${mockId}`;
+      apiUrl.base = `/nearTutors?id=${this.props.userId}`;
     }
     if (price !== MAX_PRICE) {
       ++filterCount;
@@ -210,9 +198,8 @@ class TutorsScreen extends Component {
   };
 
   getAllTutors = () => {
-    console.log(this.state.apiUrl)
     this.getTutors();
-    this.getRecommendedTutor();//TODO: Show him
+    this.getRecommendedTutor();
   };
 
   render() {
@@ -231,7 +218,11 @@ class TutorsScreen extends Component {
       this.state.tutors.length ? (
         <FlatList
           keyExtractor={(item) => item.tutor.id.toString()}
-          data={this.state.tutors}
+          data={
+            this.state.recommendedTutor
+              ? [this.state.recommendedTutor].concat(this.state.tutors)
+              : this.state.tutors
+          }
           renderItem={({item}) => tutorElement(item, this.props.theme)}
         />
       ) : (
@@ -254,19 +245,20 @@ class TutorsScreen extends Component {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
         <View style={[generalStyles.row, {height: 50}]}>
-          <TouchableOpacity onPress={() => this.setState({...this.state, filterMenuOpened: true})}>
-            <View
-              style={[
-                generalStyles.centeredContainer,
-                {
-                  flex: 3,
-                  borderRightWidth: 1,
-                  borderBottomWidth: 1,
-                  borderColor: this.props.theme.colors.dimmedBorderColor,
-                },
-              ]}>
-              <Text>FILTERS: {this.state.filterCount}</Text>
-            </View>
+          <TouchableOpacity
+            onPress={() =>
+              this.setState({...this.state, filterMenuOpened: true})
+            }
+            style={[
+              generalStyles.centeredContainer,
+              {
+                flex: 3,
+                borderRightWidth: 1,
+                borderBottomWidth: 1,
+                borderColor: this.props.theme.colors.dimmedBorderColor,
+              },
+            ]}>
+            <Text>FILTERS: {this.state.filterCount}</Text>
           </TouchableOpacity>
           <View
             style={[
@@ -300,7 +292,13 @@ class TutorsScreen extends Component {
   }
 }
 
-export default function (props) {
+const mapStateToProps = (state) => ({
+  userId: state.auth.userId,
+});
+
+function ScreenWithTheme(props) {
   const theme = useTheme();
   return <TutorsScreen {...props} theme={theme} />;
 }
+
+export default connect(mapStateToProps, null)(ScreenWithTheme);

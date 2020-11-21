@@ -5,6 +5,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ContentScreen from '../screens/ContentScreen';
 import {useSelector} from 'react-redux';
 import {studentTheme, tutorTheme} from '../styles/styles';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export const MainNavigator = () => {
         initialRouteName="Login"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Sign up" component={SignUpScreen} />
         <Stack.Screen name="Content" component={ContentScreen} />
       </Stack.Navigator>
     </NavigationContainer>

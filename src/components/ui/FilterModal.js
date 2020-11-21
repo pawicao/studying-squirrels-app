@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import Text from './Text';
+import Text from './Texts/Text';
 import {useTheme} from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {PrimaryButton} from './PrimaryButton';
+import {PrimaryButton} from './Buttons/PrimaryButton';
 import {Divider} from 'react-native-elements';
-import {SideButton} from './SideButton';
+import {SideButton} from './Buttons/SideButton';
 import CheckBox from '@react-native-community/checkbox';
-import axios from 'axios';
-import {API_BASEURL, API_KEY} from '@env';
 import {Picker} from '@react-native-picker/picker';
 import {ClickableRating} from './ClickableRating';
+import Api from '../../utilities/api';
+import HorizontalWrapper from "./Buttons/HorizontalWrapper";
 
-let SLIDER_KEY = 0;//TODO: Fix. Add changing default when key higher (Check the fix. Move to state if necessary)
+let SLIDER_KEY = 0;
 
 const ResetButton = (props) => {
   return (
@@ -31,7 +31,10 @@ const ResetButton = (props) => {
 };
 
 const FilterModal = (props) => {
-  const [price, setPrice] = useState(props.filterValues.price); //TODO: Fix axioses
+  const [price, setPrice] = useState({
+    price: props.filterValues.price,
+    default: props.filterValues.price,
+  });
   const [city, setCity] = useState({chosen: props.filterValues.city, all: []});
   const [rating, setRating] = useState(props.filterValues.rating);
   const [subjects, setSubjects] = useState({
@@ -39,25 +42,14 @@ const FilterModal = (props) => {
     all: [],
   });
   const {colors} = useTheme();
-  let defaultPrice = props.filterValues.price;
 
   useEffect(() => {
-    axios
-      .create({
-        headers: {Authorization: 'Bearer ' + API_KEY},
-        baseURL: API_BASEURL,
-      })
-      .get('/subjects')
+    Api.get('/subjects')
       .then((res) => setSubjects({...subjects, all: res.data}))
       .catch(function (error) {
         console.log(error);
       });
-    axios
-      .create({
-        headers: {Authorization: 'Bearer ' + API_KEY},
-        baseURL: API_BASEURL,
-      })
-      .get('/cities')
+    Api.get('/cities')
       .then((res) =>
         setCity({
           ...city,
@@ -70,7 +62,7 @@ const FilterModal = (props) => {
   }, []);
 
   const applyFilters = () => {
-    props.applyFilters(price, city.chosen, rating, subjects.chosen);
+    props.applyFilters(price.price, city.chosen, rating, subjects.chosen);
   };
 
   function onStarPress(value) {
@@ -87,8 +79,7 @@ const FilterModal = (props) => {
   }
   function resetPrice() {
     SLIDER_KEY = SLIDER_KEY + 1;
-    defaultPrice = props.maxPrice;
-    setPrice(props.maxPrice);
+    setPrice({price: props.maxPrice, default: props.maxPrice});
   }
 
   function resetCity() {
@@ -183,25 +174,21 @@ const FilterModal = (props) => {
               key={SLIDER_KEY}
               minimumValue={1}
               maximumValue={props.maxPrice}
-              value={defaultPrice}
+              value={price.default}
               step={1}
               style={{width: '90%'}}
               minimumTrackTintColor={colors.primary}
               maximumTrackTintColor={colors.dimmedText}
               thumbTintColor={colors.primary}
-              onValueChange={(val) => setPrice(val)}
+              onValueChange={(val) => setPrice({...price, price: val})}
             />
-            <Text>{price === props.maxPrice ? '  ∞  ' : price + ' zł'}</Text>
+            <Text>
+              {price.price === props.maxPrice ? '  ∞  ' : price.price + ' zł'}
+            </Text>
           </View>
         </View>
       </ScrollView>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 10,
-        }}>
+      <HorizontalWrapper>
         <SideButton
           title="Reset"
           onPress={setDefaults}
@@ -212,7 +199,7 @@ const FilterModal = (props) => {
           onPress={applyFilters}
           containerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
         />
-      </View>
+      </HorizontalWrapper>
       <TouchableOpacity
         style={{position: 'absolute', right: 10, top: 10}}
         onPress={props.closeModal}>

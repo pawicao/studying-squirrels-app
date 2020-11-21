@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {View} from 'react-native';
-import {generalStyles} from '../../../styles/styles';
+import {generalStyles} from '../../styles/styles';
 import {Accessory, Avatar} from 'react-native-elements';
-import {Rating} from '../Rating';
+import {Rating} from '../ui/Rating';
 import {useTheme} from '@react-navigation/native';
-import Text from '../Text';
+import Text from '../ui/Texts/Text';
 
 const ProfileHeader = (props) => {
   const {colors, font} = useTheme();

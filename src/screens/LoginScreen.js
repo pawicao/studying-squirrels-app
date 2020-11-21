@@ -4,11 +4,13 @@ import {connect} from 'react-redux';
 import * as styles from '../styles/styles';
 import logo from '../assets/logo-1200px.png';
 import * as actions from '../store/actions';
-import {PrimaryButton} from '../components/ui/PrimaryButton';
+import {PrimaryButton} from '../components/ui/Buttons/PrimaryButton';
 import Input from '../components/ui/Input';
 import {generalStyles} from '../styles/styles';
-import Text from '../components/ui/Text';
+import Text from '../components/ui/Texts/Text';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
+import Spinner from '../components/ui/Spinner';
+import ErrorText from "../components/ui/Texts/ErrorText";
 
 class LoginScreen extends Component {
   state = {
@@ -29,11 +31,18 @@ class LoginScreen extends Component {
     this.props.onLogin(this.state.email, this.state.password);
   };
 
+  goToRegistration = () => {
+    this.props.navigation.push('Sign up');
+  };
+
   // noinspection JSCheckFunctionSignatures
-  componentDidUpdate() {
+  componentDidUpdate(previousProps, previousState) {
     // NOTE: Probably could be implemented better
     if (this.props.token) {
       this.props.navigation.navigate('Content');
+    }
+    if (this.props.error && previousProps.error === null) {
+      this.setState({...this.state, password: ''});
     }
   }
 
@@ -57,11 +66,20 @@ class LoginScreen extends Component {
           style={{marginBottom: 30}}
           onChangeText={(val) => this.updateInputState('password', val)}
         />
-        <PrimaryButton
-          title="Sign in"
-          containerStyle={{marginTop: 15, marginBottom: 10}}
-          onPress={this.handleLogin}
-        />
+        {this.props.error && (
+          <ErrorText>
+            Authentication failed.
+          </ErrorText>
+        )}
+        {this.props.loading ? (
+          <Spinner style={{marginTop: 15, marginBottom: 10}} />
+        ) : (
+          <PrimaryButton
+            title="Sign in"
+            containerStyle={{marginTop: 15, marginBottom: 10}}
+            onPress={this.handleLogin}
+          />
+        )}
         <Text primary tiny>
           Forgot your password?
         </Text>
@@ -79,7 +97,10 @@ class LoginScreen extends Component {
             <Icon name="google" size={40} color="#DB4437" />
           </TouchableOpacity>
         </View>
-        <Text style={{position: 'absolute', bottom: 10}} primary>
+        <Text
+          style={{position: 'absolute', bottom: 10}}
+          primary
+          onPress={this.goToRegistration}>
           Don't have an account yet? Sign up!
         </Text>
       </View>

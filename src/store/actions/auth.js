@@ -1,7 +1,8 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-
-const mockAuthApi = 'https://5f37bdd6bbfd1e00160bf569.mockapi.io/test-api/auth';
+import {AUTH_BASEURL} from '@env';
+import Api from '../../utilities/api';
+const queryString = require('query-string');
 
 const authStart = () => ({
   type: actionTypes.AUTH_START,
@@ -22,15 +23,28 @@ export const authLogout = () => ({
   type: actionTypes.AUTH_LOGOUT,
 });
 
+export const logout = () => (dispatch) => {
+  delete Api.defaults.headers.common.Authorization;
+  dispatch(authLogout());
+};
+
 export const auth = (email, password) => (dispatch) => {
   dispatch(authStart());
   const authData = {email, password};
-  const url = mockAuthApi;
   axios
-    .post(url, authData)
+    .post(`${AUTH_BASEURL}/authenticate`, queryString.stringify(authData), {
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    })
     .then((res) => {
-      const {token, userId} = res.data;
-      dispatch(authSuccess(token, userId));
+      const {jwtToken, userId} = res.data;
+      Api.interceptors.request.use(
+        (request) => {
+          request.headers.Authorization = `Bearer ${jwtToken}`;
+          return request;
+        },
+        (error) => Promise.reject(error),
+      );
+      dispatch(authSuccess(jwtToken, userId));
     })
     .catch((err) => {
       console.log(err);

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import {FlatList, View} from 'react-native';
-import Text from '../../../components/ui/Text';
+import Text from '../../../components/ui/Texts/Text';
 import Spinner from '../../../components/ui/Spinner';
 import axios from 'axios';
 import {AvatarListItem} from '../../../components/ui/AvatarListItem';

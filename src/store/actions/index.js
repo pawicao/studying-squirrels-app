@@ -1,2 +1,2 @@
-export {changeMode} from './modes'
-export {auth, authLogout} from './auth'
+export {changeMode} from './modes';
+export {auth, authLogout} from './auth';
