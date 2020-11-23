@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {API_BASEURL} from '@env';
 import {View} from 'react-native';
 import {generalStyles} from '../../styles/styles';
 import {Accessory, Avatar} from 'react-native-elements';
@@ -9,14 +9,13 @@ import Text from '../ui/Texts/Text';
 
 const ProfileHeader = (props) => {
   const {colors, font} = useTheme();
-  let avatarBackground, containerStyle;
   return (
     <View style={[generalStyles.row]}>
       <Avatar
         rounded
         size={100}
         containerStyle={{margin: 30}}
-        source={props.user.avatar && {uri: props.user.avatar}}
+        source={props.user.avatar && {uri: API_BASEURL + props.user.avatar}}
         title={props.user.firstName[0] + props.user.lastName[0]}
         onPress={() => console.log('Change the avatar')}
         overlayContainerStyle={{backgroundColor: colors.dimmedBorderColor}}

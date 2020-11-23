@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 import {insert} from '../utilities/functions';
 import SignUpPhaseThreeComponent from '../components/SignUp/SignUpPhaseThreeComponent';
 import ImagePicker from 'react-native-image-picker';
-import {View} from "react-native";
+import {View} from 'react-native';
 
 class SignUpScreen extends Component {
   constructor(props) {
@@ -26,6 +26,8 @@ class SignUpScreen extends Component {
         phone: '',
         passwordConfirmation: '',
         dateOfBirth: '',
+        street: '',
+        postalCode: '',
       },
       phaseOne: true,
       phaseThree: false,
@@ -54,6 +56,22 @@ class SignUpScreen extends Component {
     });
   };
 
+  updatePostalCode = (val) => {
+    const oldStatePostalCode = this.state.data.postalCode;
+    let valueToAdd = val;
+    if (val.length === 3 && oldStatePostalCode.length === 2) {
+      valueToAdd = insert(valueToAdd, oldStatePostalCode.length, '-');
+    }
+    this.setState((prevState) => {
+      return {
+        data: {
+          ...prevState.data,
+          postalCode: valueToAdd,
+        },
+      };
+    });
+  };
+
   updateInputState = (key, value) => {
     this.setState((prevState) => {
       return {
@@ -67,7 +85,10 @@ class SignUpScreen extends Component {
 
   register = (photo) => {
     this.setState({phaseThree: false, photo}, () => {
-      let registrationData = this.state.data;
+      let registrationData = {
+        ...this.state.data,
+        email: this.state.data.email.toLowerCase(),
+      };
       delete registrationData.passwordConfirmation;
       this.props.onRegister(registrationData, photo);
     });
@@ -80,13 +101,13 @@ class SignUpScreen extends Component {
     if (cameraMode) {
       ImagePicker.launchCamera(options, (response) => {
         if (response.uri) {
-          this.setState({photo: response.uri});
+          this.setState({photo: response});
         }
       });
     } else {
       ImagePicker.launchImageLibrary(options, (response) => {
         if (response.uri) {
-          this.setState({photo: response.uri});
+          this.setState({photo: response});
         }
       });
     }
@@ -161,6 +182,7 @@ class SignUpScreen extends Component {
         <SignUpPhaseTwoComponent
           updateInputState={this.updateInputState}
           goBack={this.goBack}
+          updatePostalCode={this.updatePostalCode}
           updateDateOfBirth={this.updateDateOfBirth}
           error={this.state.errorMessage}
           networkError={this.props.error}

@@ -113,7 +113,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onLogin: (email, password) => dispatch(actions.auth(email, password)),
+  onLogin: (email, password) => dispatch(actions.auth(email.toLowerCase(), password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "eject": "react-native eject",
+    "eject": "react-native init studying_squirrels_ui && mv studying_squirrels_ui/android android && rm -rf studying_squirrels_ui",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "link-icons": "react-native link react-native-vector-icons && react-native link react-native-image-picker",

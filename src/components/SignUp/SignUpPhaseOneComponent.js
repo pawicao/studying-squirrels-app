@@ -5,13 +5,12 @@ import {generalStyles} from '../../styles/styles';
 import JumboText from '../ui/Texts/JumboText';
 import Input from '../ui/Input';
 import ErrorText from '../ui/Texts/ErrorText';
-import {SideButton} from '../ui/Buttons/SideButton';
 import Spinner from '../ui/Spinner';
 import {PrimaryButton} from '../ui/Buttons/PrimaryButton';
 import HorizontalWrapper from '../ui/Buttons/HorizontalWrapper';
+import {BackButton} from '../ui/Buttons/BackButton';
 
 // TODO: Overlays as a way of informing after changing mode
-// TODO: FIX ABSOLUTE SQUIRREL HEADER
 const SignUpPhaseOneComponent = (props) => {
   return (
     <ScrollView contentContainerStyle={{justifyContent: 'center', flexGrow: 1}}>
@@ -29,7 +28,7 @@ const SignUpPhaseOneComponent = (props) => {
         {props.error && <ErrorText>{props.error}</ErrorText>}
       </View>
       <HorizontalWrapper>
-        <SideButton
+        <BackButton
           title="Back"
           onPress={props.goBack}
           containerStyle={{paddingHorizontal: 20, paddingVertical: 10}}

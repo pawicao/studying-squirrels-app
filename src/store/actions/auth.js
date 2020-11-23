@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import {AUTH_BASEURL} from '@env';
+import {AUTH_BASEURL, API_BASEURL} from '@env';
 import moment from 'moment';
 import Api from '../../utilities/api';
 const queryString = require('query-string');
@@ -33,7 +33,8 @@ export const register = (data, photo) => (dispatch) => {
   dispatch(authStart());
   const registerData = {
     ...data,
-    dateOfBirth: moment(data.dateOfBirth, 'DD/MM/YYYY').add(2, 'hours') * 1000,
+    dateOfBirth:
+      moment(data.dateOfBirth, 'DD/MM/YYYY').add(2, 'hours').format('X') * 1000,
   };
   axios
     .post(`${AUTH_BASEURL}/register`, queryString.stringify(registerData), {
@@ -49,9 +50,35 @@ export const register = (data, photo) => (dispatch) => {
         (error) => Promise.reject(error),
       );
       if (photo) {
-        console.log('Here we upload a photo!')
+        const formData = new FormData();
+        console.log(photo);
+        formData.append('file', {
+          uri: photo.uri,
+          name: `${new Date().getMilliseconds()}.${photo.uri.split('.').pop()}`,
+          type: photo.type,
+        });
+        formData.append('id', userId);
+        const config = {
+          method: 'post',
+          url: `${API_BASEURL}/photo`,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          data: formData,
+        };
+        axios(config)
+          .then((response) => {
+            dispatch(authSuccess(jwtToken, userId));
+          })
+          .catch((error) => {
+            console.log(error);
+            dispatch(authSuccess(jwtToken, userId));
+          });
+      } else {
+        dispatch(authSuccess(jwtToken, userId));
       }
-      dispatch(authSuccess(jwtToken, userId));
     })
     .catch((err) => {
       console.log(err);

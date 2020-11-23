@@ -38,7 +38,12 @@ const Input = (props) => {
         colorFocused: colors.primary,
         colorBlurred: colors.dimmedText,
       }}
-      inputStyles={{color: colors.text, top: '3%', marginLeft: 0}}
+      inputStyles={{
+        ...props.inputStyles,
+        color: colors.text,
+        top: '3%',
+        marginLeft: 0,
+      }}
       labelStyles={labelStyles}
       darkTheme={!dark}
       onFocus={() => {

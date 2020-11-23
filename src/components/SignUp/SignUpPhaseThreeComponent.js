@@ -9,7 +9,7 @@ import HorizontalWrapper from '../ui/Buttons/HorizontalWrapper';
 import {Accessory, Avatar, Overlay} from 'react-native-elements';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-//TODO: ProfileHeader poprawa, faktyczne wysylanie
+
 const SignUpPhaseThreeComponent = (props) => {
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => {
@@ -49,7 +49,7 @@ const SignUpPhaseThreeComponent = (props) => {
           rounded
           size={140}
           containerStyle={{margin: 30}}
-          source={props.avatar && {uri: props.avatar}}
+          source={props.avatar && {uri: props.avatar.uri}}
           title={props.title}
           onPress={toggleOverlay}
           overlayContainerStyle={{backgroundColor: colors.dimmedBorderColor}}

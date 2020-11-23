@@ -6,6 +6,7 @@ import {IconListItem} from '../../components/ui/IconListItem';
 import ProfileHeader from '../../components/Profile/ProfileHeader';
 import Spinner from '../../components/ui/Spinner';
 import * as actions from '../../store/actions';
+import Api from "../../utilities/api";
 
 const mockURL = 'https://5f37bdd6bbfd1e00160bf569.mockapi.io/test-api/me';
 
@@ -43,11 +44,16 @@ class MyAccountScreen extends Component {
       userId: null,
       firstName: '',
       lastName: '',
-      avatar: '',
+      avatar: null,
       studentRating: null,
       tutorRating: null,
       isTutor: null,
       isStudent: null,
+      phone: null,
+      email: null,
+      placeOfResidence: null,
+      tutorRatingsGiven: 0,
+      studentRatingsGiven: 0,
     },
     loaded: false,
   };
@@ -94,19 +100,23 @@ class MyAccountScreen extends Component {
   };
 
   componentDidMount() {
-    axios
-      .get(mockURL)
+    Api.get(`/person/${this.props.userId}?id=${this.props.userId}`)
       .then((res) =>
         this.setState({
           user: {
-            userId: res.data[0].userId,
-            firstName: res.data[0].firstName,
-            lastName: res.data[0].lastName,
-            avatar: res.data[0].avatar,
-            studentRating: res.data[0].studentRating,
-            tutorRating: res.data[0].tutorRating,
-            isTutor: res.data[0].isTutor,
-            isStudent: res.data[0].isStudent,
+            userId: res.data.id,
+            firstName: res.data.firstName,
+            lastName: res.data.lastName,
+            avatar: res.data.photoPath,
+            studentRating: res.data.studentRating,
+            tutorRating: res.data.tutorRating,
+            isTutor: res.data.tutor,
+            isStudent: res.data.student,
+            email: res.data.email,
+            phone: res.data.phone,
+            placeOfResidence: res.data.placeOfResidence,
+            tutorRatingsGiven: res.data.tutorRatingsGiven,
+            studentRatingsGiven: res.data.studentRatingsGiven,
           },
           loaded: true,
         }),
@@ -128,7 +138,6 @@ class MyAccountScreen extends Component {
     } else {
       upperContent = <Spinner style={{paddingTop: 55, paddingBottom: 55}} />;
     }
-
     return (
       <View>
         {upperContent}
@@ -152,6 +161,7 @@ class MyAccountScreen extends Component {
 
 const mapStateToProps = (state) => ({
   studentMode: state.mode.studentMode,
+  userId: state.auth.userId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
