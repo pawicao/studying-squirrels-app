@@ -19,3 +19,6 @@ export const extractHalves = (num) => {
     half: num - full === 0.5,
   };
 };
+
+export const insert = (str, index, value) =>
+  str.substr(0, index) + value + str.substr(index);

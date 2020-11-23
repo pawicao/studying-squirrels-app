@@ -10,7 +10,7 @@ import {generalStyles} from '../styles/styles';
 import Text from '../components/ui/Texts/Text';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
 import Spinner from '../components/ui/Spinner';
-import ErrorText from "../components/ui/Texts/ErrorText";
+import ErrorText from '../components/ui/Texts/ErrorText';
 
 class LoginScreen extends Component {
   state = {
@@ -40,8 +40,8 @@ class LoginScreen extends Component {
     // NOTE: Probably could be implemented better
     if (this.props.token) {
       this.props.navigation.navigate('Content');
-    }
-    if (this.props.error && previousProps.error === null) {
+    } else if (this.props.error && previousProps.error === null) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({...this.state, password: ''});
     }
   }
@@ -55,7 +55,8 @@ class LoginScreen extends Component {
           style={styles.imagesStyles.image_65}
         />
         <Input
-          label="E-mail address" //TODO: Dodac ze to email
+          label="E-mail address"
+          keyboardType="email-address"
           value={this.state.email}
           onChangeText={(val) => this.updateInputState('email', val)}
         />
@@ -66,11 +67,7 @@ class LoginScreen extends Component {
           style={{marginBottom: 30}}
           onChangeText={(val) => this.updateInputState('password', val)}
         />
-        {this.props.error && (
-          <ErrorText>
-            Authentication failed.
-          </ErrorText>
-        )}
+        {this.props.error && <ErrorText>Authentication failed.</ErrorText>}
         {this.props.loading ? (
           <Spinner style={{marginTop: 15, marginBottom: 10}} />
         ) : (

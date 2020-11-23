@@ -11,7 +11,7 @@ import CheckBox from '@react-native-community/checkbox';
 import {Picker} from '@react-native-picker/picker';
 import {ClickableRating} from './ClickableRating';
 import Api from '../../utilities/api';
-import HorizontalWrapper from "./Buttons/HorizontalWrapper";
+import HorizontalWrapper from './Buttons/HorizontalWrapper';
 
 let SLIDER_KEY = 0;
 

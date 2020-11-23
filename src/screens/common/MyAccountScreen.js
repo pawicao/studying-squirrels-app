@@ -155,7 +155,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onLogout: () => dispatch(actions.authLogout()),
+  onLogout: () => dispatch(actions.logout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyAccountScreen);

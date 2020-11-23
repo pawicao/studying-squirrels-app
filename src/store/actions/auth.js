@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import {AUTH_BASEURL} from '@env';
+import moment from 'moment';
 import Api from '../../utilities/api';
 const queryString = require('query-string');
 
@@ -19,13 +20,43 @@ const authFail = (error) => ({
   error,
 });
 
-export const authLogout = () => ({
+const authLogout = () => ({
   type: actionTypes.AUTH_LOGOUT,
 });
 
 export const logout = () => (dispatch) => {
   delete Api.defaults.headers.common.Authorization;
   dispatch(authLogout());
+};
+
+export const register = (data, photo) => (dispatch) => {
+  dispatch(authStart());
+  const registerData = {
+    ...data,
+    dateOfBirth: moment(data.dateOfBirth, 'DD/MM/YYYY').add(2, 'hours') * 1000,
+  };
+  axios
+    .post(`${AUTH_BASEURL}/register`, queryString.stringify(registerData), {
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    })
+    .then((res) => {
+      const {jwtToken, userId} = res.data;
+      Api.interceptors.request.use(
+        (request) => {
+          request.headers.Authorization = `Bearer ${jwtToken}`;
+          return request;
+        },
+        (error) => Promise.reject(error),
+      );
+      if (photo) {
+        console.log('Here we upload a photo!')
+      }
+      dispatch(authSuccess(jwtToken, userId));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(authFail(err));
+    });
 };
 
 export const auth = (email, password) => (dispatch) => {

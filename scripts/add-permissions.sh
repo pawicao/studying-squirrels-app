@@ -1,0 +1,1 @@
+sed -i '/<uses-permission*/ a <uses-permission android:name="android.permission.CAMERA" /><uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />' ./android/app/src/main/AndroidManifest.xml

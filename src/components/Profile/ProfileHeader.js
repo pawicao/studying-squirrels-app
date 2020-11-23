@@ -20,18 +20,26 @@ const ProfileHeader = (props) => {
         title={props.user.firstName[0] + props.user.lastName[0]}
         onPress={() => console.log('Change the avatar')}
         overlayContainerStyle={{backgroundColor: colors.dimmedBorderColor}}
-        placeholderStyle={{ backgroundColor: colors.dimmedBorderColor}}
-        titleStyle={{ color: colors.text}}
-      >
-        <Accessory size={25}/>
+        placeholderStyle={{backgroundColor: colors.dimmedBorderColor}}
+        titleStyle={{color: colors.text}}>
+        <Accessory size={25} />
       </Avatar>
       <View style={[generalStyles.centeredContainer, {flex: 4}]}>
-        <Text style={{fontSize: font.header}}>{props.user.firstName} {props.user.lastName}</Text>
+        <Text style={{fontSize: font.header}}>
+          {props.user.firstName} {props.user.lastName}
+        </Text>
         <Text>{props.studentMode ? 'Student' : 'Tutor'}</Text>
-        <Rating size={25} rating={props.studentMode ? props.user.studentRating : props.user.tutorRating} />
+        <Rating
+          size={25}
+          rating={
+            props.studentMode
+              ? props.user.studentRating
+              : props.user.tutorRating
+          }
+        />
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default ProfileHeader;

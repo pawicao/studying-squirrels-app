@@ -27,6 +27,7 @@ const Input = (props) => {
         marginRight: -5,
       }}
       containerStyles={{
+        ...props.containerStyle,
         marginHorizontal: 15,
         borderWidth: 0,
         borderBottomWidth: 2,
