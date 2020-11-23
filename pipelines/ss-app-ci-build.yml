@@ -28,6 +28,9 @@ steps:
   workingDirectory: src
   displayName: 'Install node dependencies'
 
+- task: Bash@3
+  inputs:
+    filePath: 'scripts/add-permissions.sh'
 - task: Gradle@2
   inputs:
     workingDirectory: 'android'
