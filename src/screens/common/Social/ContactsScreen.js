@@ -10,8 +10,8 @@ const mockURL = 'https://5f37bdd6bbfd1e00160bf569.mockapi.io/test-api/contacts';
 
 class ContactsScreen extends Component {
   state = {
-    contacts: []
-  }
+    contacts: [],
+  };
 
   renderContactItem = ({item}) => {
     return (
@@ -19,26 +19,38 @@ class ContactsScreen extends Component {
         avatarOnLeft={true}
         avatarSource={item.avatar}
         title={item.firstName + ' ' + item.lastName}
-        avatarSize='medium'
+        avatarSize="medium"
       />
     );
-  }
+  };
 
   componentDidMount() {
-    axios.get(mockURL)
-      .then(res => this.setState({
+    axios
+      .get(mockURL)
+      .then((res) =>
+        this.setState({
           contacts: res.data,
-        }
-      ))
+        }),
+      )
       .catch(function (error) {
         console.log(error);
       });
   }
 
   render() {
-    let content = this.state.contacts.length ?
-      <View><FlatList keyExtractor={(item) => item.id} data={this.state.contacts} renderItem={this.renderContactItem}/></View> :
-      <View style={generalStyles.container}><Spinner /></View>
+    let content = this.state.contacts.length ? (
+      <View>
+        <FlatList
+          keyExtractor={(item) => item.id}
+          data={this.state.contacts}
+          renderItem={this.renderContactItem}
+        />
+      </View>
+    ) : (
+      <View style={generalStyles.container}>
+        <Spinner />
+      </View>
+    );
 
     return content;
   }

@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LessonsScreen from './common/LessonsScreen';
-import TutorsScreen from './student/TutorsScreen';
-import MyAccountScreen from './common/MyAccountScreen';
-import SocialScreen from './common/SocialScreen';
-import CalendarScreen from './common/CalendarScreen';
-import {BottomTabNavigator, routes} from '../components/ui/BottomTabNavigator';
-import * as actions from '../store/actions';
+import LessonsScreen from './Lessons/LessonsScreen';
+import MyAccountScreen from '../../navigation/MyAccountScreen';
+import SocialScreen from '../../navigation/SocialScreen';
+import CalendarScreen from './CalendarScreen';
+import {BottomTabNavigator, routes} from '../../components/ui/BottomTabNavigator';
+import * as actions from '../../store/actions';
 import {connect} from 'react-redux';
 
 import {LogBox} from 'react-native';
-import MySubjectsScreen from './tutor/MySubjectsScreen';
+import MySubjectsScreen from '../tutor/MySubjectsScreen';
+import TutorsScreenWrapper from '../../navigation/TutorsScreenWrapper';
+import LessonsNavigationScreen from "../../navigation/LessonsNavigationScreen";
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -22,9 +23,9 @@ class ContentScreen extends Component {
   render() {
     return (
       <BottomTabNavigator>
-        <Tab.Screen name={routes.lessons} component={LessonsScreen} />
+        <Tab.Screen name={routes.lessons} component={LessonsNavigationScreen} />
         {this.props.studentMode ? (
-          <Tab.Screen name={routes.tutors} component={TutorsScreen} />
+          <Tab.Screen name={routes.tutors} component={TutorsScreenWrapper} />
         ) : (
           <Tab.Screen name={routes.subjects} component={MySubjectsScreen} />
         )}
@@ -32,7 +33,7 @@ class ContentScreen extends Component {
           name={routes.social}
           component={SocialScreen /*options={{ tabBarBadge: 9 }}*/}
         />
-        <Tab.Screen name={routes.calendar} component={CalendarScreen} />
+        {/*        <Tab.Screen name={routes.calendar} component={CalendarScreen} />*/}
         <Tab.Screen
           name={routes.myAccount}
           component={MyAccountScreen}
@@ -40,7 +41,7 @@ class ContentScreen extends Component {
         />
       </BottomTabNavigator>
     );
-
+    /*
     let navigatorContent;
     if (this.props.studentMode) {
       navigatorContent = (
@@ -49,7 +50,7 @@ class ContentScreen extends Component {
           <Tab.Screen name={routes.tutors} component={TutorsScreen} />
           <Tab.Screen
             name={routes.social}
-            component={SocialScreen /*options={{ tabBarBadge: 9 }}*/}
+            component={SocialScreen /!*options={{ tabBarBadge: 9 }}*!/}
           />
           <Tab.Screen name={routes.calendar} component={CalendarScreen} />
           <Tab.Screen
@@ -73,7 +74,7 @@ class ContentScreen extends Component {
         </BottomTabNavigator>
       );
     }
-    return navigatorContent;
+    return navigatorContent;*/
   }
 }
 

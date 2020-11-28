@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, TouchableWithoutFeedback, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {generalStyles} from '../../styles/styles';
 import {useTheme} from '@react-navigation/native';
@@ -24,6 +24,7 @@ export const ClickableRating = (props) => {
       style={[
         generalStyles.row,
         {alignItems: 'flex-start', justifyContent: 'flex-start'},
+        props.style,
       ]}>
       {stars}
     </View>

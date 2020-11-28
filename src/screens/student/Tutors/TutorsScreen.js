@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import {commafy} from '../../utilities/functions';
+import {commafy} from '../../../utilities/functions';
 import {useTheme} from '@react-navigation/native';
-import {generalStyles} from '../../styles/styles';
+import {generalStyles} from '../../../styles/styles';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {Rating} from '../../components/ui/Rating';
+import {Rating} from '../../../components/ui/Rating';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import Spinner from '../../components/ui/Spinner';
-import {AvatarListItem} from '../../components/ui/AvatarListItem';
-import {sortMethods, sortTutors} from '../../utilities/sorting';
-import FilterModal from '../../components/ui/FilterModal';
-import Api from '../../utilities/api';
+import Spinner from '../../../components/ui/Spinner';
+import {AvatarListItem} from '../../../components/ui/AvatarListItem';
+import {sortMethods, sortTutors} from '../../../utilities/sorting';
+import FilterModal from '../../../components/ui/FilterModal';
+import Api from '../../../utilities/api';
 
 const MAX_PRICE = 250;
 const DEFAULT_CITY = {id: 0, name: 'Default (nearest tutors)'};
@@ -46,7 +46,7 @@ const TutorDetails = (props) => (
   </View>
 );
 
-const tutorElement = (item, theme) => {
+const tutorElement = (item, theme, goToProfile) => {
   const {tutor} = item;
   const subjects = commafy(
     tutor.offeredSubjects.map((subject) => subject.subject.name),
@@ -55,6 +55,7 @@ const tutorElement = (item, theme) => {
     <AvatarListItem
       title={tutor.firstName}
       white
+      onPress={() => goToProfile(tutor.id)}
       highlighted={item.recommendation}
       rightElement={
         <TutorDetails
@@ -127,6 +128,10 @@ class TutorsScreen extends Component {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  goToProfile = (id) => {
+    this.props.navigation.push('TutorProfile', {id});
   };
 
   componentDidMount() {
@@ -223,7 +228,9 @@ class TutorsScreen extends Component {
               ? [this.state.recommendedTutor].concat(this.state.tutors)
               : this.state.tutors
           }
-          renderItem={({item}) => tutorElement(item, this.props.theme)}
+          renderItem={({item}) =>
+            tutorElement(item, this.props.theme, this.goToProfile)
+          }
         />
       ) : (
         <TouchableOpacity

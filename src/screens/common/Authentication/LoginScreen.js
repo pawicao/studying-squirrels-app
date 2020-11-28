@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
-import * as styles from '../styles/styles';
-import logo from '../assets/logo-1200px.png';
-import * as actions from '../store/actions';
-import {PrimaryButton} from '../components/ui/Buttons/PrimaryButton';
-import Input from '../components/ui/Input';
-import {generalStyles} from '../styles/styles';
-import Text from '../components/ui/Texts/Text';
+import * as styles from '../../../styles/styles';
+import logo from '../../../assets/logo-1200px.png';
+import * as actions from '../../../store/actions';
+import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
+import Input from '../../../components/ui/Input';
+import {generalStyles} from '../../../styles/styles';
+import Text from '../../../components/ui/Texts/Text';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
-import Spinner from '../components/ui/Spinner';
-import ErrorText from '../components/ui/Texts/ErrorText';
+import Spinner from '../../../components/ui/Spinner';
+import ErrorText from '../../../components/ui/Texts/ErrorText';
 
 class LoginScreen extends Component {
   state = {

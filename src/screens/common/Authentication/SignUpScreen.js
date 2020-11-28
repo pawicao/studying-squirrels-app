@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {AUTH_BASEURL} from '@env';
-import SquirrelHeading from '../components/SquirrelHeading';
-import {isChildEmpty, isEmailValid} from '../utilities/validation';
-import SignUpPhaseOneComponent from '../components/SignUp/SignUpPhaseOneComponent';
-import SignUpPhaseTwoComponent from '../components/SignUp/SignUpPhaseTwoComponent';
-import * as actions from '../store/actions';
+import SquirrelHeading from '../../../components/SquirrelHeading';
+import {isChildEmpty, isEmailValid} from '../../../utilities/validation';
+import SignUpPhaseOneComponent from '../../../components/SignUp/SignUpPhaseOneComponent';
+import SignUpPhaseTwoComponent from '../../../components/SignUp/SignUpPhaseTwoComponent';
+import * as actions from '../../../store/actions';
 import {connect} from 'react-redux';
-import {insert} from '../utilities/functions';
-import SignUpPhaseThreeComponent from '../components/SignUp/SignUpPhaseThreeComponent';
+import {insert} from '../../../utilities/functions';
+import SignUpPhaseThreeComponent from '../../../components/SignUp/SignUpPhaseThreeComponent';
 import ImagePicker from 'react-native-image-picker';
 import {View} from 'react-native';
 

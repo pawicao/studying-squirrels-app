@@ -12,6 +12,7 @@ export const PrimaryButton = (props) => {
       buttonStyle={[
         styles.generalStyles.buttonPrimary,
         {backgroundColor: colors.primary},
+        props.buttonStyle,
       ]}
       type="solid"
       titleStyle={{color: colors.primaryButtonText}}

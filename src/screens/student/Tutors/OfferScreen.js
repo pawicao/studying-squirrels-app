@@ -1,0 +1,135 @@
+import React, {Component} from 'react';
+import OfferHeader from '../../../components/Offer/OfferHeader';
+import {ScrollView, View} from 'react-native';
+import {connect} from 'react-redux';
+import Calendar from '../../../components/Offer/Calendar/Calendar';
+import ProfileHeader from '../../../components/Profile/ProfileHeader';
+import RatingsList from '../../../components/Profile/RatingsList';
+import Spinner from '../../../components/ui/Spinner';
+import Api from '../../../utilities/api';
+import moment from 'moment-timezone';
+import {Overlay} from 'react-native-elements';
+import Text from '../../../components/ui/Texts/Text';
+import Input from '../../../components/ui/Input';
+import HorizontalWrapper from '../../../components/ui/Buttons/HorizontalWrapper';
+import {SideButton} from '../../../components/ui/Buttons/SideButton';
+import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
+import ConfirmationOverlay from '../../../components/ui/ConfirmationOverlay';
+
+class OfferScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.tutor = this.props.route.params.tutor;
+    this.offer = this.props.route.params.offer;
+    this.state = {
+      timeslots: null,
+      ratings: null,
+      studentDescription: '',
+      modalOpened: false,
+      chosenDate: null,
+      isModalLoading: false,
+    };
+  }
+
+  getFreeTimeslots = () => {
+    Api.get(
+      `/tutors/${this.tutor.id}/timeslots?offerId=${
+        this.offer.id
+      }&time=${new Date().getTime()}`,
+    )
+      .then((res) => this.setState({timeslots: res.data}))
+      .catch((err) => console.log(err));
+  };
+
+  getRatings = () => {
+    Api.get(
+      `/person/${this.tutor.id}/ratings?student=false&subject=${this.offer.subject.id}`,
+    )
+      .then((res) => this.setState({ratings: res.data}))
+      .catch((err) => console.log(err));
+  };
+
+  toggleOverlay = () => {
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        modalOpened: !prevState.modalOpened,
+        studentDescription: '',
+      };
+    });
+  };
+
+  openOverlayWithDate = (day, hour) => {
+    this.setState({
+      chosenDate:
+        moment(`${day} ${hour}`).tz('Europe/Warsaw').format('X') * 1000,
+      modalOpened: true,
+    });
+  };
+
+  makeAppointment = () => {
+    this.setState({isModalLoading: true});
+    Api.post('/lesson', {
+      studentId: this.props.userId,
+      offerId: this.offer.id,
+      dateInMillis: this.state.chosenDate,
+      isModalLoading: false,
+      studentDescription: this.state.studentDescription,
+    })
+      .then((res) => {
+        this.props.navigation.popToTop();
+        this.props.navigation.jumpTo('Lessons');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  componentDidMount() {
+    this.getFreeTimeslots();
+    this.getRatings();
+  }
+
+  render() {
+    return (
+      <View style={{flex: 1, justifyContent: 'space-around'}}>
+        <ConfirmationOverlay
+          onConfirm={this.makeAppointment}
+          isVisible={this.state.modalOpened}
+          inputValue={this.state.studentDescription}
+          loading={this.state.isModalLoading}
+          onChangeText={(val) => this.setState({studentDescription: val})}
+          onBackdropPress={this.toggleOverlay}>
+          If you want, you can add a custom message to your lesson request.
+        </ConfirmationOverlay>
+        <OfferHeader
+          subject={this.offer.subject}
+          price={this.offer.price}
+          style={{paddingVertical: 30}}
+        />
+        {this.state.timeslots ? (
+          <Calendar
+            onPress={this.openOverlayWithDate}
+            timeslots={this.state.timeslots}
+            style={{flex: 2}}
+          />
+        ) : (
+          <Spinner />
+        )}
+        <ScrollView style={{flex: 2}}>
+          <ProfileHeader studentMode={false} user={this.tutor} />
+          {this.state.ratings && (
+            <RatingsList
+              subjectName={this.offer.subject.name}
+              ratings={this.state.ratings}
+            />
+          )}
+        </ScrollView>
+      </View>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  userId: state.auth.userId,
+});
+
+export default connect(mapStateToProps, null)(OfferScreen);

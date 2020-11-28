@@ -22,3 +22,10 @@ export const extractHalves = (num) => {
 
 export const insert = (str, index, value) =>
   str.substr(0, index) + value + str.substr(index);
+
+export const partition = (array, filter) => {
+  let pass = [];
+  let fail = [];
+  array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
+  return [pass, fail];
+};

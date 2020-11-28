@@ -2,13 +2,11 @@ import React, {Component} from 'react';
 import {FlatList, View} from 'react-native';
 import axios from 'axios';
 import {connect} from 'react-redux';
-import {IconListItem} from '../../components/ui/IconListItem';
-import ProfileHeader from '../../components/Profile/ProfileHeader';
-import Spinner from '../../components/ui/Spinner';
-import * as actions from '../../store/actions';
-import Api from "../../utilities/api";
-
-const mockURL = 'https://5f37bdd6bbfd1e00160bf569.mockapi.io/test-api/me';
+import {IconListItem} from '../../../components/ui/IconListItem';
+import ProfileHeader from '../../../components/Profile/ProfileHeader';
+import Spinner from '../../../components/ui/Spinner';
+import * as actions from '../../../store/actions';
+import Api from '../../../utilities/api';
 
 const optionsList = [
   {
@@ -38,17 +36,17 @@ const optionsList = [
   },
 ];
 
-class MyAccountScreen extends Component {
+class MyAccountMainScreen extends Component {
   state = {
     user: {
       userId: null,
       firstName: '',
       lastName: '',
-      avatar: null,
+      photoPath: null,
       studentRating: null,
       tutorRating: null,
-      isTutor: null,
-      isStudent: null,
+      tutor: null,
+      student: null,
       phone: null,
       email: null,
       placeOfResidence: null,
@@ -63,7 +61,7 @@ class MyAccountScreen extends Component {
       case 'logout':
         this.handleLogout();
         if (!this.props.studentMode) {
-          this.props.route.params.changeMode();
+          this.props.route.params.changeMode(); //TODO: FIX
         }
         this.props.navigation.navigate('Login');
         break;
@@ -71,7 +69,9 @@ class MyAccountScreen extends Component {
         console.log('Edit data'); // TODO: More screens
         break;
       case 'my-profile':
-        console.log('Show my profile');
+        this.props.navigation.push('MyAccountProfile', {
+          profile: this.state.user,
+        });
         break;
       case 'support':
         console.log('Support');
@@ -90,7 +90,7 @@ class MyAccountScreen extends Component {
 
   renderSettingsListItem = ({item}) => {
     return (
-      <IconListItem // TODO: MINOR: Fix opacity feedback
+      <IconListItem
         title={item.title}
         icon={{name: item.icon, size: 30}}
         onPress={() => this.optionsFunction(item.id)}
@@ -104,19 +104,20 @@ class MyAccountScreen extends Component {
       .then((res) =>
         this.setState({
           user: {
-            userId: res.data.id,
-            firstName: res.data.firstName,
-            lastName: res.data.lastName,
-            avatar: res.data.photoPath,
-            studentRating: res.data.studentRating,
-            tutorRating: res.data.tutorRating,
-            isTutor: res.data.tutor,
-            isStudent: res.data.student,
-            email: res.data.email,
-            phone: res.data.phone,
-            placeOfResidence: res.data.placeOfResidence,
-            tutorRatingsGiven: res.data.tutorRatingsGiven,
-            studentRatingsGiven: res.data.studentRatingsGiven,
+            userId: res.data.person.id,
+            firstName: res.data.person.firstName,
+            lastName: res.data.person.lastName,
+            photoPath: res.data.person.photoPath,
+            studentRating: res.data.person.studentRating,
+            tutorRating: res.data.person.tutorRating,
+            tutor: res.data.person.tutor,
+            student: res.data.person.student,
+            email: res.data.person.email,
+            phone: res.data.person.phone,
+            offeredSubjects: res.data.person.offeredSubjects,
+            placeOfResidence: res.data.person.placeOfResidence,
+            tutorRatingsGiven: res.data.person.tutorRatingsGiven,
+            studentRatingsGiven: res.data.person.studentRatingsGiven,
           },
           loaded: true,
         }),
@@ -132,6 +133,7 @@ class MyAccountScreen extends Component {
       upperContent = (
         <ProfileHeader
           studentMode={this.props.studentMode}
+          me
           user={this.state.user}
         />
       );
@@ -168,4 +170,7 @@ const mapDispatchToProps = (dispatch) => ({
   onLogout: () => dispatch(actions.logout()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyAccountScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MyAccountMainScreen);

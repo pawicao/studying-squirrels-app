@@ -10,10 +10,15 @@ export const BackButton = (props) => {
   return (
     <Button
       {...props}
-      buttonStyle={[
-        styles.generalStyles.buttonPrimary,
-      ]}
-      icon={<Icon name="chevron-left" size={25} color={colors.dimmedText} style={{marginBottom: -2}} />}
+      //buttonStyle={[styles.generalStyles.buttonPrimary]}
+      icon={
+        <Icon
+          name="chevron-left"
+          size={25}
+          color={colors.dimmedText}
+          style={{marginBottom: -2}}
+        />
+      }
       type="clear"
       titleStyle={{color: colors.dimmedText}}
     />

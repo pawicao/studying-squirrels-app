@@ -50,6 +50,7 @@ export const AvatarListItem = (props) => {
     <ListItem
       {...props}
       topDivider
+      onPress={props.onPress}
       containerStyle={containerStyle}
       leftAvatar={props.avatarOnLeft ? avatar : null}
       rightAvatar={!props.avatarOnLeft ? avatar : null}

@@ -1,11 +1,11 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import LoginScreen from '../screens/LoginScreen';
-import ContentScreen from '../screens/ContentScreen';
+import LoginScreen from '../screens/common/Authentication/LoginScreen';
+import ContentScreen from '../screens/common/ContentScreen';
 import {useSelector} from 'react-redux';
 import {studentTheme, tutorTheme} from '../styles/styles';
-import SignUpScreen from '../screens/SignUpScreen';
+import SignUpScreen from '../screens/common/Authentication/SignUpScreen';
 
 const Stack = createStackNavigator();
 

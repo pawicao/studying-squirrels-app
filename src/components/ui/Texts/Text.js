@@ -8,12 +8,12 @@ const Text = (props) => {
     <RNText
       {...props}
       style={{
-        ...props.style,
         color: props.primary
           ? colors.primary
-          : props.error
-          ? 'red'
+          : props.dimmed
+          ? colors.dimmedText
           : colors.text,
+        ...props.style,
         fontSize: props.tiny ? font.tiny : props.header ? font.header : null,
       }}>
       {props.children}
