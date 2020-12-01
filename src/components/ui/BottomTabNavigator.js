@@ -18,6 +18,7 @@ export const BottomTabNavigator = (props) => {
   const {colors} = useTheme();
   return (
     <Tab.Navigator
+      lazy
       initialRouteName={routes.lessons}
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color}) => {

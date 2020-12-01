@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, View} from 'react-native';
-import icon from '../assets/icons/icon_mini.png';
-import Text from './ui/Texts/Text';
+import icon from '../../assets/icons/icon_mini.png';
+import Text from './Texts/Text';
 
 const SquirrelHeading = (props) => {
   return (

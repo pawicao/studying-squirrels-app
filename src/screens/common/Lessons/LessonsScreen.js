@@ -5,11 +5,12 @@ import {connect} from 'react-redux';
 import Api from '../../../utilities/api';
 import moment from 'moment';
 import axios from 'axios';
-import {partition} from '../../../utilities/functions';
+import {groupBy, partition} from '../../../utilities/functions';
 import LessonsSection from '../../../components/Lesson/LessonsList/LessonsSection';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import Spinner from '../../../components/ui/Spinner';
 import ConfirmationOverlay from '../../../components/ui/ConfirmationOverlay';
+import NoDataView from '../../../components/ui/NoDataView';
 // TODO: different NoData text for tutor
 class LessonsScreen extends Component {
   constructor(props) {
@@ -33,15 +34,16 @@ class LessonsScreen extends Component {
     };
   }
 
-  sortLessons = (lessonA, lessonB, negate = false) => {
-    if (lessonA.canceled && !lessonB.canceled) {
-      return -1;
-    }
-    const check = negate
+  sortLessons = (lessonA, lessonB, negate = false) =>
+    negate
       ? moment(lessonA.date) < moment(lessonB.date)
-      : moment(lessonA.date) > moment(lessonB.date);
-    return check ? -1 : 1;
-  };
+        ? -1
+        : 1
+      : moment(lessonA.date) > moment(lessonB.date)
+      ? -1
+      : 1;
+
+  goToLesson = (id) => this.props.navigation.push('LessonDetails', {id});
 
   getLessons = () => {
     this.setState({isLoaded: false});
@@ -62,8 +64,17 @@ class LessonsScreen extends Component {
               (les) => les.confirmed,
             );
           }
+          const groupedPastLessons = groupBy(pastLessons, 'canceled');
           this.setState({
-            pastLessons: pastLessons.sort((a, b) => this.sortLessons(a, b)),
+            pastLessons: pastLessons.length
+              ? groupedPastLessons.false
+                  .sort((a, b) => this.sortLessons(a, b))
+                  .concat(
+                    groupedPastLessons.true.sort((a, b) =>
+                      this.sortLessons(a, b),
+                    ),
+                  )
+              : [],
             futureLessons: futureLessons.sort((a, b) =>
               this.sortLessons(a, b, true),
             ),
@@ -80,14 +91,15 @@ class LessonsScreen extends Component {
   };
 
   onCancel = (val) => {
+    console.log(val);
     Api.put(`/lesson/${val}/cancel`)
       .then((res) =>
         this.setState((prevState) => {
           return {
             ...prevState,
-            needActionsLessons: prevState.needActionsLessons.map((les) =>
+            needActionLessons: prevState.needActionLessons.map((les) =>
               les.id === res.data.id
-                ? {...les, canceled: res.data.canceled}
+                ? {...les, canceled: res.data.canceled, place: null}
                 : les,
             ),
           };
@@ -104,7 +116,7 @@ class LessonsScreen extends Component {
           return {
             ...prevState,
             modalButtonLoading: false,
-            needActionsLessons: prevState.needActionsLessons.map((les) =>
+            needActionLessons: prevState.needActionLessons.map((les) =>
               les.id === res.data.id
                 ? {...les, confirmed: res.data.confirmed}
                 : les,
@@ -115,7 +127,8 @@ class LessonsScreen extends Component {
       .catch((err) => console.log(err));
   };
 
-  toggleConfirmationOverlay = (val = null) =>
+  toggleConfirmationOverlay = (val = null) => {
+    console.log(val);
     this.setState((prevState) => {
       return {
         ...prevState,
@@ -123,6 +136,7 @@ class LessonsScreen extends Component {
         confirmationModalOpened: !prevState.confirmationModalOpened,
       };
     });
+  };
 
   toggleRatingOverlay = (chosenLessonRating = null) =>
     this.setState((prevState) => {
@@ -183,38 +197,36 @@ class LessonsScreen extends Component {
       this.state.pastLessons.length === 0
     ) {
       return (
-        <TouchableWithoutFeedback onPress={this.getLessons}>
-          <View
-            style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
-            <Text
-              style={{
-                textAlign: 'center',
-                marginBottom: 10,
-                marginHorizontal: 30,
-              }}
-              header>
-              There's nothing to show here yet!
-            </Text>
-            <Text
-              style={{
-                textAlign: 'center',
-                marginBottom: 10,
-                marginHorizontal: 37,
-              }}>
+        <NoDataView
+          subtitle={
+            <>
               Go and check out the{' '}
-              <Text style={{fontWeight: 'bold'}}>Tutors</Text>
-              <Icon size={20} name="map-marker-radius" /> section to start
-              learning!
-            </Text>
-            <Text tiny>Tap to refresh!</Text>
-          </View>
-        </TouchableWithoutFeedback>
+              <Text style={{fontWeight: 'bold'}}>
+                {this.props.studentMode ? 'Tutors' : 'Offers'}
+              </Text>
+              <Icon
+                size={20}
+                name={this.props.studentMode ? 'map-marker-radius' : 'glasses'}
+              />{' '}
+              section to start{' '}
+              {this.props.studentMode ? 'learning' : 'teaching'}!
+            </>
+          }
+          onReload={this.getLessons}
+        />
       );
     }
+    const lessonSectionProps = {
+      onStarPress: this.toggleRatingOverlay,
+      onConfirm: this.toggleConfirmationOverlay,
+      onCancel: this.onCancel,
+      studentMode: this.props.studentMode,
+      goToLesson: this.goToLesson,
+    };
     return (
       <>
         <ConfirmationOverlay
-          onConfirm={this.onConfirm} // TODO: Finish it & check if it works, when you deal with tutors!
+          onConfirm={this.onConfirm}
           isVisible={this.state.confirmationModalOpened}
           inputValue={this.state.tutorDescription}
           loading={this.state.modalButtonLoading}
@@ -224,7 +236,7 @@ class LessonsScreen extends Component {
           of the lesson.
         </ConfirmationOverlay>
         <ConfirmationOverlay
-          onConfirm={this.onRatingConfirmation} // TODO: Finish it & check if it works, when you deal with tutors!
+          onConfirm={this.onRatingConfirmation}
           isVisible={this.state.ratingModalOpened}
           inputValue={
             this.state.chosenLessonRating
@@ -254,30 +266,21 @@ class LessonsScreen extends Component {
             <LessonsSection
               title="Need action"
               past={false}
-              onStarPress={this.toggleRatingOverlay}
-              onConfirm={this.toggleConfirmationOverlay}
-              onCancel={this.onCancel}
-              studentMode={this.props.studentMode}
               lessons={this.state.needActionLessons}
+              {...lessonSectionProps}
             />
           )}
           <LessonsSection
             title="Future lessons"
             past={false}
-            onStarPress={this.toggleRatingOverlay}
-            onConfirm={this.toggleConfirmationOverlay}
-            onCancel={this.onCancel}
-            studentMode={this.props.studentMode}
             lessons={this.state.futureLessons}
+            {...lessonSectionProps}
           />
           <LessonsSection
             title="Past lessons"
             past
-            onStarPress={this.toggleRatingOverlay}
-            onConfirm={this.toggleConfirmationOverlay}
-            onCancel={this.onCancel}
-            studentMode={this.props.studentMode}
             lessons={this.state.pastLessons}
+            {...lessonSectionProps}
           />
         </ScrollView>
       </>

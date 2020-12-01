@@ -8,7 +8,7 @@ const GradientLessonListItem = (props) => {
   const {colors} = useTheme();
   const {gradientColor, wrapperStyle, ...passThroughProps} = props;
   const wrappedComponent = <LessonListItem {...passThroughProps} />;
-  return (gradientColor) ? (
+  return gradientColor ? (
     <LinearGradient colors={[colors.background, colors[gradientColor]]}>
       {wrappedComponent}
     </LinearGradient>

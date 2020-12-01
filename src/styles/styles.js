@@ -12,6 +12,7 @@ export const studentTheme = {
   },
   colors: {
     starColor: '#FFBF00',
+    yellowText: '#FFBF00',
     primary: '#e35f2e',
     dimmedPrimary: '#f8f1f1',
     background: '#efefef',
@@ -29,6 +30,7 @@ export const studentTheme = {
     secondaryButtonText: '#56545a',
     dimmedBorderColor: '#C7C7CC',
     veryDimmedBorderColor: '#e0dfdf',
+    sideButtonColor: '#e0dfdf',
   },
 };
 
@@ -44,13 +46,14 @@ export const tutorTheme = {
   },
   colors: {
     starColor: '#FFBF00',
+    yellowText: '#fff7b7',
     primary: '#e35f2e',
-    redText: '#de0000',
-    dimmedPrimary: '#f8f1f1',
-    dimmedYellow: '#fcecd2',
-    dimmedRed: '#F4CCCC',
-    greenText: '#1cb71f',
-    dimmedGreen: '#D9EAD3',
+    redText: '#ee4343',
+    dimmedPrimary: '#fd9a7b',
+    dimmedYellow: '#e7af52',
+    dimmedRed: '#8a2020',
+    greenText: '#26e92a',
+    dimmedGreen: '#2e7910',
     background: '#403f44',
     card: '#403f44',
     text: '#efefef',
@@ -60,7 +63,8 @@ export const tutorTheme = {
     primaryButtonText: '#efefef',
     secondaryButtonText: '#56545a',
     dimmedBorderColor: '#56545a',
-    veryDimmedBorderColor: '#e0dfdf',
+    veryDimmedBorderColor: '#7c7c7c',
+    sideButtonColor: '#e0dfdf',
   },
 };
 

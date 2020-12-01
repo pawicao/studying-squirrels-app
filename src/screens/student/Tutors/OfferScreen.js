@@ -8,12 +8,6 @@ import RatingsList from '../../../components/Profile/RatingsList';
 import Spinner from '../../../components/ui/Spinner';
 import Api from '../../../utilities/api';
 import moment from 'moment-timezone';
-import {Overlay} from 'react-native-elements';
-import Text from '../../../components/ui/Texts/Text';
-import Input from '../../../components/ui/Input';
-import HorizontalWrapper from '../../../components/ui/Buttons/HorizontalWrapper';
-import {SideButton} from '../../../components/ui/Buttons/SideButton';
-import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
 import ConfirmationOverlay from '../../../components/ui/ConfirmationOverlay';
 
 class OfferScreen extends Component {
@@ -67,6 +61,8 @@ class OfferScreen extends Component {
     });
   };
 
+  goToProfile = () => this.props.navigation.goBack();
+
   makeAppointment = () => {
     this.setState({isModalLoading: true});
     Api.post('/lesson', {
@@ -110,12 +106,13 @@ class OfferScreen extends Component {
             onPress={this.openOverlayWithDate}
             timeslots={this.state.timeslots}
             style={{flex: 2}}
+            tutorMode={false}
           />
         ) : (
           <Spinner />
         )}
         <ScrollView style={{flex: 2}}>
-          <ProfileHeader studentMode={false} user={this.tutor} />
+          <ProfileHeader studentMode={false} user={this.tutor} goToProfile={this.goToProfile} />
           {this.state.ratings && (
             <RatingsList
               subjectName={this.offer.subject.name}

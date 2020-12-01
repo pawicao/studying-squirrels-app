@@ -9,6 +9,7 @@ import HorizontalWrapper from '../ui/Buttons/HorizontalWrapper';
 import {Accessory, Avatar, Overlay} from 'react-native-elements';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import AvatarOverlay from '../ui/AvatarOverlay';
 
 const SignUpPhaseThreeComponent = (props) => {
   const [visible, setVisible] = useState(false);
@@ -18,28 +19,11 @@ const SignUpPhaseThreeComponent = (props) => {
   const {colors} = useTheme();
   return (
     <ScrollView contentContainerStyle={{justifyContent: 'center', flexGrow: 1}}>
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              toggleOverlay();
-              props.addAvatar(true);
-            }}
-            style={{padding: 30, alignItems: 'center'}}>
-            <Icon name="camera" size={64} color={colors.primary} />
-            <Text>Take a photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              toggleOverlay();
-              props.addAvatar(false);
-            }}
-            style={{padding: 30, alignItems: 'center'}}>
-            <Icon name="file" size={64} color={colors.primary} />
-            <Text>Choose from a gallery</Text>
-          </TouchableOpacity>
-        </View>
-      </Overlay>
+      <AvatarOverlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        addAvatar={props.addAvatar}
+      />
       <View style={[generalStyles.container]}>
         <JumboText style={{marginTop: -20}}>One more thing!</JumboText>
         <Text style={{paddingBottom: 100}} header>

@@ -8,7 +8,7 @@ const Tab = createMaterialTopTabNavigator();
 export default class LessonsNavigationScreen extends Component {
   render() {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator lazy>
         <Tab.Screen name="Lessons" component={LessonsScreen} />
         <Tab.Screen name="Homeworks" component={HomeworksScreen} />
       </Tab.Navigator>

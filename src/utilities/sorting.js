@@ -57,13 +57,13 @@ export const sortTutors = (tutors, sortMethodValue) => {
       tutorArray.sort((a, b) => a.lowestPrice > b.lowestPrice ? -1 : 1);
       break;
     case 'RATING_ASC':
-      tutorArray.sort((a, b) => a.tutorRating > b.tutorRating ? 1 : -1);
+      tutorArray.sort((a, b) => a.tutor.tutorRating > b.tutor.tutorRating ? 1 : -1);
       break;
     case 'RATING_DESC':
-      tutorArray.sort((a, b) => a.tutorRating > b.tutorRating ? -1 : 1);
+      tutorArray.sort((a, b) => a.tutor.tutorRating > b.tutor.tutorRating ? -1 : 1);
       break;
     case 'POPULARITY':
-      tutorArray.sort((a, b) => a.tutorRatingsGiven > b.tutorRatingsGiven ? -1 : 1);
+      tutorArray.sort((a, b) => a.tutor.tutorRatingsGiven > b.tutor.tutorRatingsGiven ? -1 : 1);
       break;
     default:
       tutorArray.sort((a, b) => a.tutor.id > b.tutor.id ? 1 : -1);

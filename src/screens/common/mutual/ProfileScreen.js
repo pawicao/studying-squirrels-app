@@ -78,7 +78,11 @@ class ProfileScreen extends Component {
       idTwo: this.state.profile.id,
     })
       .then((res) =>
-        this.setState({isSocialBarLoaded: true, contactInfo: res.data}),
+        this.setState({
+          isSocialBarLoaded: true,
+          contactInfo: res.data.contactInfo,
+          profile: res.data.person,
+        }),
       )
       .catch((err) => console.log(err));
   };
@@ -87,7 +91,11 @@ class ProfileScreen extends Component {
     this.setState({isSocialBarLoaded: false});
     Api.delete(`/friend/${this.props.userId}?id=${this.state.profile.id}`)
       .then((res) =>
-        this.setState({isSocialBarLoaded: true, contactInfo: null}),
+        this.setState((prevState) => ({
+          isSocialBarLoaded: true,
+          contactInfo: null,
+          profile: {...prevState.profile, email: null, phone: null},
+        })),
       )
       .catch((err) => console.log(err));
   };
@@ -158,8 +166,10 @@ class ProfileScreen extends Component {
             {this.state.profile.email && this.state.profile.phone && (
               <ContactInfo
                 title="Contact information"
-                email={this.state.profile.email}
-                phone={this.state.profile.phone}
+                contactData={{
+                  email: this.state.profile.email,
+                  phone: this.state.profile.phone,
+                }}
               />
             )}
             {!this.state.mode && (
@@ -170,8 +180,9 @@ class ProfileScreen extends Component {
                   !(
                     this.state.profile.id === undefined ||
                     this.state.profile.id === this.props.userId
-                  ) &&
-                  this.goToOffer
+                  )
+                    ? this.goToOffer
+                    : null
                 }
               />
             )}

@@ -70,9 +70,20 @@ const LessonsSection = (props) => {
     } else if (!lesson.confirmed) {
       topCaption = {
         text: 'AWAITS CONFIRMATION',
-        color: 'starColor',
+        color: 'yellowText',
       };
       gradientColor = 'dimmedYellow';
+    }
+    let ratingDescription, rating, personName;
+    if (props.studentMode) {
+      ratingDescription = lesson.givenLesson.tutorRatingDescription;
+      rating = lesson.givenLesson.tutorRating;
+      personName = `${lesson.givenLesson.tutor.firstName} ${lesson.givenLesson.tutor.lastName}`;
+    }
+    else {
+      ratingDescription = lesson.takenLesson.studentRatingDescription;
+      rating = lesson.takenLesson.studentRating;
+      personName = `${lesson.takenLesson.student.firstName} ${lesson.takenLesson.student.lastName}`;
     }
     return (
       <GradientLessonListItem
@@ -86,19 +97,14 @@ const LessonsSection = (props) => {
         onStarPress={props.onStarPress}
         onConfirm={props.onConfirm}
         onCancel={props.onCancel}
+        canceled={lesson.canceled}
         past={props.past}
         studentMode={props.studentMode}
-        ratingDescription={
-          props.studentMode
-            ? lesson.givenLesson.tutorRatingDescription
-            : lesson.takenLesson.studentRatingDescription
-        }
-        rating={
-          props.studentMode
-            ? lesson.givenLesson.tutorRating
-            : lesson.takenLesson.studentRating
-        }
+        ratingDescription={ratingDescription}
+        personName={personName}
+        rating={rating}
         date={lesson.date}
+        goToLesson={props.goToLesson}
       />
     );
   };

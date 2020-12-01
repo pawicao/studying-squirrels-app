@@ -5,9 +5,9 @@ import {useTheme} from '@react-navigation/native';
 import moment from 'moment';
 import {ClickableRating} from '../../ui/ClickableRating';
 import Text from '../../ui/Texts/Text';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import IconButton from '../../ui/Buttons/IconButton';
-// TODO: TOP TEXT
+
 const LessonListItem = (props) => {
   const {colors} = useTheme();
   const onStarPress = (value) =>
@@ -18,11 +18,16 @@ const LessonListItem = (props) => {
       ratingDescription: props.ratingDescription ? props.ratingDescription : '',
     });
   return (
-    <>
+    <TouchableOpacity
+      onPress={() => props.goToLesson(props.id)}>
       <ListItem
         {...props}
         title={props.subject.name}
-        subtitle={moment(props.date).format('DD MMM YYYY HH:mm')}
+        subtitle={
+          props.personName +
+          '\n' +
+          moment(props.date).format('DD MMM YYYY HH:mm')
+        }
         topDivider
         containerStyle={{
           backgroundColor: 'transparent',
@@ -31,7 +36,7 @@ const LessonListItem = (props) => {
         titleStyle={{color: colors.text}}
         subtitleStyle={{color: colors.dimmedText}}
         leftIcon={
-          <Icon color={colors.primary} size={35} name={props.subject.icon} />
+          <Icon color={colors.primary} size={45} name={props.subject.icon} />
         }
         rightElement={
           props.icon && (
@@ -43,13 +48,13 @@ const LessonListItem = (props) => {
           )
         }
       />
-      {props.past ? (
+      {props.past && !props.canceled ? (
         <ClickableRating
           rating={props.rating}
           style={{alignSelf: 'center', paddingBottom: 10}}
           onStarPress={onStarPress}
         />
-      ) : props.studentMode || props.confirmed ? null : (
+      ) : props.studentMode || props.confirmed || props.canceled ? null : (
         <View style={{marginTop: -10}}>
           <Text
             tiny
@@ -61,19 +66,30 @@ const LessonListItem = (props) => {
               solid
               key={1}
               icon="check"
-              onPress={() => props.onConfirm(props.lessonId)}
+              onPress={() => props.onConfirm(props.id)}
             />
             <IconButton
               solid
               key={2}
               icon="close"
-              onPress={() => props.onCancel(props.lessonId)}
+              onPress={() => props.onCancel(props.id)}
             />
           </View>
         </View>
       )}
-      {props.topCaption && <Text tiny style={{alignSelf: 'center', marginBottom: 10, fontWeight: 'bold', color: colors[props.topCaption.color]}}>{props.topCaption.text}</Text>}
-    </>
+      {props.topCaption && (
+        <Text
+          tiny
+          style={{
+            alignSelf: 'center',
+            marginBottom: 10,
+            fontWeight: 'bold',
+            color: colors[props.topCaption.color],
+          }}>
+          {props.topCaption.text}
+        </Text>
+      )}
+    </TouchableOpacity>
   );
 };
 

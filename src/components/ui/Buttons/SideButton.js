@@ -11,7 +11,7 @@ export const SideButton = (props) => {
       {...props}
       buttonStyle={[
         styles.generalStyles.buttonPrimary,
-        {backgroundColor: colors.veryDimmedBorderColor},
+        {backgroundColor: colors.sideButtonColor},
       ]}
       type="solid"
       titleStyle={{color: colors.secondaryButtonText}}

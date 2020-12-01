@@ -11,10 +11,22 @@ const ContactInfo = (props) => {
       <Text header style={{padding: 15}}>
         {props.title}
       </Text>
+      {props.place && (
+        <View style={{flexDirection: 'row', marginVertical: 10}}>
+          <Icon
+            name="map-marker"
+            size={25}
+            color={colors.dimmedText}
+            style={{paddingHorizontal: 15}}
+          />
+          <Text>{`${props.place.street}, ${props.place.postalCode} ${props.place.city.name}`}</Text>
+        </View>
+      )}
       <TouchableWithoutFeedback
-
         onPress={() => {
-          Linking.openURL(`mailto:${props.email}?subject=Studying Squirrels - contact`)
+          Linking.openURL(
+            `mailto:${props.contactData.email}?subject=Studying Squirrels - contact`,
+          );
         }}>
         <View style={{flexDirection: 'row', marginVertical: 10}}>
           <Icon
@@ -23,11 +35,11 @@ const ContactInfo = (props) => {
             color={colors.dimmedText}
             style={{paddingHorizontal: 15}}
           />
-          <Text>{props.email}</Text>
+          <Text>{props.contactData.email}</Text>
         </View>
       </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => Linking.openURL(`tel:${props.phone}`)}
-        >
+      <TouchableWithoutFeedback
+        onPress={() => Linking.openURL(`tel:${props.contactData.phone}`)}>
         <View style={{flexDirection: 'row', marginVertical: 10}}>
           <Icon
             name="phone"
@@ -35,7 +47,7 @@ const ContactInfo = (props) => {
             color={colors.dimmedText}
             style={{paddingHorizontal: 15}}
           />
-          <Text>{props.phone}</Text>
+          <Text>{props.contactData.phone}</Text>
         </View>
       </TouchableWithoutFeedback>
     </>

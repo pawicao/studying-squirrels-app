@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import {AUTH_BASEURL, API_BASEURL} from '@env';
 import moment from 'moment';
-import Api from '../../utilities/api';
+import Api, {sendPhoto} from '../../utilities/api';
 const queryString = require('query-string');
 
 const authStart = () => ({
@@ -50,32 +50,13 @@ export const register = (data, photo) => (dispatch) => {
         (error) => Promise.reject(error),
       );
       if (photo) {
-        const formData = new FormData();
-        console.log(photo);
-        formData.append('file', {
-          uri: photo.uri,
-          name: `${new Date().getMilliseconds()}.${photo.uri.split('.').pop()}`,
-          type: photo.type,
-        });
-        formData.append('id', userId);
-        const config = {
-          method: 'post',
-          url: `${API_BASEURL}/photo`,
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          data: formData,
-        };
-        axios(config)
-          .then((response) => {
-            dispatch(authSuccess(jwtToken, userId));
-          })
-          .catch((error) => {
-            console.log(error);
-            dispatch(authSuccess(jwtToken, userId));
-          });
+        sendPhoto(
+          photo,
+          userId,
+          jwtToken,
+          () => dispatch(authSuccess(jwtToken, userId)),
+          true,
+        );
       } else {
         dispatch(authSuccess(jwtToken, userId));
       }

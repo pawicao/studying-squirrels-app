@@ -14,6 +14,7 @@ import {AvatarListItem} from '../../../components/ui/AvatarListItem';
 import {sortMethods, sortTutors} from '../../../utilities/sorting';
 import FilterModal from '../../../components/ui/FilterModal';
 import Api from '../../../utilities/api';
+import NoDataView from '../../../components/ui/NoDataView';
 
 const MAX_PRICE = 250;
 const DEFAULT_CITY = {id: 0, name: 'Default (nearest tutors)'};
@@ -103,11 +104,17 @@ class TutorsScreen extends Component {
   }
 
   getTutors = () => {
-    this.setState({isLoaded: false});
     Api.get(this.state.apiUrl.base + this.state.apiUrl.params)
       .then((res) =>
         this.setState({
-          tutors: sortTutors(res.data),
+          tutors: this.state.recommendedTutor
+            ? this.sortTutors(
+                res.data.filter(
+                  (obj) =>
+                    obj.tutor.id !== this.state.recommendedTutor.tutor.id,
+                ),
+              )
+            : this.sortTutors(res.data),
           isLoaded: true,
         }),
       )
@@ -117,16 +124,21 @@ class TutorsScreen extends Component {
   };
 
   getRecommendedTutor = () => {
+    const getTutors = this.getTutors;
     Api.get(
       `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params,
     )
-      .then((res) =>
-        this.setState({
-          recommendedTutor: res.data,
-        }),
-      )
+      .then((res) => {
+        this.setState(
+          {
+            recommendedTutor: res.data,
+          },
+          getTutors,
+        );
+      })
       .catch(function (error) {
         console.log(error);
+        getTutors();
       });
   };
 
@@ -149,7 +161,7 @@ class TutorsScreen extends Component {
       ? sortTutors(tutors, method)
       : sortTutors(tutors, this.state.sortMethod.value);
 
-  applySortMethod = (itemValue, itemIndex) => {
+  applySortMethod = (itemValue, itemIndex) =>
     this.setState({isLoaded: false}, () => {
       this.setState({
         sortMethod: sortMethods[itemIndex],
@@ -157,7 +169,6 @@ class TutorsScreen extends Component {
         isLoaded: true,
       });
     });
-  };
 
   applyFilters = (price, city, rating, subjects) => {
     let filterCount = 0;
@@ -203,7 +214,7 @@ class TutorsScreen extends Component {
   };
 
   getAllTutors = () => {
-    this.getTutors();
+    this.setState({isLoaded: false, recommendedTutor: null});
     this.getRecommendedTutor();
   };
 
@@ -220,7 +231,7 @@ class TutorsScreen extends Component {
       );
     }
     const content = this.state.isLoaded ? (
-      this.state.tutors.length ? (
+      this.state.tutors.length || this.state.recommendedTutor ? (
         <FlatList
           keyExtractor={(item) => item.tutor.id.toString()}
           data={
@@ -233,20 +244,19 @@ class TutorsScreen extends Component {
           }
         />
       ) : (
-        <TouchableOpacity
-          style={generalStyles.centeredContainer}
-          onPress={this.getAllTutors}>
-          <Icon
-            name="refresh"
-            size={this.props.theme.spec.loadingSize}
-            color={this.props.theme.colors.dimmedText}
-          />
-          <Text>No results for given criteria.</Text>
-          <Text>Tap to refresh.</Text>
-        </TouchableOpacity>
+        <NoDataView
+          subtitle={
+            <>
+              No results for given criteria. You can try changing the filters!
+            </>
+          }
+          onReload={this.getAllTutors}
+        />
       )
     ) : (
-      <Spinner />
+      <View style={{justifyContent: 'center'}}>
+        <Spinner />
+      </View>
     );
 
     return (
@@ -290,7 +300,9 @@ class TutorsScreen extends Component {
         <View
           style={[
             {flex: 6},
-            !this.state.tutors.length && generalStyles.centeredContainer,
+            !this.state.tutors.length &&
+              !this.state.recommendedTutor &&
+              generalStyles.centeredContainer,
           ]}>
           {content}
         </View>

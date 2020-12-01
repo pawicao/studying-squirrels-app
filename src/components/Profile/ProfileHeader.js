@@ -1,6 +1,6 @@
 import React from 'react';
 import {API_BASEURL} from '@env';
-import {View} from 'react-native';
+import {Image, View} from 'react-native';
 import {generalStyles} from '../../styles/styles';
 import {Accessory, Avatar} from 'react-native-elements';
 import {Rating} from '../ui/Rating';
@@ -17,6 +17,7 @@ const ProfileHeader = (props) => {
           onPress={props.switchView}
           style={{position: 'absolute', top: 0, right: 0, padding: 15}}
           size={30}
+          color={colors.text}
           name="account-switch-outline"
         />
       )}
@@ -25,10 +26,18 @@ const ProfileHeader = (props) => {
         size={100}
         containerStyle={{margin: 30}}
         source={
-          props.user.photoPath && {uri: API_BASEURL + props.user.photoPath}
+          props.user.photoPath && {
+            uri: props.photoChanged ? props.user.photoPath : API_BASEURL + props.user.photoPath,
+          }
         }
         title={props.user.firstName[0] + props.user.lastName[0]}
-        onPress={() => console.log('Change the avatar')}
+        onPress={
+          props.me
+            ? props.changeAvatar
+            : props.goToProfile
+            ? props.goToProfile
+            : null
+        }
         overlayContainerStyle={{backgroundColor: colors.dimmedBorderColor}}
         placeholderStyle={{backgroundColor: colors.dimmedBorderColor}}
         titleStyle={{color: colors.text}}>

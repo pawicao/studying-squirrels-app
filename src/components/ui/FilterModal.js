@@ -45,7 +45,7 @@ const FilterModal = (props) => {
 
   useEffect(() => {
     Api.get('/subjects')
-      .then((res) => setSubjects({...subjects, all: res.data}))
+      .then((res) => setSubjects({...subjects, all: res.data.sort((a, b) => a.name > b.name ? 1 : -1)}))
       .catch(function (error) {
         console.log(error);
       });

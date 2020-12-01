@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, ToastAndroid, View} from 'react-native';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import {IconListItem} from '../../../components/ui/IconListItem';
 import ProfileHeader from '../../../components/Profile/ProfileHeader';
 import Spinner from '../../../components/ui/Spinner';
 import * as actions from '../../../store/actions';
-import Api from '../../../utilities/api';
+import Api, {sendPhoto} from '../../../utilities/api';
+import AvatarOverlay from '../../../components/ui/AvatarOverlay';
+import ImagePicker from 'react-native-image-picker';
 
 const optionsList = [
   {
@@ -53,7 +55,17 @@ class MyAccountMainScreen extends Component {
       tutorRatingsGiven: 0,
       studentRatingsGiven: 0,
     },
+    photoChanged: false,
+    avatarModalVisible: false,
     loaded: false,
+  };
+
+  changeMode = () => {
+    ToastAndroid.show(
+      `You are now in ${this.props.studentMode ? 'Tutor' : 'Student'} mode`,
+      ToastAndroid.SHORT,
+    );
+    this.props.changeMode();
   };
 
   optionsFunction(title) {
@@ -61,7 +73,7 @@ class MyAccountMainScreen extends Component {
       case 'logout':
         this.handleLogout();
         if (!this.props.studentMode) {
-          this.props.route.params.changeMode(); //TODO: FIX
+          this.changeMode(); //TODO: FIX
         }
         this.props.navigation.navigate('Login');
         break;
@@ -80,12 +92,44 @@ class MyAccountMainScreen extends Component {
         console.log('Settings');
         break;
       default:
-        this.props.route.params.changeMode();
+        this.changeMode();
     }
   }
 
+  changeAvatar = (cameraMode) => {
+    const options = {
+      noData: true,
+    };
+    let imgResponse = null;
+    const func = cameraMode
+      ? ImagePicker.launchCamera
+      : ImagePicker.launchImageLibrary;
+    func(options, (response) => {
+      imgResponse = response;
+      if (imgResponse.uri) {
+        sendPhoto(response, this.props.userId, this.props.token, (res) =>
+          this.setState((prevState) => ({
+            ...prevState,
+            user: {
+              ...prevState.user,
+              photoPath: imgResponse.uri,
+            },
+            photoChanged: true,
+          })),
+        );
+      }
+    });
+  };
+
   handleLogout = () => {
     this.props.onLogout();
+  };
+
+  toggleOverlay = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      avatarModalVisible: !prevState.avatarModalVisible,
+    }));
   };
 
   renderSettingsListItem = ({item}) => {
@@ -134,6 +178,8 @@ class MyAccountMainScreen extends Component {
         <ProfileHeader
           studentMode={this.props.studentMode}
           me
+          photoChanged={this.state.photoChanged}
+          changeAvatar={this.toggleOverlay}
           user={this.state.user}
         />
       );
@@ -142,6 +188,11 @@ class MyAccountMainScreen extends Component {
     }
     return (
       <View>
+        <AvatarOverlay
+          isVisible={this.state.avatarModalVisible}
+          onBackdropPress={this.toggleOverlay}
+          addAvatar={this.changeAvatar}
+        />
         {upperContent}
         <IconListItem
           title={
@@ -164,10 +215,12 @@ class MyAccountMainScreen extends Component {
 const mapStateToProps = (state) => ({
   studentMode: state.mode.studentMode,
   userId: state.auth.userId,
+  token: state.auth.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onLogout: () => dispatch(actions.logout()),
+  changeMode: () => dispatch(actions.changeMode()),
 });
 
 export default connect(

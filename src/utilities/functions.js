@@ -29,3 +29,53 @@ export const partition = (array, filter) => {
   array.forEach((e, idx, arr) => (filter(e, idx, arr) ? pass : fail).push(e));
   return [pass, fail];
 };
+
+export const groupBy = (arr, property) => {
+  return arr.reduce((acc, cur) => {
+    acc[cur[property]] = [...(acc[cur[property]] || []), cur];
+    return acc;
+  }, {});
+};
+
+export const tripleGroupBy = (arr, property1, property2, property3) => {
+  return arr.reduce((acc, cur) => {
+    acc[cur[property1][property2][property3]] = [
+      ...(acc[cur[property1][property2][property3]] || []),
+      cur,
+    ];
+    return acc;
+  }, {});
+};
+
+export const quadrupleGroupBy = (
+  arr,
+  property1,
+  property2,
+  property3,
+  property4,
+) => {
+  return arr.reduce((acc, cur) => {
+    acc[cur[property1][property2][property3][property4]] = [
+      ...(acc[cur[property1][property2][property3][property4]] || []),
+      cur,
+    ];
+    return acc;
+  }, {});
+};
+
+const countDecimals = (value) => {
+  if (Math.floor(value) == value) {
+    return 0;
+  }
+  let separator = value.includes(',') ? ',' : '.';
+  return value.toString().split(separator)[1].length || 0;
+};
+export const isPrice = (valueToAdd) => {
+  return !(
+    valueToAdd.includes('-') ||
+    valueToAdd.includes(' ') ||
+    valueToAdd === '.' ||
+    valueToAdd === ',' ||
+    countDecimals(valueToAdd) > 2
+  );
+};

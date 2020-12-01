@@ -17,12 +17,18 @@ const Calendar = (props) => {
         .sort()
         .map(
           (timeslot) =>
-            props.timeslots[timeslot].length > 0 && (
+            (props.tutorMode || props.timeslots[timeslot].length > 0) && (
               <CalendarColumn
                 onPress={props.onPress}
                 key={timeslot}
                 day={timeslot}
-                hours={props.timeslots[timeslot]}
+                hours={
+                  props.tutorMode
+                    ? props.timeslots[timeslot].all
+                    : props.timeslots[timeslot]
+                }
+                tutorMode={props.tutorMode}
+                chosen={props.tutorMode && props.timeslots[timeslot].chosen}
               />
             ),
         )}

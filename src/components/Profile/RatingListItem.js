@@ -31,8 +31,9 @@ const RatingListItem = (props) => {
       <Text
         dimmed
         style={{
-          paddingHorizontal: 20,
+          paddingHorizontal: 30,
           textAlign: 'justify',
+          paddingBottom: 10,
           color: colors.text,
         }}>
         {ratingDescription}
