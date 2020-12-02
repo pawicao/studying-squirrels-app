@@ -4,6 +4,7 @@ import {ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import Text from '../ui/Texts/Text';
 import {View} from 'react-native';
+import Spinner from '../ui/Spinner';
 
 const SubjectListItem = (props) => {
   const {colors} = useTheme();
@@ -23,13 +24,17 @@ const SubjectListItem = (props) => {
         props.offer && (
           <View style={{flexDirection: 'row'}}>
             <Text>{props.offer.price.toString().replace('.', ',')} zł</Text>
-            <Icon
-              color={colors.redText}
-              size={20}
-              style={{paddingLeft: 10}}
-              name="close"
-              onPress={() => props.onDelete(props.offer.id)}
-            />
+            {props.removalIsLoading ? (
+              <Spinner size={15} style={{paddingLeft: 15}} />
+            ) : (
+              <Icon
+                color={colors.redText}
+                size={20}
+                style={{paddingLeft: 10}}
+                name="close"
+                onPress={() => props.onDelete(props.offer.id)}
+              />
+            )}
           </View>
         )
       }

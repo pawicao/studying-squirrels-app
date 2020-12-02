@@ -13,6 +13,8 @@ const OfferHeader = (props) => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-start',
+          borderBottomWidth: 1,
+          borderBottomColor: colors.veryDimmedBorderColor,
         },
         props.style,
       ]}>

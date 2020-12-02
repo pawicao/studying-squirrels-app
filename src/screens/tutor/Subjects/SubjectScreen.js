@@ -69,7 +69,10 @@ class SubjectScreen extends Component {
       price: parseFloat(this.state.price.replace(',', '.')),
     })
       .then((res) => {
-        this.props.navigation.goBack();
+        this.setState(
+          {addButtonLoading: false},
+          this.props.navigation.goBack(),
+        );
       })
       .catch((err) => console.log(err));
   };
@@ -82,7 +85,22 @@ class SubjectScreen extends Component {
       slots: this.getTimeslotsToPass(),
     })
       .then((res) => {
-        this.props.navigation.goBack();
+        this.setState(
+          {addButtonLoading: false},
+          this.props.navigation.goBack(),
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  removeOffer = () => {
+    this.setState({removeButtonLoading: true});
+    Api.delete(`/offer/${this.props.route.params.offer.id}`)
+      .then((res) => {
+        this.setState(
+          {removeButtonLoading: false},
+          this.props.navigation.goBack(),
+        );
       })
       .catch((err) => console.log(err));
   };
@@ -236,7 +254,7 @@ class SubjectScreen extends Component {
             addButton: this.state.addButtonLoading,
           }}
           showRemovalButton={this.state.editMode}
-          onRemove={() => console.log('Removal')}
+          onRemove={this.removeOffer}
           onConfirm={
             this.state.editMode ? this.editOffer : this.addSubjectAndOffer
           }

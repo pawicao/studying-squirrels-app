@@ -116,6 +116,7 @@ class LessonsScreen extends Component {
           return {
             ...prevState,
             modalButtonLoading: false,
+            confirmationModalOpened: false,
             needActionLessons: prevState.needActionLessons.map((les) =>
               les.id === res.data.id
                 ? {...les, confirmed: res.data.confirmed}
@@ -128,7 +129,6 @@ class LessonsScreen extends Component {
   };
 
   toggleConfirmationOverlay = (val = null) => {
-    console.log(val);
     this.setState((prevState) => {
       return {
         ...prevState,

@@ -12,6 +12,7 @@ class MySubjectsScreen extends Component {
     this.state = {
       isLoaded: false,
       offers: [],
+      loadingRemovalButtonId: null,
     };
   }
 
@@ -33,7 +34,15 @@ class MySubjectsScreen extends Component {
 
   editOffer = (offer) => this.props.navigation.push('SubjectsDetails', {offer});
 
-  deleteOffer = (id) => console.log(id);
+  deleteOffer = (id) => {
+    this.setState({loadingRemovalButtonId: id});
+    Api.delete(`/offer/${id}`)
+      .then((res) => {
+        this.setState({loadingRemovalButtonId: null});
+        this.getOffers();
+      })
+      .catch((err) => console.log(err));
+  };
 
   componentDidMount() {
     this.getOffers();
@@ -56,6 +65,9 @@ class MySubjectsScreen extends Component {
                 title={offer.subject.name}
                 offer={offer}
                 icon={offer.subject.icon}
+                removalIsLoading={
+                  this.state.loadingRemovalButtonId === offer.id
+                }
                 onPress={this.editOffer}
                 onDelete={this.deleteOffer}
                 key={offer.id}

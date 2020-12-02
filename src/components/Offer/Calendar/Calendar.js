@@ -8,7 +8,11 @@ const Calendar = (props) => {
   return (
     <ScrollView
       horizontal
-      contentContainerStyle={{flexGrow: 1, justifyContent: 'space-around'}}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'space-around',
+        paddingTop: 5,
+      }}
       style={[
         {borderBottomColor: colors.veryDimmedBorderColor, borderBottomWidth: 1},
         props.style,
