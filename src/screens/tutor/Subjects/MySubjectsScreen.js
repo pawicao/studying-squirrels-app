@@ -31,8 +31,7 @@ class MySubjectsScreen extends Component {
 
   createNewOffer = () => this.props.navigation.push('SubjectsDetails');
 
-  editOffer = (id) =>
-    this.props.navigation.push('SubjectsDetails', {offer: id});
+  editOffer = (offer) => this.props.navigation.push('SubjectsDetails', {offer});
 
   deleteOffer = (id) => console.log(id);
 

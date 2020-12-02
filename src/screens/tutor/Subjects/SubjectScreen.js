@@ -12,6 +12,7 @@ import HorizontalWrapper from '../../../components/ui/Buttons/HorizontalWrapper'
 import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
 import {SideButton} from '../../../components/ui/Buttons/SideButton';
 import {connect} from 'react-redux';
+import SubjectActionSection from '../../../components/Subject/SubjectActionSection';
 
 const newSubjectObject = {id: -1, name: '<New subject>', icon: 'book'};
 
@@ -61,16 +62,10 @@ class SubjectScreen extends Component {
   };
 
   addOffer = (subjectId) => {
-    let timeslotsToPass = {};
-    for (let key of Object.keys(this.state.timeslots)) {
-      if (this.state.timeslots[key].chosen.length) {
-        timeslotsToPass[key] = this.state.timeslots[key].chosen;
-      }
-    }
     Api.post('/offer', {
       tutorId: this.props.userId,
       subjectId,
-      slots: timeslotsToPass,
+      slots: this.getTimeslotsToPass(),
       price: parseFloat(this.state.price.replace(',', '.')),
     })
       .then((res) => {
@@ -79,10 +74,33 @@ class SubjectScreen extends Component {
       .catch((err) => console.log(err));
   };
 
+  editOffer = () => {
+    this.setState({addButtonLoading: true});
+    Api.put('/offer', {
+      offerId: this.props.route.params.offer.id,
+      price: parseFloat(this.state.price.replace(',', '.')),
+      slots: this.getTimeslotsToPass(),
+    })
+      .then((res) => {
+        this.props.navigation.goBack();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  getTimeslotsToPass = () => {
+    let timeslotsToPass = {};
+    for (let key of Object.keys(this.state.timeslots)) {
+      if (this.state.timeslots[key].chosen.length) {
+        timeslotsToPass[key] = this.state.timeslots[key].chosen;
+      }
+    }
+    return timeslotsToPass;
+  };
+
   combineTimeslots = (all, chosen) => {
     let timeslots = {...all};
     for (let key of Object.keys(timeslots)) {
-      timeslots[key].chosen = chosen[key];
+      timeslots[key].chosen = chosen[key] ? chosen[key] : [];
     }
     return timeslots;
   };
@@ -212,26 +230,17 @@ class SubjectScreen extends Component {
           timeslots={this.state.timeslots}
           handleHourClick={this.handleHourClick}
         />
-        <HorizontalWrapper>
-          {this.state.removeButtonLoading ? (
-            <Spinner style={{paddingHorizontal: 20, paddingTop: 10}} />
-          ) : (
-            <SideButton
-              containerStyle={{paddingHorizontal: 20, paddingTop: 10}}
-              title="Remove"
-              onPress={() => console.log('XA')}
-            />
-          )}
-          {this.state.addButtonLoading ? (
-            <Spinner style={{paddingHorizontal: 20, paddingTop: 10}} />
-          ) : (
-            <PrimaryButton
-              containerStyle={{paddingHorizontal: 20, paddingTop: 10}}
-              title="  Add  "
-              onPress={this.addSubjectAndOffer}
-            />
-          )}
-        </HorizontalWrapper>
+        <SubjectActionSection
+          loading={{
+            removeButton: this.state.removeButtonLoading,
+            addButton: this.state.addButtonLoading,
+          }}
+          showRemovalButton={this.state.editMode}
+          onRemove={() => console.log('Removal')}
+          onConfirm={
+            this.state.editMode ? this.editOffer : this.addSubjectAndOffer
+          }
+        />
       </View>
     );
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Text from '../ui/Texts/Text';
 import Calendar from '../Offer/Calendar/Calendar';
-import {View} from "react-native";
+import {View} from 'react-native';
 
 const SubjectAvailability = (props) => {
   return (
