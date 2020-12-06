@@ -7,7 +7,7 @@
     "eject": "react-native init studying_squirrels_ui && mv studying_squirrels_ui/android android && rm -rf studying_squirrels_ui",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "link-icons": "react-native link react-native-vector-icons && react-native link react-native-image-picker && react-native link react-native-linear-gradien",
+    "link-icons": "react-native link react-native-vector-icons && react-native link react-native-image-picker && react-native link react-native-linear-gradient",
     "create-app-icons": "cp -R ./src/assets/icons/res ./android/app/src/main",
     "adb": "adb.exe kill-server && adb.exe start-server -a -P 5037 nodaemon server",
     "permissions": "./scripts/add-permissions.sh",
