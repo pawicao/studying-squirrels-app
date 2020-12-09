@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {ScrollView, View} from 'react-native';
 import Spinner from '../../../components/ui/Spinner';
-import Api from '../../../utilities/api';
 import {Picker} from '@react-native-picker/picker';
 import SubjectHeader from '../../../components/Subject/SubjectHeader';
 import SubjectPriceInput from '../../../components/Subject/SubjectPriceInput';
 import {isPrice} from '../../../utilities/functions';
 import SubjectAvailability from '../../../components/Subject/SubjectAvailability';
 import {getAllTimeslots} from '../../../utilities/time';
-import HorizontalWrapper from '../../../components/ui/Buttons/HorizontalWrapper';
-import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
-import {SideButton} from '../../../components/ui/Buttons/SideButton';
 import {connect} from 'react-redux';
+import axios from 'axios';
 import SubjectActionSection from '../../../components/Subject/SubjectActionSection';
 
 const newSubjectObject = {id: -1, name: '<New subject>', icon: 'book'};
@@ -49,7 +46,8 @@ class SubjectScreen extends Component {
   };
 
   addSubject = () => {
-    Api.post('/subject', {name: this.state.inputValue.trim()})
+    axios
+      .post('/subject', {name: this.state.inputValue.trim()})
       .then((res) =>
         this.setState(
           {
@@ -62,12 +60,13 @@ class SubjectScreen extends Component {
   };
 
   addOffer = (subjectId) => {
-    Api.post('/offer', {
-      tutorId: this.props.userId,
-      subjectId,
-      slots: this.getTimeslotsToPass(),
-      price: parseFloat(this.state.price.replace(',', '.')),
-    })
+    axios
+      .post('/offer', {
+        tutorId: this.props.userId,
+        subjectId,
+        slots: this.getTimeslotsToPass(),
+        price: parseFloat(this.state.price.replace(',', '.')),
+      })
       .then((res) => {
         this.setState(
           {addButtonLoading: false},
@@ -79,11 +78,12 @@ class SubjectScreen extends Component {
 
   editOffer = () => {
     this.setState({addButtonLoading: true});
-    Api.put('/offer', {
-      offerId: this.props.route.params.offer.id,
-      price: parseFloat(this.state.price.replace(',', '.')),
-      slots: this.getTimeslotsToPass(),
-    })
+    axios
+      .put('/offer', {
+        offerId: this.props.route.params.offer.id,
+        price: parseFloat(this.state.price.replace(',', '.')),
+        slots: this.getTimeslotsToPass(),
+      })
       .then((res) => {
         this.setState(
           {addButtonLoading: false},
@@ -95,7 +95,8 @@ class SubjectScreen extends Component {
 
   removeOffer = () => {
     this.setState({removeButtonLoading: true});
-    Api.delete(`/offer/${this.props.route.params.offer.id}`)
+    axios
+      .delete(`/offer/${this.props.route.params.offer.id}`)
       .then((res) => {
         this.setState(
           {removeButtonLoading: false},
@@ -125,7 +126,7 @@ class SubjectScreen extends Component {
 
   getAllOffers = () => {
     this.setState({isLoaded: false});
-    Api.get('/subjects').then((res) => {
+    axios.get('/subjects').then((res) => {
       const sortedData = res.data.sort((a, b) => (a.name > b.name ? 1 : -1));
       this.pickerItems = sortedData.map((subject) => (
         <Picker.Item value={subject.id} label={subject.name} key={subject.id} />

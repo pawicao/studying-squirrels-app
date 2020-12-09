@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {ScrollView, View} from 'react-native';
 import Spinner from '../../../components/ui/Spinner';
-import Api from '../../../utilities/api';
+import axios from 'axios';
 import {generalStyles} from '../../../styles/styles';
 import ProfileHeader from '../../../components/Profile/ProfileHeader';
 import {connect} from 'react-redux';
@@ -26,7 +26,8 @@ class ProfileScreen extends Component {
   }
 
   getProfileData = () => {
-    Api.get(`/person/${this.props.route.params.id}?id=${this.props.userId}`)
+    axios
+      .get(`/person/${this.props.route.params.id}?id=${this.props.userId}`)
       .then((res) => {
         this.setState(
           {
@@ -47,9 +48,10 @@ class ProfileScreen extends Component {
     if (this.state.areRatingsLoaded) {
       this.setState({areRatingsLoaded: false});
     }
-    Api.get(
-      `/person/${id}/ratings?id=${this.props.userId}&student=${this.state.mode}`,
-    )
+    axios
+      .get(
+        `/person/${id}/ratings?id=${this.props.userId}&student=${this.state.mode}`,
+      )
       .then((res) => {
         this.setState({
           ratings: res.data,
@@ -61,10 +63,11 @@ class ProfileScreen extends Component {
 
   addContact = () => {
     this.setState({isSocialBarLoaded: false});
-    Api.post('/friend', {
-      idOne: this.props.userId,
-      idTwo: this.state.profile.id,
-    })
+    axios
+      .post('/friend', {
+        idOne: this.props.userId,
+        idTwo: this.state.profile.id,
+      })
       .then((res) =>
         this.setState({isSocialBarLoaded: true, contactInfo: res.data}),
       )
@@ -73,10 +76,11 @@ class ProfileScreen extends Component {
 
   acceptContact = () => {
     this.setState({isSocialBarLoaded: false});
-    Api.put('/friend', {
-      idOne: this.props.userId,
-      idTwo: this.state.profile.id,
-    })
+    axios
+      .put('/friend', {
+        idOne: this.props.userId,
+        idTwo: this.state.profile.id,
+      })
       .then((res) =>
         this.setState({
           isSocialBarLoaded: true,
@@ -89,7 +93,8 @@ class ProfileScreen extends Component {
 
   deleteContact = () => {
     this.setState({isSocialBarLoaded: false});
-    Api.delete(`/friend/${this.props.userId}?id=${this.state.profile.id}`)
+    axios
+      .delete(`/friend/${this.props.userId}?id=${this.state.profile.id}`)
       .then((res) =>
         this.setState((prevState) => ({
           isSocialBarLoaded: true,

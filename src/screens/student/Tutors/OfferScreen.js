@@ -6,7 +6,7 @@ import Calendar from '../../../components/Offer/Calendar/Calendar';
 import ProfileHeader from '../../../components/Profile/ProfileHeader';
 import RatingsList from '../../../components/Profile/RatingsList';
 import Spinner from '../../../components/ui/Spinner';
-import Api from '../../../utilities/api';
+import axios from 'axios';
 import moment from 'moment-timezone';
 import ConfirmationOverlay from '../../../components/ui/ConfirmationOverlay';
 
@@ -26,19 +26,21 @@ class OfferScreen extends Component {
   }
 
   getFreeTimeslots = () => {
-    Api.get(
-      `/tutors/${this.tutor.id}/timeslots?offerId=${
-        this.offer.id
-      }&time=${new Date().getTime()}`,
-    )
+    axios
+      .get(
+        `/tutors/${this.tutor.id}/timeslots?offerId=${
+          this.offer.id
+        }&time=${new Date().getTime()}`,
+      )
       .then((res) => this.setState({timeslots: res.data}))
       .catch((err) => console.log(err));
   };
 
   getRatings = () => {
-    Api.get(
-      `/person/${this.tutor.id}/ratings?student=false&subject=${this.offer.subject.id}`,
-    )
+    axios
+      .get(
+        `/person/${this.tutor.id}/ratings?student=false&subject=${this.offer.subject.id}`,
+      )
       .then((res) => this.setState({ratings: res.data}))
       .catch((err) => console.log(err));
   };
@@ -65,13 +67,14 @@ class OfferScreen extends Component {
 
   makeAppointment = () => {
     this.setState({isModalLoading: true});
-    Api.post('/lesson', {
-      studentId: this.props.userId,
-      offerId: this.offer.id,
-      dateInMillis: this.state.chosenDate,
-      isModalLoading: false,
-      studentDescription: this.state.studentDescription,
-    })
+    axios
+      .post('/lesson', {
+        studentId: this.props.userId,
+        offerId: this.offer.id,
+        dateInMillis: this.state.chosenDate,
+        isModalLoading: false,
+        studentDescription: this.state.studentDescription,
+      })
       .then((res) => {
         this.props.navigation.popToTop();
         this.props.navigation.jumpTo('Lessons');
@@ -112,7 +115,11 @@ class OfferScreen extends Component {
           <Spinner />
         )}
         <ScrollView style={{flex: 2}}>
-          <ProfileHeader studentMode={false} user={this.tutor} goToProfile={this.goToProfile} />
+          <ProfileHeader
+            studentMode={false}
+            user={this.tutor}
+            goToProfile={this.goToProfile}
+          />
           {this.state.ratings && (
             <RatingsList
               subjectName={this.offer.subject.name}

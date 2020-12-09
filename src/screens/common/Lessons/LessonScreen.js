@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ScrollView, View} from 'react-native';
 import Spinner from '../../../components/ui/Spinner';
-import Api from '../../../utilities/api';
+import axios from 'axios';
 import {connect} from 'react-redux';
 import LessonHeader from '../../../components/Lesson/LessonHeader';
 import HomeworksList from '../../../components/Homework/HomeworksList';
@@ -30,7 +30,8 @@ class LessonScreen extends Component {
 
   getLesson = () => {
     this.setState({isLoaded: false});
-    Api.get(`/lesson/${this.props.route.params.id}`)
+    axios
+      .get(`/lesson/${this.props.route.params.id}`)
       .then((res) => this.setState({isLoaded: true, lesson: res.data}))
       .catch((err) => console.log(err));
   };
@@ -60,7 +61,8 @@ class LessonScreen extends Component {
 
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
-    Api.put(`/lesson/${this.state.lesson.id}/confirm`)
+    axios
+      .put(`/lesson/${this.state.lesson.id}/confirm`)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -75,7 +77,8 @@ class LessonScreen extends Component {
   };
 
   onCancel = () => {
-    Api.put(`/lesson/${this.state.lesson.id}/cancel`)
+    axios
+      .put(`/lesson/${this.state.lesson.id}/cancel`)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -92,13 +95,14 @@ class LessonScreen extends Component {
     const oldRating = this.props.studentMode
       ? this.state.lesson.givenLesson.tutorRating
       : this.state.lesson.takenLesson.studentRating;
-    Api.post('/lesson/rating', {
-      lessonId: this.state.lesson.id,
-      student: this.props.studentMode,
-      altering: oldRating != null,
-      rating: this.state.rating,
-      ratingDescription: this.state.ratingDescription,
-    })
+    axios
+      .post('/lesson/rating', {
+        lessonId: this.state.lesson.id,
+        student: this.props.studentMode,
+        altering: oldRating != null,
+        rating: this.state.rating,
+        ratingDescription: this.state.ratingDescription,
+      })
       .then((res) =>
         this.setState((prevState) => {
           return {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {API_BASEURL} from '@env';
-import {Image, View} from 'react-native';
+import {View} from 'react-native';
 import {generalStyles} from '../../styles/styles';
 import {Accessory, Avatar} from 'react-native-elements';
 import {Rating} from '../ui/Rating';
@@ -27,7 +27,9 @@ const ProfileHeader = (props) => {
         containerStyle={{margin: 30}}
         source={
           props.user.photoPath && {
-            uri: props.photoChanged ? props.user.photoPath : API_BASEURL + props.user.photoPath,
+            uri: props.photoChanged
+              ? props.user.photoPath
+              : API_BASEURL + props.user.photoPath,
           }
         }
         title={props.user.firstName[0] + props.user.lastName[0]}

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {FlatList, ToastAndroid, View} from 'react-native';
-import axios from 'axios';
 import {connect} from 'react-redux';
 import {IconListItem} from '../../../components/ui/IconListItem';
 import ProfileHeader from '../../../components/Profile/ProfileHeader';
 import Spinner from '../../../components/ui/Spinner';
 import * as actions from '../../../store/actions';
-import Api, {sendPhoto} from '../../../utilities/api';
+import {sendPhoto} from '../../../utilities/api';
+import axios from 'axios';
 import AvatarOverlay from '../../../components/ui/AvatarOverlay';
 import ImagePicker from 'react-native-image-picker';
 
@@ -144,7 +144,7 @@ class MyAccountMainScreen extends Component {
   };
 
   componentDidMount() {
-    Api.get(`/person/${this.props.userId}?id=${this.props.userId}`)
+    axios.get(`/person/${this.props.userId}?id=${this.props.userId}`)
       .then((res) =>
         this.setState({
           user: {

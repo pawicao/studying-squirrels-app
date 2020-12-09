@@ -13,8 +13,9 @@ import Spinner from '../../../components/ui/Spinner';
 import {AvatarListItem} from '../../../components/ui/AvatarListItem';
 import {sortMethods, sortTutors} from '../../../utilities/sorting';
 import FilterModal from '../../../components/ui/FilterModal';
-import Api from '../../../utilities/api';
+import axios from 'axios';
 import NoDataView from '../../../components/ui/NoDataView';
+import {API_BASEURL} from '@env';
 
 const MAX_PRICE = 250;
 const DEFAULT_CITY = {id: 0, name: 'Default (nearest tutors)'};
@@ -67,7 +68,7 @@ const tutorElement = (item, theme, goToProfile) => {
         />
       }
       subtitle={subjects}
-      avatarSource={tutor.photoPath}
+      avatarSource={tutor.photoPath && API_BASEURL + tutor.photoPath}
       avatarOnLeft={true}
     />
   );
@@ -104,7 +105,7 @@ class TutorsScreen extends Component {
   }
 
   getTutors = () => {
-    Api.get(this.state.apiUrl.base + this.state.apiUrl.params)
+    axios.get(this.state.apiUrl.base + this.state.apiUrl.params)
       .then((res) =>
         this.setState({
           tutors: this.state.recommendedTutor
@@ -125,7 +126,7 @@ class TutorsScreen extends Component {
 
   getRecommendedTutor = () => {
     const getTutors = this.getTutors;
-    Api.get(
+    axios.get(
       `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params,
     )
       .then((res) => {

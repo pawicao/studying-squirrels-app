@@ -25,7 +25,7 @@ const authLogout = () => ({
 });
 
 export const logout = () => (dispatch) => {
-  delete Api.defaults.headers.common.Authorization;
+  delete axios.defaults.headers.common.Authorization;
   dispatch(authLogout());
 };
 
@@ -42,13 +42,14 @@ export const register = (data, photo) => (dispatch) => {
     })
     .then((res) => {
       const {jwtToken, userId} = res.data;
-      Api.interceptors.request.use(
+      axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
+      /*      Api.interceptors.request.use(
         (request) => {
           request.headers.Authorization = `Bearer ${jwtToken}`;
           return request;
         },
         (error) => Promise.reject(error),
-      );
+      );*/
       if (photo) {
         sendPhoto(
           photo,
@@ -76,13 +77,14 @@ export const auth = (email, password) => (dispatch) => {
     })
     .then((res) => {
       const {jwtToken, userId} = res.data;
-      Api.interceptors.request.use(
+      axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
+      /*      Api.interceptors.request.use(
         (request) => {
           request.headers.Authorization = `Bearer ${jwtToken}`;
           return request;
         },
         (error) => Promise.reject(error),
-      );
+      );*/
       dispatch(authSuccess(jwtToken, userId));
     })
     .catch((err) => {

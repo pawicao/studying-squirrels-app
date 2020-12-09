@@ -10,7 +10,7 @@ import {SideButton} from './Buttons/SideButton';
 import CheckBox from '@react-native-community/checkbox';
 import {Picker} from '@react-native-picker/picker';
 import {ClickableRating} from './ClickableRating';
-import Api from '../../utilities/api';
+import axios from 'axios';
 import HorizontalWrapper from './Buttons/HorizontalWrapper';
 
 let SLIDER_KEY = 0;
@@ -44,12 +44,12 @@ const FilterModal = (props) => {
   const {colors} = useTheme();
 
   useEffect(() => {
-    Api.get('/subjects')
+    axios.get('/subjects')
       .then((res) => setSubjects({...subjects, all: res.data.sort((a, b) => a.name > b.name ? 1 : -1)}))
       .catch(function (error) {
         console.log(error);
       });
-    Api.get('/cities')
+    axios.get('/cities')
       .then((res) =>
         setCity({
           ...city,

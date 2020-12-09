@@ -47,19 +47,18 @@ const LessonHeader = (props) => {
     props.studentMode,
     props.lesson,
   );
+  console.log('Photo path: ' + API_BASEURL + personPhoto);
   return (
     <View
-      style={
-          {
-            flexDirection: 'row',
-            paddingHorizontal: 20,
-            paddingVertical: 20,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderBottomColor: colors.veryDimmedBorderColor,
-            borderBottomWidth: 1
-          }
-      }>
+      style={{
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomColor: colors.veryDimmedBorderColor,
+        borderBottomWidth: 1,
+      }}>
       <Icon size={60} name={props.lesson.subject.icon} color={colors.primary} />
       <View style={{alignItems: 'center'}}>
         <Text header style={{fontWeight: 'bold'}}>

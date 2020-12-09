@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import Text from '../../../components/ui/Texts/Text';
 import {connect} from 'react-redux';
-import Api from '../../../utilities/api';
 import moment from 'moment';
 import axios from 'axios';
 import {groupBy, partition} from '../../../utilities/functions';
@@ -50,7 +49,7 @@ class LessonsScreen extends Component {
     const currentTime = moment().format('X') * 1000;
     const urlBase = `/lessons/${this.props.userId}?student=${this.props.studentMode}&date=${currentTime}&past=`;
     axios
-      .all([Api.get(`${urlBase}true`), Api.get(`${urlBase}false`)])
+      .all([axios.get(`${urlBase}true`), axios.get(`${urlBase}false`)])
       .then(
         axios.spread((past, future) => {
           let pastLessons, futureLessons, needActionLessons;
@@ -65,6 +64,12 @@ class LessonsScreen extends Component {
             );
           }
           const groupedPastLessons = groupBy(pastLessons, 'canceled');
+          if (groupedPastLessons.true === undefined) {
+            groupedPastLessons.true = [];
+          }
+          if (groupedPastLessons.false === undefined) {
+            groupedPastLessons.false = [];
+          }
           this.setState({
             pastLessons: pastLessons.length
               ? groupedPastLessons.false
@@ -91,8 +96,8 @@ class LessonsScreen extends Component {
   };
 
   onCancel = (val) => {
-    console.log(val);
-    Api.put(`/lesson/${val}/cancel`)
+    axios
+      .put(`/lesson/${val}/cancel`)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -110,7 +115,8 @@ class LessonsScreen extends Component {
   //TODO: Refresh lessons when coming back from detailed lesson view, so that no bugs occur
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
-    Api.put(`/lesson/${this.state.chosenLesson}/confirm`)
+    axios
+      .put(`/lesson/${this.state.chosenLesson}/confirm`)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -149,16 +155,17 @@ class LessonsScreen extends Component {
 
   onRatingConfirmation = () => {
     this.setState({modalRatingButtonLoading: true});
-    Api.post('/lesson/rating', {
-      lessonId: this.state.chosenLessonRating.id,
-      student: this.props.studentMode,
-      altering: !(
-        typeof this.state.chosenLessonRating.oldRating === 'undefined' ||
-        this.state.chosenLessonRating.oldRating === null
-      ),
-      rating: this.state.chosenLessonRating.newRating,
-      ratingDescription: this.state.chosenLessonRating.ratingDescription,
-    })
+    axios
+      .post('/lesson/rating', {
+        lessonId: this.state.chosenLessonRating.id,
+        student: this.props.studentMode,
+        altering: !(
+          typeof this.state.chosenLessonRating.oldRating === 'undefined' ||
+          this.state.chosenLessonRating.oldRating === null
+        ),
+        rating: this.state.chosenLessonRating.newRating,
+        ratingDescription: this.state.chosenLessonRating.ratingDescription,
+      })
       .then((res) =>
         this.setState((prevState) => {
           return {

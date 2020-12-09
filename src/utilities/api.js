@@ -1,11 +1,10 @@
 import axios from 'axios';
 import {API_BASEURL} from '@env';
-
-const Api = axios.create({
+axios.defaults.baseURL = API_BASEURL;
+/*const Api = axios.create({
   baseURL: API_BASEURL,
 });
-
-export default Api;
+console.log(Api);*/
 
 export const sendPhoto = (
   photo,
@@ -15,9 +14,12 @@ export const sendPhoto = (
   isAuth = false,
 ) => {
   const formData = new FormData();
+  console.log(photo);
   formData.append('file', {
     uri: photo.uri,
-    name: `${new Date().getMilliseconds()}.${photo.uri.split('.').pop()}`,
+    name: `${new Date().getTime()}-${userId}.${photo.fileName
+      .split('.')
+      .pop()}`,
     type: photo.type,
   });
   formData.append('id', userId);
@@ -31,6 +33,18 @@ export const sendPhoto = (
     },
     data: formData,
   };
+  /*  fetch(`${API_BASEURL}/photo`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+    body: formData,
+  })
+    .then((res) => {
+      isAuth ? callbackFunc() : callbackFunc(res.data);
+    })
+    .catch((err) => console.log(err));*/
   axios(config)
     .then((response) => {
       isAuth ? callbackFunc() : callbackFunc(response.data);

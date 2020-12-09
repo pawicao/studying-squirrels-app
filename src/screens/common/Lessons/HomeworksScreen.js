@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import {ScrollView, View} from 'react-native';
-import Api from '../../../utilities/api';
+import axios from 'axios';
 import {connect} from 'react-redux';
 import {quadrupleGroupBy, tripleGroupBy} from '../../../utilities/functions';
 import Spinner from '../../../components/ui/Spinner';
@@ -19,9 +19,10 @@ class HomeworksScreen extends Component {
 
   getHomeworks = () => {
     this.setState({isLoaded: false});
-    Api.get(
-      `/lesson/homeworks/${this.props.userId}?student=${this.props.studentMode}`,
-    )
+    axios
+      .get(
+        `/lesson/homeworks/${this.props.userId}?student=${this.props.studentMode}`,
+      )
       .then((res) =>
         this.setState({
           isLoaded: true,
