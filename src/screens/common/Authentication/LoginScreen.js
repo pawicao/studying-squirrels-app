@@ -5,12 +5,13 @@ import * as styles from '../../../styles/styles';
 import logo from '../../../assets/logo-1200px.png';
 import * as actions from '../../../store/actions';
 import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
-import Input from '../../../components/ui/Input';
 import {generalStyles} from '../../../styles/styles';
 import Text from '../../../components/ui/Texts/Text';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
 import Spinner from '../../../components/ui/Spinner';
 import ErrorText from '../../../components/ui/Texts/ErrorText';
+import {EmailInput, PasswordInput} from '../../../components/ui/Input';
+import {Input} from "react-native-elements";
 
 class LoginScreen extends Component {
   state = {
@@ -54,18 +55,17 @@ class LoginScreen extends Component {
           resizeMode="contain"
           style={styles.imagesStyles.image_65}
         />
-        <Input
-          label="E-mail address"
-          keyboardType="email-address"
+        <Input containerStyle={{scaleY: 0.6}}/>
+        <EmailInput
           value={this.state.email}
           onChangeText={(val) => this.updateInputState('email', val)}
+          label="E-mail address"
         />
-        <Input
-          label="Password"
-          isPassword={true}
+        <PasswordInput
           value={this.state.password}
-          style={{marginBottom: 30}}
+          label="Password"
           onChangeText={(val) => this.updateInputState('password', val)}
+          style={{marginBottom: -25}}
         />
         {this.props.error && <ErrorText>Authentication failed.</ErrorText>}
         {this.props.loading ? (
@@ -113,7 +113,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onLogin: (email, password) => dispatch(actions.auth(email.toLowerCase(), password)),
+  onLogin: (email, password) =>
+    dispatch(actions.auth(email.toLowerCase(), password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

@@ -3,7 +3,7 @@ import {ScrollView, View} from 'react-native';
 import Text from '../ui/Texts/Text';
 import {generalStyles} from '../../styles/styles';
 import JumboText from '../ui/Texts/JumboText';
-import Input from '../ui/Input';
+import {EmailInput} from '../ui/Input';
 import ErrorText from '../ui/Texts/ErrorText';
 import Spinner from '../ui/Spinner';
 import {PrimaryButton} from '../ui/Buttons/PrimaryButton';
@@ -13,15 +13,17 @@ import {BackButton} from '../ui/Buttons/BackButton';
 // TODO: Overlays as a way of informing after changing mode
 const SignUpPhaseOneComponent = (props) => {
   return (
-    <ScrollView contentContainerStyle={{justifyContent: 'center', flexGrow: 1}}>
+    <ScrollView
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{justifyContent: 'center', flexGrow: 1}}>
       <View style={[generalStyles.container]}>
         <JumboText>Hello there!</JumboText>
         <Text style={{paddingBottom: 100}} header>
           Ready for some studying?
         </Text>
-        <Input
+        <EmailInput
           label="E-mail address"
-          keyboardType="email-address"
           value={props.email}
           onChangeText={(val) => props.updateInputState('email', val)}
         />
