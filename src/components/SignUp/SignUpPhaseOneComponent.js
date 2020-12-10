@@ -3,7 +3,7 @@ import {ScrollView, View} from 'react-native';
 import Text from '../ui/Texts/Text';
 import {generalStyles} from '../../styles/styles';
 import JumboText from '../ui/Texts/JumboText';
-import Input from '../ui/Input';
+import {EmailInput} from '../ui/Input';
 import ErrorText from '../ui/Texts/ErrorText';
 import Spinner from '../ui/Spinner';
 import {PrimaryButton} from '../ui/Buttons/PrimaryButton';
@@ -19,9 +19,8 @@ const SignUpPhaseOneComponent = (props) => {
         <Text style={{paddingBottom: 100}} header>
           Ready for some studying?
         </Text>
-        <Input
+        <EmailInput
           label="E-mail address"
-          keyboardType="email-address"
           value={props.email}
           onChangeText={(val) => props.updateInputState('email', val)}
         />

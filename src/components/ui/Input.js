@@ -1,50 +1,71 @@
 import React, {useState} from 'react';
+import FloatingLabelInput from 'react-native-floating-label-input/src/index';
 import {useTheme} from '@react-navigation/native';
-import FloatingLabelInput from 'react-native-floating-label-input/index';
 
-const Input = (props) => {
+export const EmailInput = (props) => (
+  <Input
+    {...props}
+    keyboardType="email-address"
+    autoCompleteType="email"
+    autoCapitalize="none"
+  />
+);
+
+export const PostalCodeInput = (props) => (
+  <Input {...props} autoCompleteType="postal-code" keyboardType="numeric" />
+);
+
+export const PhoneInput = (props) => (
+  <Input {...props} autoCompleteType="tel" keyboardType="phone-pad" />
+);
+
+export const NameInput = (props) => (
+  <Input {...props} autoCompleteType="name" />
+);
+
+export const StreetInput = (props) => (
+  <Input {...props} autoCompleteType="street-address" />
+);
+
+export const PasswordInput = (props) => (
+  <Input
+    {...props}
+    showPasswordContainerStyles={{
+      opacity: 0.3,
+      marginBottom: -10,
+      marginRight: -5,
+    }}
+    isPassword={true}
+    autoCapitalize="none"
+    autoCompleteType="password"
+  />
+);
+
+export const Input = (props) => {
   const {colors, dark} = useTheme();
   const [isFocused, setIsFocused] = useState(false);
-  let labelStyles = {top: '80%'};
-  let borderColor;
-  if (isFocused) {
-    labelStyles = {top: 7, left: 10, fontSize: 10};
-    borderColor = colors.primary;
-  } else {
-    if (props.value !== '') {
-      labelStyles = {top: 7, left: 10, fontSize: 10};
-    }
-    borderColor = colors.dimmedText;
-  }
-
+  let borderColor = isFocused ? colors.primary : colors.dimmedText;
   return (
     <FloatingLabelInput
-      {...props}
-      isFocused={isFocused}
-      showPasswordContainerStyles={{
-        opacity: 0.3,
-        marginBottom: -15,
-        marginRight: -5,
-      }}
       containerStyles={{
         ...props.containerStyle,
         marginHorizontal: 15,
         borderWidth: 0,
         borderBottomWidth: 2,
+        marginVertical: 5,
         borderRadius: 0,
         borderColor: borderColor,
       }}
       customLabelStyles={{
-        colorFocused: colors.primary,
+        colorFocused: isFocused ? colors.primary : colors.dimmedText,
         colorBlurred: colors.dimmedText,
       }}
       inputStyles={{
         ...props.inputStyles,
         color: colors.text,
-        top: '3%',
-        marginLeft: 0,
+        marginBottom: -9,
+        marginLeft: -5,
       }}
-      labelStyles={labelStyles}
       darkTheme={!dark}
       onFocus={() => {
         setIsFocused(true);
@@ -52,8 +73,7 @@ const Input = (props) => {
       onBlur={() => {
         setIsFocused(false);
       }}
+      {...props}
     />
   );
 };
-
-export default Input;

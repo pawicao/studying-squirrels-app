@@ -1,13 +1,13 @@
 import React from 'react';
 import {View} from 'react-native';
 import Text from './Texts/Text';
-import Input from './Input';
+import {Input} from './Input';
 import HorizontalWrapper from './Buttons/HorizontalWrapper';
 import {SideButton} from './Buttons/SideButton';
 import {PrimaryButton} from './Buttons/PrimaryButton';
 import {Overlay} from 'react-native-elements';
 import Spinner from './Spinner';
-import {useTheme} from "@react-navigation/native";
+import {useTheme} from '@react-navigation/native';
 // TODO: Moze w componentDidUpdate jezeli jakis props ISTNIEJE to zrfreshuj pobranie danych
 const MAX_LENGTH = 200;
 
@@ -24,7 +24,6 @@ const ConfirmationOverlay = (props) => {
         </Text>
         <Input
           multiline
-          showCountdown
           maxLength={MAX_LENGTH}
           value={props.inputValue}
           onChangeText={props.onChangeText}

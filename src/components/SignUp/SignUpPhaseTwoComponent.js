@@ -1,6 +1,13 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
-import Input from '../ui/Input';
+import {
+  NameInput,
+  Input,
+  PasswordInput,
+  PhoneInput,
+  PostalCodeInput,
+  StreetInput,
+} from '../ui/Input';
 import {PrimaryButton} from '../ui/Buttons/PrimaryButton';
 import HorizontalWrapper from '../ui/Buttons/HorizontalWrapper';
 import Spinner from '../ui/Spinner';
@@ -15,54 +22,48 @@ const SignUpPhaseTwoComponent = (props) => {
   return (
     <ScrollView contentContainerStyle={{justifyContent: 'center', flexGrow: 1}}>
       <View style={{alignItems: 'center'}}>
-        <Input
+        <NameInput
           label="First name"
-          containerStyle={{marginBottom: 10}}
           value={props.data.firstName}
           onChangeText={(val) => props.updateInputState('firstName', val)}
         />
-        <Input
+        <NameInput
           label="Last name"
-          containerStyle={{marginBottom: 10}}
           value={props.data.lastName}
           onChangeText={(val) => props.updateInputState('lastName', val)}
         />
-        <Input
+        <PasswordInput
           label="Password"
-          isPassword={true}
           value={props.data.password}
           onChangeText={(val) => props.updateInputState('password', val)}
         />
-        <Input
+        <PasswordInput
           label="Re-enter password"
-          isPassword={true}
           containerStyle={{marginBottom: 10}}
           value={props.data.passwordConfirmation}
           onChangeText={(val) =>
             props.updateInputState('passwordConfirmation', val)
           }
         />
-        <Input
+        <PhoneInput
           label="Phone"
           value={props.data.phone}
           containerStyle={{marginBottom: 10}}
-          keyboardType="phone-pad"
           onChangeText={(val) => props.updateInputState('phone', val)}
         />
         <View style={{flexDirection: 'row', marginBottom: 10}}>
-          <Input
+          <PostalCodeInput
             label="Zip code"
             value={props.data.postalCode}
-            inputStyles={{marginBottom: -10, marginTop: 10}}
+            //inputStyles={{marginBottom: -10, marginTop: 10}}
             containerStyle={{flex: 1, flexWrap: 'wrap'}}
-            keyboardType="numeric"
             maxLength={6}
             onChangeText={(val) => props.updatePostalCode(val)}
           />
-          <Input
+          <StreetInput
             label="Street"
             containerStyle={{flex: 2, flexWrap: 'wrap'}}
-            inputStyles={{marginBottom: -10, marginTop: 10}}
+            //inputStyles={{marginBottom: -10, marginTop: 10}}
             value={props.data.street}
             onChangeText={(val) => props.updateInputState('street', val)}
           />

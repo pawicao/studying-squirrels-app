@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {useTheme} from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
-import Input from '../ui/Input';
+import {Input} from '../ui/Input';
 import Text from '../ui/Texts/Text';
 
 const SubjectHeader = (props) => {
@@ -60,7 +60,7 @@ const SubjectHeader = (props) => {
                   ? 'New subject'
                   : 'or create a new one...'
               }
-              inputStyles={{marginBottom: -5, marginTop: 5}}
+              //inputStyles={{marginBottom: -5, marginTop: 5}}
               key={props.inputKey}
               value={props.inputValue}
               onChangeText={(val) => props.onInputValueChange(val)}
