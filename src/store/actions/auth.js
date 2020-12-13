@@ -2,9 +2,10 @@ import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import {AUTH_BASEURL, API_BASEURL} from '@env';
 import moment from 'moment';
-import Api, {sendPhoto} from '../../utilities/api';
+import {sendPhoto} from '../../utilities/api';
 const queryString = require('query-string');
-
+console.log(API_BASEURL);
+console.log(AUTH_BASEURL);
 const authStart = () => ({
   type: actionTypes.AUTH_START,
 });
@@ -79,6 +80,7 @@ export const auth = (email, password) => (dispatch) => {
     })
     .then((res) => {
       const {jwtToken, userId} = res.data;
+      console.log(jwtToken);
       axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
       /*      Api.interceptors.request.use(
         (request) => {

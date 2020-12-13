@@ -7,6 +7,7 @@ import {API_BASEURL} from '@env';
 
 const HomeworkIconSet = (props) => {
   const {colors} = useTheme();
+  const uri = props.personPhoto ? API_BASEURL + props.personPhoto : null;
   return (
     <TouchableOpacity onPress={props.onPress} style={{width: 60}}>
       <Icon name={props.subjectIcon} size={60} color={colors.primary} />
@@ -20,7 +21,7 @@ const HomeworkIconSet = (props) => {
           borderWidth: 2,
           borderColor: colors.background,
         }}
-        source={props.personPhoto && {uri: API_BASEURL + props.personPhoto}}
+        source={props.personPhoto && {uri: uri}}
         title={props.personInitials}
         overlayContainerStyle={{backgroundColor: colors.dimmedBorderColor}}
         placeholderStyle={{backgroundColor: colors.dimmedBorderColor}}

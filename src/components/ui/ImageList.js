@@ -41,28 +41,31 @@ const ImageList = (props) => {
       </Modal>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {addImage}
-        {props.images.map((item, index) => (
-          <View
-            key={`attachment-${index}`}
-            style={{width: 50, marginTop: 10, marginHorizontal: 5}}>
-            <TouchableHighlight
-              onPress={() => setModalState({show: true, index: index})}>
-              <Image
-                source={{uri: API_BASEURL + item.filePath}}
-                style={{width: 50, height: 50, borderRadius: 5}}
-              />
-            </TouchableHighlight>
-            {props.editable && (
-              <Icon
-                color={colors.redText}
-                onPress={() => props.onDelete(item)}
-                name="close-circle"
-                size={20}
-                style={{position: 'absolute', top: -5, right: -5}}
-              />
-            )}
-          </View>
-        ))}
+        {props.images.map((item, index) => {
+          const uri = API_BASEURL + item.filePath;
+          return (
+            <View
+              key={`attachment-${index}`}
+              style={{width: 50, marginTop: 10, marginHorizontal: 5}}>
+              <TouchableHighlight
+                onPress={() => setModalState({show: true, index: index})}>
+                <Image
+                  source={{uri: uri}}
+                  style={{width: 50, height: 50, borderRadius: 5}}
+                />
+              </TouchableHighlight>
+              {props.editable && (
+                <Icon
+                  color={colors.redText}
+                  onPress={() => props.onDelete(item)}
+                  name="close-circle"
+                  size={20}
+                  style={{position: 'absolute', top: -5, right: -5}}
+                />
+              )}
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );

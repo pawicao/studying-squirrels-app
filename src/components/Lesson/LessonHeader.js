@@ -46,7 +46,7 @@ const LessonHeader = (props) => {
     props.studentMode,
     props.lesson,
   );
-  console.log('Photo path: ' + API_BASEURL + personPhoto);
+  const photoPath = personPhoto ? API_BASEURL + personPhoto : null;
   return (
     <View
       style={{
@@ -67,7 +67,7 @@ const LessonHeader = (props) => {
         rounded
         size={80}
         onPress={() => props.goToProfile(personId)}
-        source={personPhoto && {uri: API_BASEURL + personPhoto}}
+        source={personPhoto && {uri: photoPath}}
         title={personInitials}
         overlayContainerStyle={{backgroundColor: colors.dimmedBorderColor}}
         placeholderStyle={{backgroundColor: colors.dimmedBorderColor}}

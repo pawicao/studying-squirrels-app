@@ -10,6 +10,10 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 const ProfileHeader = (props) => {
   const {colors, font} = useTheme();
+  const uri =
+    props.user.photoPath && props.photoChanged
+      ? props.user.photoPath
+      : API_BASEURL + props.user.photoPath;
   return (
     <View style={[generalStyles.row]}>
       {props.switchView && (
@@ -25,13 +29,7 @@ const ProfileHeader = (props) => {
         rounded
         size={100}
         containerStyle={{margin: 30}}
-        source={
-          props.user.photoPath && {
-            uri: props.photoChanged
-              ? props.user.photoPath
-              : API_BASEURL + props.user.photoPath,
-          }
-        }
+        source={props.user.photoPath && {uri: uri}}
         title={props.user.firstName[0] + props.user.lastName[0]}
         onPress={
           props.me
