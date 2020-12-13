@@ -133,14 +133,18 @@ class MyAccountMainScreen extends Component {
   };
 
   changeStatus = () => {
-    const url = `/person/status/${this.props.userId}?student=${!this.props
-      .studentMode}`;
-    axios
-      .put(url)
-      .then((_res) => {
-        this.changeMode();
-      })
-      .catch((err) => console.log(err));
+    if (this.state.user.tutor === this.state.user.student) {
+      this.changeMode();
+    } else {
+      const url = `/person/status/${this.props.userId}?student=${!this.props
+        .studentMode}`;
+      axios
+        .put(url)
+        .then((_res) => {
+          this.changeMode();
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   renderSettingsListItem = ({item}) => {
