@@ -92,7 +92,7 @@ class MyAccountMainScreen extends Component {
         console.log('Settings');
         break;
       default:
-        this.changeMode();
+        this.changeStatus();
     }
   }
 
@@ -130,6 +130,17 @@ class MyAccountMainScreen extends Component {
       ...prevState,
       avatarModalVisible: !prevState.avatarModalVisible,
     }));
+  };
+
+  changeStatus = () => {
+    const url = `/person/status/${this.props.userId}?student=${!this.props
+      .studentMode}`;
+    axios
+      .put(url)
+      .then((_res) => {
+        this.changeMode();
+      })
+      .catch((err) => console.log(err));
   };
 
   renderSettingsListItem = ({item}) => {

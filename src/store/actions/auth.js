@@ -80,7 +80,6 @@ export const auth = (email, password) => (dispatch) => {
     })
     .then((res) => {
       const {jwtToken, userId} = res.data;
-      console.log(jwtToken);
       axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
       /*      Api.interceptors.request.use(
         (request) => {
