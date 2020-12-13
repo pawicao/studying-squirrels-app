@@ -20,7 +20,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      sed "s/localhost/$SERVICEADDRESS/" .env
+      sed -i "s/localhost/$SERVICEADDRESS/" .env
   env:
     SERVICEADDRESS: $(ServiceAddress)
   displayName: 'Replace api address value'
