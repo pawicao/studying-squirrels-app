@@ -17,6 +17,10 @@ class HomeworksScreen extends Component {
     };
   }
 
+  goToHomework = (homework) => {
+    this.props.navigation.navigate('HomeworkScreen', {homework});
+  };
+
   getHomeworks = () => {
     this.setState({isLoaded: false});
     axios
@@ -75,6 +79,7 @@ class HomeworksScreen extends Component {
             <HomeworksList
               homeworks={this.state.homeworks[homeworkSection]}
               key={homeworkSection}
+              onPress={this.goToHomework}
               title={
                 this.props.studentMode
                   ? this.state.homeworks[homeworkSection][0].lesson.subject.name

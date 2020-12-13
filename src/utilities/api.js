@@ -33,18 +33,6 @@ export const sendPhoto = (
     },
     data: formData,
   };
-  /*  fetch(`${API_BASEURL}/photo`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-    body: formData,
-  })
-    .then((res) => {
-      isAuth ? callbackFunc() : callbackFunc(res.data);
-    })
-    .catch((err) => console.log(err));*/
   axios(config)
     .then((response) => {
       isAuth ? callbackFunc() : callbackFunc(response.data);

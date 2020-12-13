@@ -2,10 +2,10 @@ import React from 'react';
 import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {useTheme} from '@react-navigation/native';
-import Text from '../ui/Texts/Text';
 import moment from 'moment';
 import {Avatar} from 'react-native-elements';
 import {API_BASEURL} from '@env';
+import LessonHomeworkHeaderInfo from '../ui/LessonHomeworkHeaderInfo';
 
 const processPersonData = (mode, lesson) => {
   let personInitials, personPhoto, personId, rating, lessonPersonDetails;
@@ -42,7 +42,6 @@ const processPersonData = (mode, lesson) => {
 
 const LessonHeader = (props) => {
   const {colors} = useTheme();
-  const lessonDate = moment(props.lesson.date);
   const {personInitials, personPhoto, personId} = processPersonData(
     props.studentMode,
     props.lesson,
@@ -60,14 +59,10 @@ const LessonHeader = (props) => {
         borderBottomWidth: 1,
       }}>
       <Icon size={60} name={props.lesson.subject.icon} color={colors.primary} />
-      <View style={{alignItems: 'center'}}>
-        <Text header style={{fontWeight: 'bold'}}>
-          {props.lesson.subject.name}
-        </Text>
-        <Text style={{textAlign: 'center'}}>
-          {lessonDate.format('DD MMM YYYY') + '\n' + lessonDate.format('HH:mm')}
-        </Text>
-      </View>
+      <LessonHomeworkHeaderInfo
+        date={props.lesson.date}
+        subjectName={props.lesson.subject.name}
+      />
       <Avatar
         rounded
         size={80}

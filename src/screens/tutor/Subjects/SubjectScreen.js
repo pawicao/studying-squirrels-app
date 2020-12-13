@@ -9,7 +9,7 @@ import SubjectAvailability from '../../../components/Subject/SubjectAvailability
 import {getAllTimeslots} from '../../../utilities/time';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import SubjectActionSection from '../../../components/Subject/SubjectActionSection';
+import ButtonActionSection from '../../../components/ui/ButtonActionSection';
 
 const newSubjectObject = {id: -1, name: '<New subject>', icon: 'book'};
 
@@ -249,14 +249,16 @@ class SubjectScreen extends Component {
           timeslots={this.state.timeslots}
           handleHourClick={this.handleHourClick}
         />
-        <SubjectActionSection
+        <ButtonActionSection
           loading={{
-            removeButton: this.state.removeButtonLoading,
-            addButton: this.state.addButtonLoading,
+            secondaryButton: this.state.removeButtonLoading,
+            primaryButton: this.state.addButtonLoading,
           }}
-          showRemovalButton={this.state.editMode}
-          onRemove={this.removeOffer}
-          onConfirm={
+          showSecondaryButton={this.state.editMode}
+          secondaryButtonText="Remove"
+          primaryButtonText="Confirm"
+          onSecondaryButtonPress={this.removeOffer}
+          onPrimaryButtonPress={
             this.state.editMode ? this.editOffer : this.addSubjectAndOffer
           }
         />

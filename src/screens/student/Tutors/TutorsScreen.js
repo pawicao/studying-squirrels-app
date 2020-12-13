@@ -62,7 +62,7 @@ const tutorElement = (item, theme, goToProfile) => {
       rightElement={
         <TutorDetails
           rating={tutor.tutorRating}
-          date={moment(item.timeslot).format('d MMM y')}
+          date={moment(item.timeslot).format('D MMM Y')}
           price={item.lowestPrice ? item.lowestPrice | 0 : '--'}
           theme={theme}
         />
@@ -105,7 +105,8 @@ class TutorsScreen extends Component {
   }
 
   getTutors = () => {
-    axios.get(this.state.apiUrl.base + this.state.apiUrl.params)
+    axios
+      .get(this.state.apiUrl.base + this.state.apiUrl.params)
       .then((res) =>
         this.setState({
           tutors: this.state.recommendedTutor
@@ -126,9 +127,10 @@ class TutorsScreen extends Component {
 
   getRecommendedTutor = () => {
     const getTutors = this.getTutors;
-    axios.get(
-      `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params,
-    )
+    axios
+      .get(
+        `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params,
+      )
       .then((res) => {
         this.setState(
           {

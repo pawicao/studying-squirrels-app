@@ -79,3 +79,10 @@ export const isPrice = (valueToAdd) => {
     countDecimals(valueToAdd) > 2
   );
 };
+
+export const pickIcon = (done, now, then) =>
+  done
+    ? {name: 'check', color: 'greenText'}
+    : now > then
+    ? {name: 'exclamation-thick', color: 'redText'}
+    : {name: 'progress-clock', color: 'primary'};

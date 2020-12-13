@@ -40,7 +40,9 @@ class LessonScreen extends Component {
     this.props.navigation.push('ProfileDetails', {id});
   };
 
-  goToHomework = (id) => console.log(id);
+  goToHomework = (homework) => {
+    this.props.navigation.navigate('HomeworkScreen', {homework});
+  };
 
   toggleRatingOverlay = (rating = null) =>
     this.setState((prevState) => {
@@ -122,7 +124,9 @@ class LessonScreen extends Component {
       .catch((err) => console.log(err));
   };
 
-  addHomework = () => console.log('ADD HOMEWORK');
+  addHomework = () => this.props.navigation.navigate('HomeworkScreen', {homework: {
+        lesson: (({homeworks, ...rest}) => rest)(this.state.lesson),
+    }, newHomework: true});
 
   componentDidMount() {
     this.getLesson();
@@ -146,6 +150,7 @@ class LessonScreen extends Component {
       studentMode: this.props.studentMode,
       date: this.state.lesson.date,
     };
+
     return (
       <>
         <ConfirmationOverlay

@@ -144,7 +144,11 @@ class SignUpScreen extends Component {
               loading: false,
             });
           } else {
-            this.setState({loading: false, phaseOne: false, errorMessage: null});
+            this.setState({
+              loading: false,
+              phaseOne: false,
+              errorMessage: null,
+            });
           }
         })
         .catch((err) => {

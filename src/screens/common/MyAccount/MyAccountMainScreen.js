@@ -7,7 +7,7 @@ import Spinner from '../../../components/ui/Spinner';
 import * as actions from '../../../store/actions';
 import {sendPhoto} from '../../../utilities/api';
 import axios from 'axios';
-import AvatarOverlay from '../../../components/ui/AvatarOverlay';
+import ImageUploadOverlay from '../../../components/ui/ImageUploadOverlay';
 import ImagePicker from 'react-native-image-picker';
 
 const optionsList = [
@@ -188,10 +188,10 @@ class MyAccountMainScreen extends Component {
     }
     return (
       <View>
-        <AvatarOverlay
+        <ImageUploadOverlay
           isVisible={this.state.avatarModalVisible}
           onBackdropPress={this.toggleOverlay}
-          addAvatar={this.changeAvatar}
+          addImage={this.changeAvatar}
         />
         {upperContent}
         <IconListItem

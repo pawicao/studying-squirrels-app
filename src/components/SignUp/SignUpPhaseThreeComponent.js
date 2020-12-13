@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import Text from '../ui/Texts/Text';
 import {generalStyles} from '../../styles/styles';
 import JumboText from '../ui/Texts/JumboText';
 import {SideButton} from '../ui/Buttons/SideButton';
 import {PrimaryButton} from '../ui/Buttons/PrimaryButton';
 import HorizontalWrapper from '../ui/Buttons/HorizontalWrapper';
-import {Accessory, Avatar, Overlay} from 'react-native-elements';
+import {Accessory, Avatar} from 'react-native-elements';
 import {useTheme} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import AvatarOverlay from '../ui/AvatarOverlay';
+import ImageUploadOverlay from '../ui/ImageUploadOverlay';
 
 const SignUpPhaseThreeComponent = (props) => {
   const [visible, setVisible] = useState(false);
@@ -19,10 +18,10 @@ const SignUpPhaseThreeComponent = (props) => {
   const {colors} = useTheme();
   return (
     <ScrollView contentContainerStyle={{justifyContent: 'center', flexGrow: 1}}>
-      <AvatarOverlay
+      <ImageUploadOverlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
-        addAvatar={props.addAvatar}
+        addImage={props.addAvatar}
       />
       <View style={[generalStyles.container]}>
         <JumboText style={{marginTop: -20}}>One more thing!</JumboText>
