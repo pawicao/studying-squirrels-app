@@ -44,12 +44,14 @@ const FilterModal = (props) => {
   const {colors} = useTheme();
 
   useEffect(() => {
-    axios.get('/subjects')
+    let url = '/subjects';
+    axios.get(url)
       .then((res) => setSubjects({...subjects, all: res.data.sort((a, b) => a.name > b.name ? 1 : -1)}))
       .catch(function (error) {
         console.log(error);
       });
-    axios.get('/cities')
+    url = '/cities';
+    axios.get(url)
       .then((res) =>
         setCity({
           ...city,

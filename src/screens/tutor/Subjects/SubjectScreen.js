@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, View} from 'react-native';
+import {View} from 'react-native';
 import Spinner from '../../../components/ui/Spinner';
 import {Picker} from '@react-native-picker/picker';
 import SubjectHeader from '../../../components/Subject/SubjectHeader';
@@ -46,8 +46,10 @@ class SubjectScreen extends Component {
   };
 
   addSubject = () => {
+    const url = '/subject';
+    const data = {name: this.state.inputValue.trim()};
     axios
-      .post('/subject', {name: this.state.inputValue.trim()})
+      .post(url, data)
       .then((res) =>
         this.setState(
           {
@@ -60,13 +62,15 @@ class SubjectScreen extends Component {
   };
 
   addOffer = (subjectId) => {
+    const url = '/offer';
+    const data = {
+      tutorId: this.props.userId,
+      subjectId,
+      slots: this.getTimeslotsToPass(),
+      price: parseFloat(this.state.price.replace(',', '.')),
+    };
     axios
-      .post('/offer', {
-        tutorId: this.props.userId,
-        subjectId,
-        slots: this.getTimeslotsToPass(),
-        price: parseFloat(this.state.price.replace(',', '.')),
-      })
+      .post(url, data)
       .then((res) => {
         this.setState(
           {addButtonLoading: false},
@@ -77,13 +81,15 @@ class SubjectScreen extends Component {
   };
 
   editOffer = () => {
+    const url = '/offer';
+    const data = {
+      offerId: this.props.route.params.offer.id,
+      price: parseFloat(this.state.price.replace(',', '.')),
+      slots: this.getTimeslotsToPass(),
+    };
     this.setState({addButtonLoading: true});
     axios
-      .put('/offer', {
-        offerId: this.props.route.params.offer.id,
-        price: parseFloat(this.state.price.replace(',', '.')),
-        slots: this.getTimeslotsToPass(),
-      })
+      .put(url, data)
       .then((res) => {
         this.setState(
           {addButtonLoading: false},
@@ -95,8 +101,9 @@ class SubjectScreen extends Component {
 
   removeOffer = () => {
     this.setState({removeButtonLoading: true});
+    const url = `/offer/${this.props.route.params.offer.id}`;
     axios
-      .delete(`/offer/${this.props.route.params.offer.id}`)
+      .delete(url)
       .then((res) => {
         this.setState(
           {removeButtonLoading: false},
@@ -126,7 +133,8 @@ class SubjectScreen extends Component {
 
   getAllOffers = () => {
     this.setState({isLoaded: false});
-    axios.get('/subjects').then((res) => {
+    const url = '/subjects';
+    axios.get(url).then((res) => {
       const sortedData = res.data.sort((a, b) => (a.name > b.name ? 1 : -1));
       this.pickerItems = sortedData.map((subject) => (
         <Picker.Item value={subject.id} label={subject.name} key={subject.id} />

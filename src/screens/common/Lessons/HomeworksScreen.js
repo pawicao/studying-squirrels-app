@@ -23,10 +23,9 @@ class HomeworksScreen extends Component {
 
   getHomeworks = () => {
     this.setState({isLoaded: false});
+    const url = `/lesson/homeworks/${this.props.userId}?student=${this.props.studentMode}`;
     axios
-      .get(
-        `/lesson/homeworks/${this.props.userId}?student=${this.props.studentMode}`,
-      )
+      .get(url)
       .then((res) =>
         this.setState({
           isLoaded: true,

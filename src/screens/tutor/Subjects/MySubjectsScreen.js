@@ -18,7 +18,9 @@ class MySubjectsScreen extends Component {
 
   getOffers = () => {
     this.setState({isLoaded: false});
-    axios.get(`/offers?tutorId=${this.props.userId}`)
+    const url = `/offers?tutorId=${this.props.userId}`;
+    axios
+      .get(url)
       .then((res) =>
         this.setState({
           isLoaded: true,
@@ -35,8 +37,10 @@ class MySubjectsScreen extends Component {
   editOffer = (offer) => this.props.navigation.push('SubjectsDetails', {offer});
 
   deleteOffer = (id) => {
+    const url = `/offer/${id}`;
     this.setState({loadingRemovalButtonId: id});
-    axios.delete(`/offer/${id}`)
+    axios
+      .delete(url)
       .then((res) => {
         this.setState({loadingRemovalButtonId: null});
         this.getOffers();

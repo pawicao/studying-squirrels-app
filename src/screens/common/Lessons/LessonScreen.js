@@ -30,8 +30,9 @@ class LessonScreen extends Component {
 
   getLesson = () => {
     this.setState({isLoaded: false});
+    const url = `/lesson/${this.props.route.params.id}`;
     axios
-      .get(`/lesson/${this.props.route.params.id}`)
+      .get(url)
       .then((res) => this.setState({isLoaded: true, lesson: res.data}))
       .catch((err) => console.log(err));
   };
@@ -63,8 +64,9 @@ class LessonScreen extends Component {
 
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
+    const url = `/lesson/${this.state.lesson.id}/confirm`;
     axios
-      .put(`/lesson/${this.state.lesson.id}/confirm`)
+      .put(url)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -79,8 +81,9 @@ class LessonScreen extends Component {
   };
 
   onCancel = () => {
+    const url = `/lesson/${this.state.lesson.id}/cancel`;
     axios
-      .put(`/lesson/${this.state.lesson.id}/cancel`)
+      .put(url)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -97,8 +100,9 @@ class LessonScreen extends Component {
     const oldRating = this.props.studentMode
       ? this.state.lesson.givenLesson.tutorRating
       : this.state.lesson.takenLesson.studentRating;
+    const url = '/lesson/rating';
     axios
-      .post('/lesson/rating', {
+      .post(url, {
         lessonId: this.state.lesson.id,
         student: this.props.studentMode,
         altering: oldRating != null,

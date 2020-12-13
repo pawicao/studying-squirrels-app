@@ -26,21 +26,19 @@ class OfferScreen extends Component {
   }
 
   getFreeTimeslots = () => {
+    const url = `/tutors/${this.tutor.id}/timeslots?offerId=${
+      this.offer.id
+    }&time=${new Date().getTime()}`;
     axios
-      .get(
-        `/tutors/${this.tutor.id}/timeslots?offerId=${
-          this.offer.id
-        }&time=${new Date().getTime()}`,
-      )
+      .get(url)
       .then((res) => this.setState({timeslots: res.data}))
       .catch((err) => console.log(err));
   };
 
   getRatings = () => {
+    const url = `/person/${this.tutor.id}/ratings?student=false&subject=${this.offer.subject.id}`;
     axios
-      .get(
-        `/person/${this.tutor.id}/ratings?student=false&subject=${this.offer.subject.id}`,
-      )
+      .get(url)
       .then((res) => this.setState({ratings: res.data}))
       .catch((err) => console.log(err));
   };
@@ -67,14 +65,16 @@ class OfferScreen extends Component {
 
   makeAppointment = () => {
     this.setState({isModalLoading: true});
+    const url = '/lesson';
+    const data = {
+      studentId: this.props.userId,
+      offerId: this.offer.id,
+      dateInMillis: this.state.chosenDate,
+      isModalLoading: false,
+      studentDescription: this.state.studentDescription,
+    };
     axios
-      .post('/lesson', {
-        studentId: this.props.userId,
-        offerId: this.offer.id,
-        dateInMillis: this.state.chosenDate,
-        isModalLoading: false,
-        studentDescription: this.state.studentDescription,
-      })
+      .post(url, data)
       .then((res) => {
         this.props.navigation.popToTop();
         this.props.navigation.jumpTo('Lessons');

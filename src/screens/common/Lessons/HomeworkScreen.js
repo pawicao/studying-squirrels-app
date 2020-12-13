@@ -52,30 +52,34 @@ class HomeworkScreen extends Component {
 
   addHomework = () => {
     this.setState({primaryButtonLoading: true});
+    const url = '/lesson/homework';
+    const data = {
+      lessonId: this.state.homework.lesson.id,
+      deadline: this.state.deadlineInput.getTime(),
+      textContent: this.state.taskInput,
+    };
     axios
-      .post('/lesson/homework', {
-        lessonId: this.state.homework.lesson.id,
-        deadline: this.state.deadlineInput.getTime(),
-        textContent: this.state.taskInput,
-      })
+      .post(url, data)
       .then((_res) => this.props.navigation.goBack())
       .catch((err) => console.log(err));
   };
 
   editTask = () => {
     this.setState({primaryButtonLoading: true});
+    const url = '/lesson/homework';
+    const data = {
+      homeworkId: this.state.homework.id,
+      deadline: this.state.deadlineInput.getTime(),
+      textContent: this.state.taskInput,
+    };
     axios
-      .put('/lesson/homework', {
-        homeworkId: this.state.homework.id,
-        deadline: this.state.deadlineInput.getTime(),
-        textContent: this.state.taskInput,
-      })
+      .put(url, data)
       .then((res) =>
         this.setState((prevState) => ({
           ...prevState,
           homework: {
             ...prevState.homework,
-            deadline: res.data.deadline, // TODO: Fix the input which will be added to state, I mean delete id, not fix
+            deadline: res.data.deadline,
             textContent: res.data.textContent,
           },
           deadlineInput: new Date(res.data.deadline),
@@ -90,11 +94,13 @@ class HomeworkScreen extends Component {
   editSolution = () => {
     this.setState({primaryButtonLoading: true});
     const apiRequest = this.state.homework.done ? axios.put : axios.post;
-    apiRequest('/lesson/homework/student', {
+    const url = '/lesson/homework/student';
+    const data = {
       date: new Date().getTime(),
       solution: this.state.solutionInput,
       id: this.state.homework.id,
-    })
+    };
+    apiRequest(url, data)
       .then((res) =>
         this.setState((prevState) => ({
           ...prevState,
@@ -129,8 +135,9 @@ class HomeworkScreen extends Component {
 
   removeHomework = () => {
     this.setState({secondaryButtonLoading: true});
+    const url = `/lesson/homework/${this.state.homework.id}`;
     axios
-      .delete(`/lesson/homework/${this.state.homework.id}`)
+      .delete(url)
       .then((_res) => this.props.navigation.goBack())
       .catch((err) => console.log(err));
   };
@@ -143,8 +150,9 @@ class HomeworkScreen extends Component {
   };
 
   deleteAttachment = (attachment) => {
+    const url = `/lesson/homework/attachment/${attachment.id}`;
     axios
-      .delete(`/lesson/homework/attachment/${attachment.id}`)
+      .delete(url)
       .then((_res) =>
         this.setState((prevState) => ({
           ...prevState,
@@ -177,9 +185,10 @@ class HomeworkScreen extends Component {
           }.${response.fileName.split('.').pop()}`,
           type: response.type,
         });
+        const url = `${API_BASEURL}/lesson/homework/student/attachment`;
         const config = {
           method: 'post',
-          url: `${API_BASEURL}/lesson/homework/student/attachment`,
+          url: url,
           headers: {
             Accept: 'application/json',
             'Content-Type': 'multipart/form-data',

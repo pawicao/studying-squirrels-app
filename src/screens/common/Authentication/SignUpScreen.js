@@ -134,8 +134,9 @@ class SignUpScreen extends Component {
   proceedToPhaseTwo = () => {
     if (isEmailValid(this.state.data.email)) {
       this.setState({loading: true});
+      const url = `${AUTH_BASEURL}/mailcheck/${this.state.data.email}`;
       axios
-        .get(`${AUTH_BASEURL}/mailcheck/${this.state.data.email}`)
+        .get(url)
         .then((res) => {
           if (res.data) {
             this.setState({

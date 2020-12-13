@@ -48,8 +48,9 @@ class LessonsScreen extends Component {
     this.setState({isLoaded: false});
     const currentTime = moment().format('X') * 1000;
     const urlBase = `/lessons/${this.props.userId}?student=${this.props.studentMode}&date=${currentTime}&past=`;
+    const urls = [`${urlBase}true`, `${urlBase}false`];
     axios
-      .all([axios.get(`${urlBase}true`), axios.get(`${urlBase}false`)])
+      .all([axios.get(urls[0]), axios.get(urls[1])])
       .then(
         axios.spread((past, future) => {
           let pastLessons, futureLessons, needActionLessons;
@@ -96,8 +97,9 @@ class LessonsScreen extends Component {
   };
 
   onCancel = (val) => {
+    const url = `/lesson/${val}/cancel`;
     axios
-      .put(`/lesson/${val}/cancel`)
+      .put(url)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -115,8 +117,9 @@ class LessonsScreen extends Component {
   //TODO: Refresh lessons when coming back from detailed lesson view, so that no bugs occur
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
+    const url = `/lesson/${this.state.chosenLesson}/confirm`;
     axios
-      .put(`/lesson/${this.state.chosenLesson}/confirm`)
+      .put(url)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -155,8 +158,9 @@ class LessonsScreen extends Component {
 
   onRatingConfirmation = () => {
     this.setState({modalRatingButtonLoading: true});
+    const url = '/lesson/rating';
     axios
-      .post('/lesson/rating', {
+      .post(url, {
         lessonId: this.state.chosenLessonRating.id,
         student: this.props.studentMode,
         altering: !(

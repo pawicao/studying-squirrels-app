@@ -144,7 +144,9 @@ class MyAccountMainScreen extends Component {
   };
 
   componentDidMount() {
-    axios.get(`/person/${this.props.userId}?id=${this.props.userId}`)
+    const url = `/person/${this.props.userId}?id=${this.props.userId}`;
+    axios
+      .get(url)
       .then((res) =>
         this.setState({
           user: {

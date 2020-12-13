@@ -105,8 +105,9 @@ class TutorsScreen extends Component {
   }
 
   getTutors = () => {
+    const url = this.state.apiUrl.base + this.state.apiUrl.params;
     axios
-      .get(this.state.apiUrl.base + this.state.apiUrl.params)
+      .get(url)
       .then((res) =>
         this.setState({
           tutors: this.state.recommendedTutor
@@ -127,10 +128,10 @@ class TutorsScreen extends Component {
 
   getRecommendedTutor = () => {
     const getTutors = this.getTutors;
+    const url =
+      `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params;
     axios
-      .get(
-        `/recommendedTutor?id=${this.props.userId}` + this.state.apiUrl.params,
-      )
+      .get(url)
       .then((res) => {
         this.setState(
           {

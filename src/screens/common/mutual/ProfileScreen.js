@@ -26,8 +26,9 @@ class ProfileScreen extends Component {
   }
 
   getProfileData = () => {
+    const url = `/person/${this.props.route.params.id}?id=${this.props.userId}`;
     axios
-      .get(`/person/${this.props.route.params.id}?id=${this.props.userId}`)
+      .get(url)
       .then((res) => {
         this.setState(
           {
@@ -48,10 +49,9 @@ class ProfileScreen extends Component {
     if (this.state.areRatingsLoaded) {
       this.setState({areRatingsLoaded: false});
     }
+    const url = `/person/${id}/ratings?id=${this.props.userId}&student=${this.state.mode}`;
     axios
-      .get(
-        `/person/${id}/ratings?id=${this.props.userId}&student=${this.state.mode}`,
-      )
+      .get(url)
       .then((res) => {
         this.setState({
           ratings: res.data,
@@ -63,11 +63,13 @@ class ProfileScreen extends Component {
 
   addContact = () => {
     this.setState({isSocialBarLoaded: false});
+    const url = '/friend';
+    const data = {
+      idOne: this.props.userId,
+      idTwo: this.state.profile.id,
+    };
     axios
-      .post('/friend', {
-        idOne: this.props.userId,
-        idTwo: this.state.profile.id,
-      })
+      .post(url, data)
       .then((res) =>
         this.setState({isSocialBarLoaded: true, contactInfo: res.data}),
       )
@@ -76,11 +78,13 @@ class ProfileScreen extends Component {
 
   acceptContact = () => {
     this.setState({isSocialBarLoaded: false});
+    const url = '/friend';
+    const data = {
+      idOne: this.props.userId,
+      idTwo: this.state.profile.id,
+    };
     axios
-      .put('/friend', {
-        idOne: this.props.userId,
-        idTwo: this.state.profile.id,
-      })
+      .put(url, data)
       .then((res) =>
         this.setState({
           isSocialBarLoaded: true,
@@ -93,8 +97,9 @@ class ProfileScreen extends Component {
 
   deleteContact = () => {
     this.setState({isSocialBarLoaded: false});
+    const url = `/friend/${this.props.userId}?id=${this.state.profile.id}`;
     axios
-      .delete(`/friend/${this.props.userId}?id=${this.state.profile.id}`)
+      .delete(url)
       .then((res) =>
         this.setState((prevState) => ({
           isSocialBarLoaded: true,

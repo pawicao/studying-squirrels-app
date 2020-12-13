@@ -1,6 +1,16 @@
 import axios from 'axios';
 import {API_BASEURL} from '@env';
 axios.defaults.baseURL = API_BASEURL;
+axios.interceptors.request.use(
+  (config) => {
+    console.log(config.url);
+    return config;
+  },
+  (error) => {
+    console.log(error);
+    return error;
+  },
+);
 /*const Api = axios.create({
   baseURL: API_BASEURL,
 });
@@ -23,9 +33,10 @@ export const sendPhoto = (
     type: photo.type,
   });
   formData.append('id', userId);
+  const url = `${API_BASEURL}/photo`;
   const config = {
     method: 'post',
-    url: `${API_BASEURL}/photo`,
+    url: url,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'multipart/form-data',

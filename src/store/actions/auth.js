@@ -36,8 +36,9 @@ export const register = (data, photo) => (dispatch) => {
     dateOfBirth:
       moment(data.dateOfBirth, 'DD/MM/YYYY').add(2, 'hours').format('X') * 1000,
   };
+  const url = `${AUTH_BASEURL}/register`;
   axios
-    .post(`${AUTH_BASEURL}/register`, queryString.stringify(registerData), {
+    .post(url, queryString.stringify(registerData), {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     })
     .then((res) => {
@@ -71,8 +72,9 @@ export const register = (data, photo) => (dispatch) => {
 export const auth = (email, password) => (dispatch) => {
   dispatch(authStart());
   const authData = {email, password};
+  const url = `${AUTH_BASEURL}/authenticate`;
   axios
-    .post(`${AUTH_BASEURL}/authenticate`, queryString.stringify(authData), {
+    .post(url, queryString.stringify(authData), {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     })
     .then((res) => {
