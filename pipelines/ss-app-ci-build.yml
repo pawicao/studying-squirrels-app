@@ -21,6 +21,7 @@ steps:
     targetType: 'inline'
     script: |
       sed -i "s/localhost/$SERVICEADDRESS/" .env
+      cp .env .env.production
   env:
     SERVICEADDRESS: $(ServiceAddress)
   displayName: 'Replace api address value'
