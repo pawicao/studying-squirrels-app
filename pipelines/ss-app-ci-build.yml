@@ -20,7 +20,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      echo "export default 'http://${ServiceAddress}';" > ./src/env/prod.js
+      echo "export default 'http://$SERVICEADDRESS';" > ./src/env/prod.js
       echo "export default 'prod';" > ./src/env/active.env.js
   env:
     SERVICEADDRESS: $(ServiceAddress)
