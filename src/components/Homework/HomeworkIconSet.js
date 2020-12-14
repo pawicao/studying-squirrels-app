@@ -3,7 +3,7 @@ import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {useTheme} from '@react-navigation/native';
 import {Avatar} from 'react-native-elements';
-import {API_BASEURL} from '@env';
+import {API_BASEURL} from '../../env/env';
 
 const HomeworkIconSet = (props) => {
   const {colors} = useTheme();

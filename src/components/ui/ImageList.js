@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Modal, ScrollView, View, Image, TouchableHighlight} from 'react-native';
-import {API_BASEURL} from '@env';
+import {API_BASEURL} from '../../env/env';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {useTheme} from '@react-navigation/native';
 import {ImageViewer} from 'react-native-image-zoom-viewer';

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {AUTH_BASEURL} from '@env';
+import {AUTH_BASEURL} from '../../../env/env';
 import SquirrelHeading from '../../../components/ui/SquirrelHeading';
 import {isChildEmpty, isEmailValid} from '../../../utilities/validation';
 import SignUpPhaseOneComponent from '../../../components/SignUp/SignUpPhaseOneComponent';

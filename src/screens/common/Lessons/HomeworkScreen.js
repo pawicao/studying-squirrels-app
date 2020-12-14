@@ -11,7 +11,7 @@ import DatePicker from 'react-native-date-picker';
 import Text from '../../../components/ui/Texts/Text';
 import ImageUploadOverlay from '../../../components/ui/ImageUploadOverlay';
 import ImagePicker from 'react-native-image-picker';
-import {API_BASEURL} from '@env';
+import {API_BASEURL} from '../../../env/env';
 
 class HomeworkScreen extends Component {
   constructor(props) {

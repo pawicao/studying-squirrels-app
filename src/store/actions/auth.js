@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import {AUTH_BASEURL, API_BASEURL} from '@env';
+import {AUTH_BASEURL, API_BASEURL} from '../../env/env';
 import moment from 'moment';
 import {sendPhoto} from '../../utilities/api';
 const queryString = require('query-string');

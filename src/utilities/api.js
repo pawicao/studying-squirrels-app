@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {API_BASEURL} from '@env';
+import {API_BASEURL} from '../env/env';
 axios.defaults.baseURL = API_BASEURL;
 axios.interceptors.request.use(
   (config) => {

@@ -15,7 +15,7 @@ import {sortMethods, sortTutors} from '../../../utilities/sorting';
 import FilterModal from '../../../components/ui/FilterModal';
 import axios from 'axios';
 import NoDataView from '../../../components/ui/NoDataView';
-import {API_BASEURL} from '@env';
+import {API_BASEURL} from '../../../env/env';
 
 const MAX_PRICE = 250;
 const DEFAULT_CITY = {id: 0, name: 'Default (nearest tutors)'};

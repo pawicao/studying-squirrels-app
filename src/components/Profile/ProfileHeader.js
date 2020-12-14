@@ -1,5 +1,5 @@
 import React from 'react';
-import {API_BASEURL} from '@env';
+import {API_BASEURL} from '../../env/env';
 import {View} from 'react-native';
 import {generalStyles} from '../../styles/styles';
 import {Accessory, Avatar} from 'react-native-elements';
