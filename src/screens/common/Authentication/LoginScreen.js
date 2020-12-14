@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import * as styles from '../../../styles/styles';
-import {AUTH_BASEURL} from "../../../env/env";
 import logo from '../../../assets/logo-1200px.png';
 import * as actions from '../../../store/actions';
 import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
@@ -56,7 +55,7 @@ class LoginScreen extends Component {
           style={styles.imagesStyles.image_65}
         />
         <EmailInput
-          label={AUTH_BASEURL}
+          label="E-mail address"
           value={this.state.email}
           onChangeText={(val) => this.updateInputState('email', val)}
         />
