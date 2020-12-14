@@ -11,7 +11,7 @@ import ConfirmationOverlay from '../../../components/ui/ConfirmationOverlay';
 import LessonActionView from '../../../components/Lesson/LessonActionView';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import ContactInfo from '../../../components/ui/ContactInfo';
-import moment from 'moment'
+import moment from 'moment';
 
 class LessonScreen extends Component {
   constructor(props) {
@@ -129,9 +129,13 @@ class LessonScreen extends Component {
       .catch((err) => console.log(err));
   };
 
-  addHomework = () => this.props.navigation.navigate('HomeworkScreen', {homework: {
+  addHomework = () =>
+    this.props.navigation.navigate('HomeworkScreen', {
+      homework: {
         lesson: (({homeworks, ...rest}) => rest)(this.state.lesson),
-    }, newHomework: true});
+      },
+      newHomework: true,
+    });
 
   componentDidMount() {
     this.getLesson();
@@ -221,7 +225,8 @@ class LessonScreen extends Component {
                   homeworks={this.state.lesson.homeworks}
                   onPress={this.goToHomework}
                   addHomeworkIcon={
-                    (!this.props.studentMode && moment() > moment(this.state.lesson.date) ) && (
+                    !this.props.studentMode &&
+                    moment() > moment(this.state.lesson.date) && (
                       <Icon
                         style={{paddingTop: 10}}
                         size={25}

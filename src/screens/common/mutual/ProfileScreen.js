@@ -128,9 +128,12 @@ class ProfileScreen extends Component {
   };
 
   switchView = () =>
-    this.setState((prevState) => {
-      return {...prevState, mode: !prevState.mode};
-    });
+    this.setState(
+      (prevState) => {
+        return {...prevState, mode: !prevState.mode, areRatingsLoaded: false};
+      },
+      () => this.getRatings(this.state.profile.id),
+    );
 
   componentDidMount() {
     this.state.profile
