@@ -300,9 +300,16 @@ class HomeworkScreen extends Component {
               <TextContentWithHeader
                 title="Solution"
                 withInput={this.props.studentMode && this.state.editing}
-                emptyContentMessage={`No solution provided yet.${
-                  this.props.studentMode ? ' Make sure to do it on time!' : ''
-                }`}>
+                emptyContentMessage={
+                  this.props.studentMode &&
+                  this.state.homework.attachments.length > 0
+                    ? "This solution doesn't have any text content."
+                    : `No solution provided yet.${
+                        this.props.studentMode
+                          ? ' Make sure to do it on time!'
+                          : ''
+                      }`
+                }>
                 {this.props.studentMode && this.state.editing ? (
                   <Input
                     multiline
