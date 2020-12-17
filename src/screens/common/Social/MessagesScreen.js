@@ -7,7 +7,7 @@ import {AvatarListItem} from '../../../components/ui/AvatarListItem';
 import {generalStyles} from '../../../styles/styles';
 
 const mockURL = 'https://5f37bdd6bbfd1e00160bf569.mockapi.io/test-api/contacts';
-
+// TODO: Ratings showing on OWN PROFILE
 class MessagesScreen extends Component {
   state = {
     messages: [], // Just mocked. Probably will have to go through two calls, first to messages, then to people who sent them

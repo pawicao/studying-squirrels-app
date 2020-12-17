@@ -9,6 +9,7 @@ import {sendPhoto} from '../../../utilities/api';
 import axios from 'axios';
 import ImageUploadOverlay from '../../../components/ui/ImageUploadOverlay';
 import ImagePicker from 'react-native-image-picker';
+import {setStudentMode} from "../../../utilities/storage";
 
 const optionsList = [
   {
@@ -73,7 +74,7 @@ class MyAccountMainScreen extends Component {
       case 'logout':
         this.handleLogout();
         if (!this.props.studentMode) {
-          this.changeMode(); //TODO: FIX
+          this.changeMode();
         }
         this.props.navigation.navigate('Login');
         break;
@@ -133,6 +134,9 @@ class MyAccountMainScreen extends Component {
   };
 
   changeStatus = () => {
+    setStudentMode(this.props.userId, !this.props.studentMode).then((_res) =>
+      console.log('Mode changed in local storage.'),
+    );
     if (this.state.user.tutor === this.state.user.student) {
       this.changeMode();
     } else {

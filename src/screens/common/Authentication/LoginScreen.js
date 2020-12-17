@@ -10,7 +10,7 @@ import Text from '../../../components/ui/Texts/Text';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
 import Spinner from '../../../components/ui/Spinner';
 import ErrorText from '../../../components/ui/Texts/ErrorText';
-import {EmailInput, PasswordInput} from "../../../components/ui/Input";
+import {EmailInput, PasswordInput} from '../../../components/ui/Input';
 
 class LoginScreen extends Component {
   state = {

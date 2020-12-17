@@ -1,2 +1,2 @@
-export {changeMode} from './modes';
-export {auth, logout, register} from './auth';
+export {changeMode, setMode} from './modes';
+export {auth, logout, register, loadFromStorage} from './auth';

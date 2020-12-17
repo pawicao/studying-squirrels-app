@@ -1,20 +1,6 @@
 import axios from 'axios';
 import {API_BASEURL} from '../env/env';
 axios.defaults.baseURL = API_BASEURL;
-axios.interceptors.request.use(
-  (config) => {
-    console.log(config.url);
-    return config;
-  },
-  (error) => {
-    console.log(error);
-    return error;
-  },
-);
-/*const Api = axios.create({
-  baseURL: API_BASEURL,
-});
-console.log(Api);*/
 
 export const sendPhoto = (
   photo,

@@ -5,3 +5,10 @@ export const changeMode = () => (dispatch) => {
     type: actionTypes.MODE_CHANGE,
   });
 };
+
+export const setMode = (studentMode) => (dispatch) => {
+  dispatch({
+    type: actionTypes.MODE_SET,
+    studentMode,
+  });
+};

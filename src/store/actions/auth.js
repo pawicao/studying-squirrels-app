@@ -1,20 +1,58 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import {AUTH_BASEURL, API_BASEURL} from '../../env/env';
+import {AUTH_BASEURL} from '../../env/env';
 import moment from 'moment';
 import {sendPhoto} from '../../utilities/api';
+import {
+  getStudentMode,
+  removeAuthData,
+  setAuthData,
+  setStudentMode,
+} from '../../utilities/storage';
+import {setMode} from './modes';
 const queryString = require('query-string');
-console.log(API_BASEURL);
-console.log(AUTH_BASEURL);
+
 const authStart = () => ({
   type: actionTypes.AUTH_START,
 });
 
-const authSuccess = (token, userId) => ({
+const authSuccessPlain = (token, userId) => ({
   type: actionTypes.AUTH_SUCCESS,
   token,
   userId,
 });
+
+const authSuccess = (token, userId) => (dispatch) => {
+  setAuthData(token, userId)
+    .then((_res) => console.log('Data saved in storage'))
+    .catch((err) => {
+      console.log(err);
+    });
+  getStudentMode(userId)
+    .then((res) => {
+      if (res != null) {
+        setMode(res);
+        dispatch(authSuccessPlain(token, userId));
+      } else {
+        axios
+          .get(`/person/status/${userId}`, {
+            headers: {Authorization: `Bearer ${token}`},
+          })
+          .then((res2) => {
+            setMode(res2.data.student);
+            setStudentMode(userId, res2.data.student).then(
+              (_res) => 'Mode changed in local storage.',
+            );
+            dispatch(authSuccessPlain(token, userId));
+          })
+          .catch((err) => console.log(err));
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      dispatch(authSuccessPlain(token, userId));
+    });
+};
 
 const authFail = (error) => ({
   type: actionTypes.AUTH_FAIL,
@@ -27,7 +65,19 @@ const authLogout = () => ({
 
 export const logout = () => (dispatch) => {
   delete axios.defaults.headers.common.Authorization;
+  removeAuthData().then((_r) =>
+    console.log('Auth data removed from the local storage'),
+  );
   dispatch(authLogout());
+};
+
+export const loadFromStorage = (authData) => (dispatch) => {
+  axios.defaults.headers.common.Authorization = `Bearer ${authData.token}`;
+  dispatch({
+    type: actionTypes.AUTH_SUCCESS,
+    token: authData.token,
+    userId: authData.userId,
+  });
 };
 
 export const register = (data, photo) => (dispatch) => {
@@ -45,13 +95,6 @@ export const register = (data, photo) => (dispatch) => {
     .then((res) => {
       const {jwtToken, userId} = res.data;
       axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
-      /*      Api.interceptors.request.use(
-        (request) => {
-          request.headers.Authorization = `Bearer ${jwtToken}`;
-          return request;
-        },
-        (error) => Promise.reject(error),
-      );*/
       if (photo) {
         sendPhoto(
           photo,
@@ -81,16 +124,10 @@ export const auth = (email, password) => (dispatch) => {
     .then((res) => {
       const {jwtToken, userId} = res.data;
       axios.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
-      /*      Api.interceptors.request.use(
-        (request) => {
-          request.headers.Authorization = `Bearer ${jwtToken}`;
-          return request;
-        },
-        (error) => Promise.reject(error),
-      );*/
       dispatch(authSuccess(jwtToken, userId));
     })
     .catch((err) => {
+      console.log('No prosze!');
       console.log(err);
       dispatch(authFail(err));
     });

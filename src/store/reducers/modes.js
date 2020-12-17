@@ -11,9 +11,14 @@ const changeMode = (state) => {
   };
 };
 
+const setMode = (state, action) => ({studentMode: action.studentMode});
+
 const reducer = (state = initialState, action) => {
   if (action.type === actionTypes.MODE_CHANGE) {
     return changeMode(state);
+  }
+  if (action.type === actionTypes.MODE_SET) {
+    return setMode(state, action);
   }
   return state;
 };
