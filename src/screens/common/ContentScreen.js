@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
 class ContentScreen extends Component {
   render() {
     return (
-      <BottomTabNavigator>
+      <BottomTabNavigator key={this.props.route.params.fromLogin}>
         <Tab.Screen
           name={routes.lessons}
           options={{unmountOnBlur: true}}

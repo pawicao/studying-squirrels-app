@@ -39,7 +39,9 @@ class LoginScreen extends Component {
   componentDidUpdate(previousProps, previousState) {
     // NOTE: Probably could be implemented better
     if (this.props.token) {
-      this.props.navigation.navigate('Content');
+      this.props.navigation.navigate('Content', {
+        fromLogin: true,
+      });
     } else if (this.props.error && previousProps.error === null) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({...this.state, password: ''});

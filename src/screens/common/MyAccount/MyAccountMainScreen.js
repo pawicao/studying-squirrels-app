@@ -9,7 +9,7 @@ import {sendPhoto} from '../../../utilities/api';
 import axios from 'axios';
 import ImageUploadOverlay from '../../../components/ui/ImageUploadOverlay';
 import ImagePicker from 'react-native-image-picker';
-import {setStudentMode} from "../../../utilities/storage";
+import {setStudentMode} from '../../../utilities/storage';
 
 const optionsList = [
   {

@@ -127,7 +127,6 @@ export const auth = (email, password) => (dispatch) => {
       dispatch(authSuccess(jwtToken, userId));
     })
     .catch((err) => {
-      console.log('No prosze!');
       console.log(err);
       dispatch(authFail(err));
     });
