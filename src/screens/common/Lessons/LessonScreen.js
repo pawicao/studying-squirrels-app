@@ -110,7 +110,7 @@ class LessonScreen extends Component {
         rating: this.state.rating,
         ratingDescription: this.state.ratingDescription,
       })
-      .then((res) =>
+      .then((res) => {
         this.setState((prevState) => {
           return {
             ...prevState,
@@ -121,11 +121,11 @@ class LessonScreen extends Component {
             lesson: {
               ...prevState.lesson,
               givenLesson: this.props.studentMode && res.data.givenLesson,
-              takenLesson: this.props.studentMode && res.data.takenLesson,
+              takenLesson: !this.props.studentMode && res.data.takenLesson,
             },
           };
-        }),
-      )
+        });
+      })
       .catch((err) => console.log(err));
   };
 

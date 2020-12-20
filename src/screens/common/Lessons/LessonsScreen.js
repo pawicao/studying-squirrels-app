@@ -33,6 +33,14 @@ class LessonsScreen extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('=========');
+    console.log(prevProps);
+    console.log('--------');
+    console.log(this.props);
+    console.log('=========');
+  }
+
   sortLessons = (lessonA, lessonB, negate = false) =>
     negate
       ? moment(lessonA.date) < moment(lessonB.date)
@@ -45,6 +53,7 @@ class LessonsScreen extends Component {
   goToLesson = (id) => this.props.navigation.push('LessonDetails', {id});
 
   getLessons = () => {
+    console.log('Param')
     this.setState({isLoaded: false});
     const currentTime = moment().format('X') * 1000;
     const urlBase = `/lessons/${this.props.userId}?student=${this.props.studentMode}&date=${currentTime}&past=`;
@@ -191,7 +200,15 @@ class LessonsScreen extends Component {
   };
 
   componentDidMount() {
-    this.getLessons();
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getLessons();
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.focusListener != null && this.focusListener.remove) {
+      this.focusListener.remove();
+    }
   }
 
   render() {

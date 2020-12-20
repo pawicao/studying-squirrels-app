@@ -20,7 +20,7 @@ class SubjectScreen extends Component {
     this.inputKey = 0;
     this.state = {
       isLoaded: false,
-      editMode: !!this.props.route.params,
+      editMode: !!this.props.route.params.offer,
       allSubjects: [],
       chosenSubject: null,
       inputValue: '',
@@ -61,6 +61,11 @@ class SubjectScreen extends Component {
       .catch((err) => console.log(err));
   };
 
+  goBack = () => {
+    this.props.navigation.goBack();
+    this.props.route.params.refresh();
+  };
+
   addOffer = (subjectId) => {
     const url = '/offer';
     const data = {
@@ -72,10 +77,7 @@ class SubjectScreen extends Component {
     axios
       .post(url, data)
       .then((res) => {
-        this.setState(
-          {addButtonLoading: false},
-          this.props.navigation.goBack(),
-        );
+        this.setState({addButtonLoading: false}, this.goBack());
       })
       .catch((err) => console.log(err));
   };
@@ -134,33 +136,42 @@ class SubjectScreen extends Component {
   getAllOffers = () => {
     this.setState({isLoaded: false});
     const url = '/subjects';
-    axios.get(url).then((res) => {
-      const sortedData = res.data.sort((a, b) => (a.name > b.name ? 1 : -1));
-      this.pickerItems = sortedData.map((subject) => (
-        <Picker.Item value={subject.id} label={subject.name} key={subject.id} />
-      ));
-      const newState = this.state.editMode
-        ? {
-            chosenSubject: this.props.route.params.offer.subject,
-            timeslots: this.combineTimeslots(
-              getAllTimeslots(),
-              this.props.route.params.offer.timeslots,
-            ),
-            price: this.props.route.params.offer.price
-              .toString()
-              .replace('.', ','),
-          }
-        : {
-            chosenSubject: sortedData.length ? sortedData[0] : newSubjectObject,
-            timeslots: getAllTimeslots(),
-            price: '',
-          };
-      this.setState({
-        isLoaded: true,
-        allSubjects: sortedData,
-        ...newState,
-      });
-    });
+    axios
+      .get(url)
+      .then((res) => {
+        const sortedData = res.data.sort((a, b) => (a.name > b.name ? 1 : -1));
+        this.pickerItems = sortedData.map((subject) => (
+          <Picker.Item
+            value={subject.id}
+            label={subject.name}
+            key={subject.id}
+          />
+        ));
+        const newState = this.state.editMode
+          ? {
+              chosenSubject: this.props.route.params.offer.subject,
+              timeslots: this.combineTimeslots(
+                getAllTimeslots(),
+                this.props.route.params.offer.timeslots,
+              ),
+              price: this.props.route.params.offer.price
+                .toString()
+                .replace('.', ','),
+            }
+          : {
+              chosenSubject: sortedData.length
+                ? sortedData[0]
+                : newSubjectObject,
+              timeslots: getAllTimeslots(),
+              price: '',
+            };
+        this.setState({
+          isLoaded: true,
+          allSubjects: sortedData,
+          ...newState,
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   onPickerValueChange = (val) => {

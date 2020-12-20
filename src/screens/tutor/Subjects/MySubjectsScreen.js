@@ -32,9 +32,9 @@ class MySubjectsScreen extends Component {
       .catch((err) => console.log(err));
   };
 
-  createNewOffer = () => this.props.navigation.push('SubjectsDetails');
+  createNewOffer = () => this.props.navigation.push('SubjectsDetails', {refresh: this.getOffers});
 
-  editOffer = (offer) => this.props.navigation.push('SubjectsDetails', {offer});
+  editOffer = (offer) => this.props.navigation.push('SubjectsDetails', {offer, refresh: this.getOffers});
 
   deleteOffer = (id) => {
     const url = `/offer/${id}`;
