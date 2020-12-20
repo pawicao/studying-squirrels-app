@@ -42,7 +42,7 @@ const optionsList = [
 class MyAccountMainScreen extends Component {
   state = {
     user: {
-      userId: null,
+      id: null,
       firstName: '',
       lastName: '',
       photoPath: null,
@@ -169,7 +169,7 @@ class MyAccountMainScreen extends Component {
       .then((res) =>
         this.setState({
           user: {
-            userId: res.data.person.id,
+            id: res.data.person.id,
             firstName: res.data.person.firstName,
             lastName: res.data.person.lastName,
             photoPath: res.data.person.photoPath,

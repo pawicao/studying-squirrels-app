@@ -10,7 +10,8 @@ import {View} from 'react-native';
 
 const LessonActionView = (props) => {
   const {colors} = useTheme();
-  if (props.canceled) {
+  const isPast = moment() > moment(props.date);
+  if (props.canceled || (isPast && !props.confirmed)) {
     return (
       <Text
         style={{
@@ -24,7 +25,7 @@ const LessonActionView = (props) => {
       </Text>
     );
   }
-  if (moment() > moment(props.date)) {
+  if (isPast) {
     return (
       <ClickableRating
         rating={props.oldRating}
