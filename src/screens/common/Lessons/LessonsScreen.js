@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import Spinner from '../../../components/ui/Spinner';
 import ConfirmationOverlay from '../../../components/ui/ConfirmationOverlay';
 import NoDataView from '../../../components/ui/NoDataView';
-// TODO: different NoData text for tutor
+
 class LessonsScreen extends Component {
   constructor(props) {
     super(props);
@@ -33,14 +33,6 @@ class LessonsScreen extends Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('=========');
-    console.log(prevProps);
-    console.log('--------');
-    console.log(this.props);
-    console.log('=========');
-  }
-
   sortLessons = (lessonA, lessonB, negate = false) =>
     negate
       ? moment(lessonA.date) < moment(lessonB.date)
@@ -53,7 +45,6 @@ class LessonsScreen extends Component {
   goToLesson = (id) => this.props.navigation.push('LessonDetails', {id});
 
   getLessons = () => {
-    console.log('Param')
     this.setState({isLoaded: false});
     const currentTime = moment().format('X') * 1000;
     const urlBase = `/lessons/${this.props.userId}?student=${this.props.studentMode}&date=${currentTime}&past=`;
@@ -123,7 +114,7 @@ class LessonsScreen extends Component {
       )
       .catch((err) => console.log(err));
   };
-  //TODO: Refresh lessons when coming back from detailed lesson view, so that no bugs occur
+
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
     const url = `/lesson/${this.state.chosenLesson}/confirm`;
@@ -200,6 +191,8 @@ class LessonsScreen extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props.navigation);
+    console.log(this.props.route.params);
     this.focusListener = this.props.navigation.addListener('focus', () => {
       this.getLessons();
     });

@@ -31,7 +31,7 @@ const authSuccess = (token, userId) => (dispatch) => {
   getStudentMode(userId)
     .then((res) => {
       if (res != null) {
-        setMode(res);
+        dispatch(setMode(res));
         dispatch(authSuccessPlain(token, userId));
       } else {
         axios
@@ -39,7 +39,7 @@ const authSuccess = (token, userId) => (dispatch) => {
             headers: {Authorization: `Bearer ${token}`},
           })
           .then((res2) => {
-            setMode(res2.data.student);
+            dispatch(setMode(res2.data.student));
             setStudentMode(userId, res2.data.student).then(
               (_res) => 'Mode changed in local storage.',
             );

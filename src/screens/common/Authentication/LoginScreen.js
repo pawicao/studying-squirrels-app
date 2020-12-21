@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome5';
 import Spinner from '../../../components/ui/Spinner';
 import ErrorText from '../../../components/ui/Texts/ErrorText';
 import {EmailInput, PasswordInput} from '../../../components/ui/Input';
+import {routes} from '../../../components/ui/BottomTabNavigator';
 
 class LoginScreen extends Component {
   state = {
@@ -35,11 +36,15 @@ class LoginScreen extends Component {
     this.props.navigation.push('Sign up');
   };
 
+  navigateToContentScreen = () => {
+    this.props.navigation.navigate('Content', {screen: routes.lessons});
+  };
+
   // noinspection JSCheckFunctionSignatures
   componentDidUpdate(previousProps, previousState) {
     // NOTE: Probably could be implemented better
-    if (this.props.token) {
-      this.props.navigation.navigate('Content');
+    if (!previousProps.token && this.props.token && this.props.userId) {
+      this.navigateToContentScreen();
     } else if (this.props.error && previousProps.error === null) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({...this.state, password: ''});

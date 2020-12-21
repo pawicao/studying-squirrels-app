@@ -46,10 +46,17 @@ class HomeworksScreen extends Component {
   };
 
   componentDidMount() {
-    this.getHomeworks();
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getHomeworks();
+    });
   }
-  // TODO: When someone gets to lesson through homework, make clicking on homework POP and not PUSH
-  // TODO: Common empty state and add empty state everywhere
+
+  componentWillUnmount() {
+    if (this.focusListener != null && this.focusListener.remove) {
+      this.focusListener.remove();
+    }
+  }
+
   render() {
     if (!this.state.isLoaded) {
       return (

@@ -129,6 +129,18 @@ class LessonScreen extends Component {
       .catch((err) => console.log(err));
   };
 
+  componentDidMount() {
+    this.focusListener = this.props.navigation.addListener('focus', () => {
+      this.getLesson();
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.focusListener != null && this.focusListener.remove) {
+      this.focusListener.remove();
+    }
+  }
+
   addHomework = () =>
     this.props.navigation.navigate('HomeworkScreen', {
       homework: {
@@ -136,10 +148,6 @@ class LessonScreen extends Component {
       },
       newHomework: true,
     });
-
-  componentDidMount() {
-    this.getLesson();
-  }
 
   render() {
     if (!this.state.isLoaded) {
