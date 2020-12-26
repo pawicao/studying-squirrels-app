@@ -117,9 +117,13 @@ class LessonsScreen extends Component {
 
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
-    const url = `/lesson/${this.state.chosenLesson}/confirm`;
+    const url = '/lesson/confirm';
+    const payload = {
+      lessonId: this.state.chosenLesson,
+      tutorDescription: this.state.tutorDescription,
+    };
     axios
-      .put(url)
+      .put(url, payload)
       .then((res) =>
         this.setState((prevState) => {
           return {
@@ -191,8 +195,6 @@ class LessonsScreen extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.navigation);
-    console.log(this.props.route.params);
     this.focusListener = this.props.navigation.addListener('focus', () => {
       this.getLessons();
     });

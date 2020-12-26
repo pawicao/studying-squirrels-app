@@ -65,9 +65,13 @@ class LessonScreen extends Component {
 
   onConfirm = () => {
     this.setState({modalButtonLoading: true});
-    const url = `/lesson/${this.state.lesson.id}/confirm`;
+    const url = '/lesson/confirm';
+    const payload = {
+      lessonId: this.state.lesson.id,
+      tutorDescription: this.state.tutorDescription,
+    };
     axios
-      .put(url)
+      .put(url, payload)
       .then((res) =>
         this.setState((prevState) => {
           return {
