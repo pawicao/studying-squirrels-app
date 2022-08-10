@@ -6,6 +6,7 @@ import icon from '../../../assets/icons/icon_mini.png';
 import axios from 'axios';
 import Spinner from '../../../components/ui/Spinner';
 import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
+import { generalStyles } from "../../../styles/styles";
 
 function AssistantScreen({route}) {
   const [assistantResults, setAssistantResults] = useState([]);
@@ -32,7 +33,10 @@ function AssistantScreen({route}) {
       const url = '/semweb/extract';
       const payload = {
         text: textContent,
-        properties: assistantProperties,
+        properties: {
+          ...assistantProperties,
+          extractedEntities: assistantResults,
+        },
       };
       axios
         .post(url, payload)
@@ -47,7 +51,10 @@ function AssistantScreen({route}) {
           }
           toggleAssistantLoading();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          toggleAssistantLoading();
+        });
     }
   }, [assistantResultsLoading]);
 
@@ -68,25 +75,32 @@ function AssistantScreen({route}) {
   return (
     <View style={{flex: 1}}>
       <LessonHeader {...headerDetails} />
-      <View>
-        <Text>
+      <View style={{margin: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text header style={{alignSelf: 'center'}}>
           {!assistantResultsLoading
             ? "Here's what I found about this task!"
             : 'Searching for results...'}
         </Text>
-        <Image source={icon} />
+        <Image source={icon} style={{marginHorizontal: 10}} />
       </View>
-      <ScrollView contentContainerStyle={{marginBottom: 10}}>
+      <ScrollView
+        contentContainerStyle={{
+          marginBottom: 10,
+          marginRight: 20,
+          marginLeft: 20,
+        }}>
         {assistantResults.map(({uri, name, wikipediaUrl}) => (
           <Text
             key={uri}
-            style={{marginVertical: 10}}
+            style={{marginVertical: 7, textDecorationLine: 'underline'}}
             primary
             onPress={() => handleLinkPress(wikipediaUrl)}>
             {name}
           </Text>
         ))}
-        {loadMoreButton}
+        <View style={[generalStyles.container, {marginVertical: 20}]}>
+          {loadMoreButton}
+        </View>
       </ScrollView>
     </View>
   );
