@@ -38,6 +38,10 @@ class LessonScreen extends Component {
       .catch((err) => console.log(err));
   };
 
+  goToAssistant = (headerDetails) => {
+    this.props.navigation.push('ProfileDetails', {headerDetails, text});
+  };
+
   goToProfile = (id) => {
     this.props.navigation.push('ProfileDetails', {id});
   };
@@ -254,6 +258,13 @@ class LessonScreen extends Component {
               )}
               <TextContentWithHeader
                 title="Tutor's note"
+                assisstantButton={
+                  this.props.studentMode
+                    ? {
+                        onPress: () => console.log('AAAAAAAAA'),
+                      }
+                    : null
+                }
                 emptyContentMessage="The tutor didn't specify any specific details regarding this lesson.">
                 {this.state.lesson.tutorDescription}
               </TextContentWithHeader>

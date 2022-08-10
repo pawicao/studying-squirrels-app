@@ -117,6 +117,7 @@ export const auth = (email, password) => (dispatch) => {
   dispatch(authStart());
   const authData = {email, password};
   const url = `${AUTH_BASEURL}/authenticate`;
+  console.log(url);
   axios
     .post(url, queryString.stringify(authData), {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},

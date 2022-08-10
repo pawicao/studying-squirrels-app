@@ -12,6 +12,7 @@ import Text from '../../../components/ui/Texts/Text';
 import ImageUploadOverlay from '../../../components/ui/ImageUploadOverlay';
 import ImagePicker from 'react-native-image-picker';
 import {API_BASEURL} from '../../../env/env';
+import {AssistantButton} from '../../../components/ui/Buttons/AssistantButton';
 
 class HomeworkScreen extends Component {
   constructor(props) {
@@ -268,6 +269,13 @@ class HomeworkScreen extends Component {
         <ScrollView contentContainerStyle={{marginBottom: 10}}>
           <TextContentWithHeader
             title="Task"
+            assisstantButton={
+              this.props.studentMode
+                ? {
+                    onPress: () => console.log('AAAAAAAAA'),
+                  }
+                : null
+            }
             withInput={!this.props.studentMode && this.state.editing}
             emptyContentMessage="This homework doesn't have any task associated with it. Most likely it's a tutor's mistake or you should be aware of what is there to be done without us reminding you about it.">
             {!this.props.studentMode && this.state.editing ? (

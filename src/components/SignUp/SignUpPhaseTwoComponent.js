@@ -94,16 +94,22 @@ const SignUpPhaseTwoComponent = (props) => {
             uncheckedIcon="circle-o"
             title="Student"
             containerStyle={{backgroundColor: 'transparent'}}
-            onPress={() => props.updateInputState('student', true)}
+            onPress={() => {
+              props.updateInputState('student', true);
+              props.updateInputState('tutor', false);
+            }}
           />
           <CheckBox
-            checked={!props.data.student}
+            checked={props.data.tutor}
             checkedColor={colors.primary}
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
             title="Tutor"
             containerStyle={{backgroundColor: 'transparent'}}
-            onPress={() => props.updateInputState('student', false)}
+            onPress={() => {
+              props.updateInputState('student', false);
+              props.updateInputState('tutor', true);
+            }}
           />
         </View>
         {props.error && <ErrorText>{props.error}</ErrorText>}
