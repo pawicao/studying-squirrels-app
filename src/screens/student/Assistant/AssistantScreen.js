@@ -6,7 +6,7 @@ import icon from '../../../assets/icons/icon_mini.png';
 import axios from 'axios';
 import Spinner from '../../../components/ui/Spinner';
 import {PrimaryButton} from '../../../components/ui/Buttons/PrimaryButton';
-import { generalStyles } from "../../../styles/styles";
+import {generalStyles} from '../../../styles/styles';
 
 function AssistantScreen({route}) {
   const [assistantResults, setAssistantResults] = useState([]);
@@ -75,7 +75,12 @@ function AssistantScreen({route}) {
   return (
     <View style={{flex: 1}}>
       <LessonHeader {...headerDetails} />
-      <View style={{margin: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View
+        style={{
+          margin: 20,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
         <Text header style={{alignSelf: 'center'}}>
           {!assistantResultsLoading
             ? "Here's what I found about this task!"
