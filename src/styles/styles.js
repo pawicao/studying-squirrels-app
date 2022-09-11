@@ -88,6 +88,31 @@ export const generalStyles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  buttonAssistantWrapper: {
+    alignSelf: 'flex-end',
+    textAlign: 'center',
+    marginRight: 20,
+    marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonAssistant: {
+    borderRadius: 100,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+    width: 60,
+    height: 60,
+    backgroundColor: studentTheme.colors.primary,
+  },
+  buttonAssistantText: {
+    color: '#e35f2e',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    textAlign: 'center',
+    marginTop: 5,
+  },
 });
 
 export const imagesStyles = StyleSheet.create({

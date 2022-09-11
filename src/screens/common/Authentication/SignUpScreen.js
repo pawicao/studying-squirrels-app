@@ -19,6 +19,7 @@ class SignUpScreen extends Component {
       data: {
         email: '',
         student: true,
+        tutor: false,
         password: '',
         firstName: '',
         lastName: '',

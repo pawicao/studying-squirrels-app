@@ -6,8 +6,8 @@ const envs = {
     AUTH_BASEURL: `${prod}/auth`,
   },
   dev: {
-    API_BASEURL: 'http://192.168.0.10:8080/api',
-    AUTH_BASEURL: 'http://192.168.0.10:8080/auth',
+    API_BASEURL: 'http://192.168.101.10:8080/api',
+    AUTH_BASEURL: 'http://192.168.101.10:8080/auth',
   },
 };
 const env = envs[active];

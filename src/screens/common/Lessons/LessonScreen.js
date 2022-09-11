@@ -38,6 +38,10 @@ class LessonScreen extends Component {
       .catch((err) => console.log(err));
   };
 
+  goToAssistant = (headerDetails, textContent) => {
+    this.props.navigation.push('AssistantScreen', {headerDetails, textContent});
+  };
+
   goToProfile = (id) => {
     this.props.navigation.push('ProfileDetails', {id});
   };
@@ -172,6 +176,12 @@ class LessonScreen extends Component {
       date: this.state.lesson.date,
     };
 
+    const headerDetails = {
+      goToProfile: this.goToProfile,
+      lesson: this.state.lesson,
+      studentMode: this.props.studentMode,
+    };
+
     return (
       <>
         <ConfirmationOverlay
@@ -201,11 +211,7 @@ class LessonScreen extends Component {
           If you want, provide a description for the given rating.
         </ConfirmationOverlay>
         <View style={{flex: 1}}>
-          <LessonHeader
-            goToProfile={this.goToProfile}
-            lesson={this.state.lesson}
-            studentMode={this.props.studentMode}
-          />
+          <LessonHeader {...headerDetails} />
           <ScrollView
             contentContainerStyle={{
               justifyContent: 'space-between',
@@ -254,6 +260,17 @@ class LessonScreen extends Component {
               )}
               <TextContentWithHeader
                 title="Tutor's note"
+                assisstantButton={
+                  this.props.studentMode
+                    ? {
+                        onPress: () =>
+                          this.goToAssistant(
+                            headerDetails,
+                            this.state.lesson.tutorDescription,
+                          ),
+                      }
+                    : null
+                }
                 emptyContentMessage="The tutor didn't specify any specific details regarding this lesson.">
                 {this.state.lesson.tutorDescription}
               </TextContentWithHeader>
