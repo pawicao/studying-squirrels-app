@@ -8,7 +8,7 @@ import {PrimaryButton} from './Buttons/PrimaryButton';
 import {Overlay} from 'react-native-elements';
 import Spinner from './Spinner';
 import {useTheme} from '@react-navigation/native';
-// TODO: Moze w componentDidUpdate jezeli jakis props ISTNIEJE to zrfreshuj pobranie danych
+// TODO: componentDidUpdate - refresh data fetch if props exist?
 const MAX_LENGTH = 200;
 
 const ConfirmationOverlay = (props) => {
